@@ -10,7 +10,6 @@ class RolesAndPermissionsSeeder extends Seeder
 {
     public function run()
     {
-        // Todos los permisos (incluyendo los nuevos relacionados con requisiciones)
         $permissions = [
             // Configuraciones y usuarios
             'ver configuraciones',
@@ -31,6 +30,12 @@ class RolesAndPermissionsSeeder extends Seeder
             'editar requisiciones',
             'eliminar requisiciones',
             'ver requisiciones por cuenta',
+
+            // Productos
+            'ver productos',
+            'crear productos',
+            'editar productos',
+            'eliminar productos',
         ];
 
         // Crear permisos si no existen
@@ -40,7 +45,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Definición de roles y permisos asignados
         $roles = [
-            'Administrador' => $permissions, // Acceso completo
+            'Administrador' => $permissions,
             'Subdirector' => [
                 'ver configuraciones',
                 'ver usuarios',
@@ -52,13 +57,14 @@ class RolesAndPermissionsSeeder extends Seeder
                 'ver requisiciones por cuenta',
             ],
             'Empleado' => [
-                'ver usuarios',
                 'ver requisiciones',
                 'ver requisiciones por cuenta',
+                'ver productos',
             ],
             'Observador' => [
                 'ver configuraciones',
                 'ver requisiciones',
+                'ver productos',
             ],
         ];
 

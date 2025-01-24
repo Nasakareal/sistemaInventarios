@@ -9,6 +9,7 @@
 @section('content')
     <div class="row">
 
+        <!-- Usuarios -->
         <div class="col-md-3 col-sm-6 col-12">
             <div class="info-box">
                 <span class="info-box-icon bg-orange"><i class="fa-solid fa-user"></i></span>
@@ -19,6 +20,7 @@
             </div>
         </div>
 
+        <!-- Roles -->
          <div class="col-md-3 col-sm-6 col-12">
             <div class="info-box">
                 <span class="info-box-icon bg-navy"><i class="fa-regular fa-flag"></i></span>
@@ -29,6 +31,18 @@
             </div>
         </div>
 
+         <!-- Cuentas Bancarias -->
+        <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-info"><i class="fa-solid fa-university"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text"><b>Cuentas Bancarias</b></span>
+                    <a href="{{ url('#') }}" class="btn btn-primary btn-sm">Acceder</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadisticas -->
         <div class="col-md-3 col-sm-6 col-12">
             <div class="info-box">
                 <span class="info-box-icon bg-success"><i class="fa-solid fa-chart-pie"></i></span>
@@ -39,6 +53,7 @@
             </div>
         </div>
 
+        <!-- Vacias Base de Datos -->
         <div class="col-md-3 col-sm-6 col-12">
             <div class="info-box">
                 <span class="info-box-icon bg-danger"><i class="fa-solid fa-dumpster"></i></span>

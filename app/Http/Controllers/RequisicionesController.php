@@ -8,43 +8,59 @@ use Illuminate\Http\Request;
 
 class RequisicionesController extends Controller
 {
+    // Método para listar requisiciones asociadas a una cuenta bancaria
     public function indexByCuenta($cuentaId)
-        {
-            $cuentaBancaria = CuentaBancaria::findOrFail($cuentaId);
-            $requisiciones = $cuentaBancaria->requisiciones;
+    {
+        $cuentaBancaria = CuentaBancaria::findOrFail($cuentaId);
+        $requisiciones = $cuentaBancaria->requisiciones()->with('cuentaBancaria')->get();
 
-            return view('requisiciones.cuentas.index', compact('cuentaBancaria', 'requisiciones'));
+        return view('requisiciones.cuentas.index', compact('cuentaBancaria', 'requisiciones'));
+    }
+
+    // Método para listar todas las requisiciones con filtros y cuentas bancarias
+    public function index(Request $request)
+    {
+        $query = Requisiciones::query()->with('cuentaBancaria'); // Relación con cuenta bancaria
+
+        // Aplicar filtros según los parámetros del request
+        if ($request->filled('numero_requisicion')) {
+            $query->where('numero_requisicion', 'like', '%' . $request->input('numero_requisicion') . '%');
         }
 
+        if ($request->filled('cuenta_bancaria_id')) {
+            $query->where('cuenta_bancaria_id', $request->input('cuenta_bancaria_id'));
+        }
 
+        if ($request->filled('monto_min')) {
+            $query->where('monto', '>=', $request->input('monto_min'));
+        }
 
-    public function index()
-    {
-        // Obtener todas las requisiciones con la relación cuentaBancaria
-        $requisiciones = Requisiciones::with('cuentaBancaria')->get();
+        if ($request->filled('monto_max')) {
+            $query->where('monto', '<=', $request->input('monto_max'));
+        }
 
-        // Si la vista 'requisiciones.index' espera otras variables, agrégalas aquí
-        // Por ejemplo, si necesitas listar cuentas, pásalas también
-        // $cuentas = CuentaBancaria::all();
+        // Obtener los resultados filtrados
+        $requisiciones = $query->get();
 
-        return view('requisiciones.index', compact('requisiciones'));
+        // Cargar todas las cuentas bancarias para usarlas en el filtro
+        $cuentas = CuentaBancaria::all();
+
+        return view('requisiciones.index', compact('requisiciones', 'cuentas'));
     }
 
 
+
+    // Mostrar formulario para crear una requisición
     public function create(Request $request)
     {
         $cuentaBancariaId = $request->input('cuenta_bancaria_id');
-        $cuentaBancaria = \App\Models\CuentaBancaria::findOrFail($cuentaBancariaId);
-
-        // Obtén todos los proveedores
+        $cuentaBancaria = CuentaBancaria::findOrFail($cuentaBancariaId);
         $proveedores = \App\Models\Proveedor::all();
 
         return view('requisiciones.cuentas.create', compact('cuentaBancariaId', 'cuentaBancaria', 'proveedores'));
     }
 
-
-
-
+    // Guardar una nueva requisición en la base de datos
     public function store(Request $request)
     {
         $request->validate([
@@ -71,9 +87,11 @@ class RequisicionesController extends Controller
         ]);
 
         Requisiciones::create($request->all());
+
         return redirect()->route('requisiciones.index')->with('success', 'Requisición creada exitosamente.');
     }
 
+    // Mostrar detalles de una requisición
     public function show(Requisiciones $requisicion)
     {
         if (!$requisicion) {
@@ -83,14 +101,14 @@ class RequisicionesController extends Controller
         return view('requisiciones.cuentas.show', compact('requisicion'));
     }
 
-
-
-    public function edit(Requisiciones $requisiciones)
+    // Mostrar formulario para editar una requisición
+    public function edit(Requisiciones $requisicion)
     {
-        return view('Requisiciones.edit', compact('requisiciones'));
+        return view('requisiciones.edit', compact('requisicion'));
     }
 
-    public function update(Request $request, Requisiciones $requisiciones)
+    // Actualizar una requisición existente
+    public function update(Request $request, Requisiciones $requisicion)
     {
         $request->validate([
             'fecha_requisicion' => 'required|date',
@@ -115,13 +133,16 @@ class RequisicionesController extends Controller
             'cuenta_bancaria_id' => 'required|exists:cuentas_bancarias,id',
         ]);
 
-        $requisiciones->update($request->all());
+        $requisicion->update($request->all());
+
         return redirect()->route('requisiciones.index')->with('success', 'Requisición actualizada exitosamente.');
     }
 
-    public function destroy(Requisiciones $requisiciones)
+    // Eliminar una requisición
+    public function destroy(Requisiciones $requisicion)
     {
-        $requisiciones->delete();
+        $requisicion->delete();
+
         return redirect()->route('requisiciones.index')->with('success', 'Requisición eliminada exitosamente.');
     }
 }

@@ -12,6 +12,11 @@
             <div class="card card-outline card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Productos</h3>
+                    <div class="card-tools">
+                        <a href="{{ url('productos/create') }}" class="btn btn-primary">
+                            <i class="fa-solid fa-plus"></i> Añadir Inventario
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table id="productos" class="table table-striped table-bordered table-hover table-sm">

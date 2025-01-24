@@ -2,15 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\Http",
-    "\\app\\Http\\Controllers",
     "\\app\\Models",
+    "\\config",
     "\\database",
     "\\database\\migrations",
     "\\resources",
     "\\resources\\views",
-    "\\resources\\views\\productos",
-    "\\routes"
+    "\\resources\\views\\admin",
+    "\\resources\\views\\productos"
   ],
+  "SelectedNode": "\\database\\migrations\\2025_01_24_051056_add_qr_url_to_productos_table.php",
   "PreviewInSolutionExplorer": false
 }

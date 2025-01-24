@@ -14,7 +14,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Rutas para Proveedores
 Route::prefix('proveedores')->middleware('auth')->group(function () {
     Route::post('/store', [ProveedorController::class, 'store'])->name('proveedores.store');
-    // Puedes agregar otras rutas relacionadas con proveedores aquí si es necesario
 });
 
 // Rutas para Productos

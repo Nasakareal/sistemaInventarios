@@ -24,7 +24,7 @@
                 <span class="info-box-icon bg-teal"><i class="fa-solid fa-clipboard-list"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text"><b>Listado de Inventarios</b></span>
-                    <a href="{{ url('#') }}" class="btn btn-primary btn-sm">Acceder</a>
+                    <a href="{{ url('productos') }}" class="btn btn-primary btn-sm">Acceder</a>
                 </div>
             </div>
         </div>
