@@ -12,7 +12,6 @@ class ProductoController extends Controller
 {
     public function index()
     {
-        // Cargar relaciones necesarias para mostrar la información completa de los productos
         $productos = Producto::with(['categoria', 'proveedor', 'departamento'])->get();
 
         return view('productos.index', compact('productos'));
@@ -20,7 +19,6 @@ class ProductoController extends Controller
 
     public function create()
     {
-        // Obtener las categorías, proveedores y departamentos para los selects
         $categorias = Categoria::all();
         $proveedores = Proveedor::all();
         $departamentos = Departamento::all();
@@ -30,28 +28,36 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
-        // Validación de los campos necesarios
         $request->validate([
             'nombre' => 'required|max:150',
             'categoria_id' => 'required|exists:categorias,id',
             'cantidad_stock' => 'required|integer|min:0',
             'precio_compra' => 'required|numeric|min:0',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen
         ]);
 
         try {
-            // Crear el producto, delegando la lógica del QR al modelo
-            $producto = Producto::create($request->all());
+            $data = $request->all();
 
-            return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente con su código QR.');
+            // Procesar la imagen si existe
+            if ($request->hasFile('imagen')) {
+                $imagePath = $request->file('imagen')->store('productos', 'public');
+                $data['imagen_url'] = "storage/{$imagePath}"; // Guardar la ruta de la imagen
+            }
+
+            // Crear el producto con los datos procesados
+            Producto::create($data);
+
+            return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
         } catch (\Exception $e) {
-            // Manejo de errores si algo falla
             return redirect()->route('productos.create')->withErrors(['error' => 'Hubo un problema al crear el producto. Inténtalo de nuevo.']);
         }
     }
 
+
+
     public function show(Producto $producto)
     {
-        // Cargar relaciones necesarias
         $producto->load(['categoria', 'proveedor', 'departamento']);
 
         return view('productos.show', compact('producto'));
@@ -59,7 +65,6 @@ class ProductoController extends Controller
 
     public function edit(Producto $producto)
     {
-        // Obtener las categorías, proveedores y departamentos para los selects
         $categorias = Categoria::all();
         $proveedores = Proveedor::all();
         $departamentos = Departamento::all();
@@ -69,7 +74,6 @@ class ProductoController extends Controller
 
     public function update(Request $request, Producto $producto)
     {
-        // Validación de los campos necesarios
         $request->validate([
             'nombre' => 'required|string|max:255',
             'categoria_id' => 'required|exists:categorias,id',
@@ -77,12 +81,10 @@ class ProductoController extends Controller
         ]);
 
         try {
-            // Actualizar el producto
             $producto->update($request->all());
 
             return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito.');
         } catch (\Exception $e) {
-            // Manejo de errores si algo falla
             return redirect()->route('productos.edit', $producto)->withErrors(['error' => 'Hubo un problema al actualizar el producto. Inténtalo de nuevo.']);
         }
     }
@@ -90,12 +92,10 @@ class ProductoController extends Controller
     public function destroy(Producto $producto)
     {
         try {
-            // Eliminar el producto
             $producto->delete();
 
             return redirect()->route('productos.index')->with('success', 'Producto eliminado con éxito.');
         } catch (\Exception $e) {
-            // Manejo de errores si algo falla
             return redirect()->route('productos.index')->withErrors(['error' => 'Hubo un problema al eliminar el producto. Inténtalo de nuevo.']);
         }
     }

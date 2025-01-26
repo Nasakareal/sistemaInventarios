@@ -20,7 +20,6 @@ class ProductosSeeder extends Seeder
                 'cantidad_stock' => 10,
                 'stock_minimo' => 2,
                 'precio_compra' => 15000,
-                'precio_venta' => 18000,
                 'ubicacion' => 'Almacén 1',
                 'estado' => 'ACTIVO'
             ],
@@ -34,7 +33,6 @@ class ProductosSeeder extends Seeder
                 'cantidad_stock' => 50,
                 'stock_minimo' => 10,
                 'precio_compra' => 25,
-                'precio_venta' => 30,
                 'ubicacion' => 'Almacén 2',
                 'estado' => 'ACTIVO'
             ],

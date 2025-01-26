@@ -78,5 +78,5 @@
 @stop
 
 @section('js')
-    <script> console.log("Configuraciones del Sistema cargadas con AdminLTE."); </script>
+    <script> console.log("Configuraciones del Sistema cargadas."); </script>
 @stop

@@ -135,10 +135,20 @@
 
 @section('js')
     <script>
+        @if (session('success'))
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        @endif
+
         @if ($errors->any())
             Swal.fire({
                 icon: 'error',
-                title: 'Errores en el formulario',
+                title: 'Error en el formulario',
                 html: `
                     <ul style="text-align: left;">
                         @foreach ($errors->all() as $error)

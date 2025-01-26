@@ -1,0 +1,151 @@
+@extends('adminlte::page')
+
+@section('title', 'Detalles del Producto')
+
+@section('content_header')
+    <h1>Detalles del Producto</h1>
+@stop
+
+@section('content')
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Datos del Producto</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {{-- Código y --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="codigo">Código</label>
+                                <p class="form-control-static">{{ $producto->codigo ?? 'Sin código' }}</p>
+                            </div>
+                        </div>
+                        {{-- Nombre --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <p class="form-control-static">{{ $producto->nombre }}</p>
+                            </div>
+                        </div>
+                        {{-- Categoría --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="categoria">Categoría</label>
+                                <p class="form-control-static">{{ $producto->categoria->nombre ?? 'No asignada' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        {{-- Proveedor --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="proveedor">Proveedor</label>
+                                <p class="form-control-static">{{ $producto->proveedor->nombre ?? 'No asignado' }}</p>
+                            </div>
+                        </div>
+                        {{-- Departamento --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="departamento">Departamento</label>
+                                <p class="form-control-static">{{ $producto->departamento->nombre ?? 'No especificado' }}</p>
+                            </div>
+                        </div>
+                        {{-- Cantidad en Stock--}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cantidad_stock">Cantidad en Stock</label>
+                                <p class="form-control-static">{{ $producto->cantidad_stock }}</p>
+                            </div>
+                        </div>
+                    </div>           
+
+                    <div class="row">
+                        {{-- Precio --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="precio_compra">Precio de Compra</label>
+                                <p class="form-control-static">$ {{ number_format($producto->precio_compra, 2) }}</p>
+                            </div>
+                        </div>
+                        {{-- Ubicación --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="ubicacion">Ubicación</label>
+                                <p class="form-control-static">{{ $producto->ubicacion ?? 'No especificada' }}</p>
+                            </div>
+                        </div>
+                        {{-- Estado --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="estado">Estado</label>
+                                <p class="form-control-static">{{ $producto->estado }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                    {{-- Descripción  --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <p class="form-control-static">{{ $producto->descripcion ?? 'No especificada' }}</p>
+                            </div>
+                        </div>
+                        {{-- Imagen --}}
+                        <div class="col-md-8">
+                            <div class="form-group text-center">
+                                <label for="imagen">Imagen del Producto</label>
+                                @if ($producto->imagen_url)
+                                    <div>
+                                       <img src="{{ asset($producto->imagen_url) }}" alt="Imagen del Producto" style="max-width: 200px; max-height: 200px;" class="img-thumbnail">
+
+                                    </div>
+                                @else
+                                    <p class="form-control-static">No tiene imagen.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        {{-- Botón de regreso --}}
+                        <div class="col-md-12 text-center">
+                            <div class="form-group">
+                                <a href="{{ route('productos.index') }}" class="btn btn-secondary">
+                                    <i class="fa-solid fa-arrow-left"></i> Volver
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@stop
+
+@section('css')
+    <style>
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-control-static {
+            display: block;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+        .img-thumbnail {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 4px;
+        }
+    </style>
+@stop
+
+@section('js')
+    <script> console.log("Vista de detalles del producto cargada correctamente."); </script>
+@stop

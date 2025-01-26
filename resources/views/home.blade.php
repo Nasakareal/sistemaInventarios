@@ -48,5 +48,5 @@
 @stop
 
 @section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+    <script> console.log("Para mi amiga, mi guía, mi estrella, mi silencio perfecto."); </script>
 @stop

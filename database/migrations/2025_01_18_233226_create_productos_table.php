@@ -20,7 +20,6 @@ class CreateProductosTable extends Migration
             $table->integer('cantidad_stock')->default(0);
             $table->integer('stock_minimo')->default(0);
             $table->decimal('precio_compra', 10, 2)->default(0);
-            $table->decimal('precio_venta', 10, 2)->default(0);
             $table->string('ubicacion', 100)->nullable();
             $table->string('imagen_url', 255)->nullable();
             $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');

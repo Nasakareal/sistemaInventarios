@@ -11,6 +11,12 @@ Auth::routes();
 // Home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// Ruta para el escaneo de QR
+Route::get('/scan', function () {
+    return view('scan.scan_qr');
+})->middleware('auth')->name('scan.qr');
+
+
 // Rutas para Proveedores
 Route::prefix('proveedores')->middleware('auth')->group(function () {
     Route::post('/store', [ProveedorController::class, 'store'])->name('proveedores.store');

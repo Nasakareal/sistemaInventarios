@@ -309,7 +309,7 @@ return [
         [
             'type' => 'link',
             'text' => 'Scan',
-            'url' => '#',
+            'url' => '/scan',
             'topnav_right' => true, 
             'icon' => 'fa-solid fa-qrcode',
         ],
