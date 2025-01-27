@@ -361,17 +361,11 @@ return [
                     'icon' => 'fa-regular fa-rectangle-list',
                     'url' => 'requisiciones',
                 ],
-                
-                [
-                    'text' => 'Cuenta 7227',
-                    'icon' => 'fa-solid fa-table-cells',
-                    'url' => 'requisiciones/cuenta_1',
-                ],
 
                 [
-                    'text' => 'Listado de',
-                    'icon' => 'fa-solid fa-barcode',
-                    'url' => '#',
+                    'text' => 'Listado de proveedores',
+                    'icon' => 'fa-solid fa-truck-ramp-box',
+                    'url' => 'proveedores',
                 ],
             ],
         ],

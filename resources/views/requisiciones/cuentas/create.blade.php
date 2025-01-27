@@ -115,28 +115,10 @@
                             </div>
                         </div>
 
-                        <!-- Tercer Row -->
-                        <div class="row">
-                            <!-- Justificación -->
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="justificacion">Justificación</label>
-                                    <textarea name="justificacion" id="justificacion"
-                                              class="form-control @error('justificacion') is-invalid @enderror"
-                                              rows="4" placeholder="Ingrese la justificación">{{ old('justificacion') }}</textarea>
-                                    @error('justificacion')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Cuarto Row -->
                         <div class="row">
                             <!-- Monto -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="monto">Monto</label>
                                     <input type="number" name="monto" id="monto"
@@ -151,7 +133,7 @@
                             </div>
 
                             <!-- Estado de la Requisición -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="status_requisicion">Estado de la Requisición</label>
                                     <select name="status_requisicion" id="status_requisicion"
@@ -167,12 +149,9 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Quinto Row -->
-                        <div class="row">
-                            <!-- Proveedor -->
-                            <div class="col-md-6">
+                             <!-- Proveedor -->
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="proveedor">Proveedor</label>
                                     <div class="input-group">
@@ -199,33 +178,24 @@
                             </div>
                         </div>
 
-                        <!-- Modal para Agregar Proveedor -->
-                        <div class="modal fade" id="addProveedorModal" tabindex="-1" role="dialog" aria-labelledby="addProveedorModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form id="addProveedorForm">
-                                        @csrf
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="addProveedorModalLabel">Agregar Nuevo Proveedor</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="nuevo_proveedor">Nombre del Proveedor</label>
-                                                <input type="text" name="nuevo_proveedor" id="nuevo_proveedor" class="form-control" placeholder="Ingrese el nombre del proveedor" required>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                            <button type="submit" class="btn btn-primary">Guardar</button>
-                                        </div>
-                                    </form>
+                        <!-- Justificación -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="justificacion">Justificación</label>
+                                    <textarea name="justificacion" id="justificacion"
+                                              class="form-control @error('justificacion') is-invalid @enderror"
+                                              rows="4" placeholder="Ingrese la justificación">{{ old('justificacion') }}</textarea>
+                                    @error('justificacion')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
-                        <!-- Fin del Modal -->
+
+                       
 
                         <!-- Botones del Formulario Principal -->
                         <hr>
@@ -259,10 +229,20 @@
 
 @section('js')
     <script>
+        @if (session('success'))
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        @endif
+
         @if ($errors->any())
             Swal.fire({
                 icon: 'error',
-                title: 'Errores en el formulario',
+                title: 'Error en el formulario',
                 html: `
                     <ul style="text-align: left;">
                         @foreach ($errors->all() as $error)
@@ -273,92 +253,5 @@
                 confirmButtonText: 'Aceptar'
             });
         @endif
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Manejar el envío del formulario del modal con AJAX
-            document.getElementById('addProveedorForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const nombreProveedor = document.getElementById('nuevo_proveedor').value.trim();
-
-                // Validar que el nombre no esté vacío
-                if (!nombreProveedor) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'El nombre del proveedor es requerido.',
-                        confirmButtonText: 'Aceptar'
-                    });
-                    return;
-                }
-
-                // Mostrar un indicador de carga (opcional)
-                Swal.fire({
-                    title: 'Agregando proveedor...',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-
-                // Realizar una solicitud AJAX para agregar el proveedor
-                fetch('{{ route('proveedores.store') }}', { // Asegúrate de que esta ruta está definida
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ nombre: nombreProveedor })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    Swal.close(); // Cerrar el indicador de carga
-                    if (data.success) {
-                        // Agregar el nuevo proveedor al select
-                        const proveedorSelect = document.getElementById('proveedor');
-                        const newOption = document.createElement('option');
-                        newOption.value = data.proveedor.nombre;
-                        newOption.text = data.proveedor.nombre;
-                        newOption.selected = true;
-                        proveedorSelect.add(newOption);
-
-                        // Cerrar el modal y limpiar el formulario
-                        $('#addProveedorModal').modal('hide');
-                        document.getElementById('addProveedorForm').reset();
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Proveedor agregado exitosamente',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    } else {
-                        // Manejar errores de validación o de otro tipo
-                        let errorMessage = 'Ocurrió un error al agregar el proveedor.';
-                        if (typeof data.message === 'object') {
-                            errorMessage = Object.values(data.message).flat().join('<br>');
-                        } else if (data.message) {
-                            errorMessage = data.message;
-                        }
-
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error al agregar proveedor',
-                            html: errorMessage,
-                            confirmButtonText: 'Aceptar'
-                        });
-                    }
-                })
-                .catch(error => {
-                    Swal.close(); // Cerrar el indicador de carga
-                    console.error('Error:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error al agregar proveedor',
-                        text: 'Ocurrió un problema al intentar agregar el proveedor.',
-                        confirmButtonText: 'Aceptar'
-                    });
-                });
-            });
-        });
     </script>
 @stop

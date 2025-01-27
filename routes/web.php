@@ -31,8 +31,19 @@ Route::prefix('productos')->middleware('auth')->group(function () {
     Route::get('/{producto}/edit', [App\Http\Controllers\ProductoController::class, 'edit'])->middleware('can:editar productos')->name('productos.edit');
     Route::put('/{producto}', [App\Http\Controllers\ProductoController::class, 'update'])->middleware('can:editar productos')->name('productos.update');
     Route::delete('/{producto}', [App\Http\Controllers\ProductoController::class, 'destroy'])->middleware('can:eliminar productos')->name('productos.destroy');
+    Route::get('/{id}/qr', [App\Http\Controllers\ProductoController::class, 'downloadQR'])->name('productos.qr');
 });
 
+// Rutas para Proveedores
+Route::prefix('proveedores')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\ProveedorController::class, 'index'])->name('proveedores.index');
+    Route::get('/create', [App\Http\Controllers\ProveedorController::class, 'create'])->middleware('can:crear proveedores')->name('proveedores.create');
+    Route::post('/', [App\Http\Controllers\ProveedorController::class, 'store'])->middleware('can:crear proveedores')->name('proveedores.store');
+    Route::get('/{proveedor}', [App\Http\Controllers\ProveedorController::class, 'show'])->middleware('can:ver proveedores')->name('proveedores.show');
+    Route::get('/{proveedor}/edit', [App\Http\Controllers\ProveedorController::class, 'edit'])->middleware('can:editar proveedores')->name('proveedores.edit');
+    Route::put('/{proveedor}', [App\Http\Controllers\ProveedorController::class, 'update'])->middleware('can:editar proveedores')->name('proveedores.update');
+    Route::delete('/{proveedor}', [App\Http\Controllers\ProveedorController::class, 'destroy'])->middleware('can:eliminar proveedores')->name('proveedores.destroy');
+});
 
 
 // Rutas para Cuentas Bancarias

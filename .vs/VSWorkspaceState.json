@@ -1,11 +1,17 @@
 {
   "ExpandedNodes": [
     "",
+    "\\app",
+    "\\app\\Http",
+    "\\app\\Http\\Controllers",
     "\\resources",
+    "\\resources\\css",
     "\\resources\\views",
-    "\\resources\\views\\admin",
-    "\\resources\\views\\admin\\settings",
-    "\\resources\\views\\admin\\settings\\users"
+    "\\resources\\views\\layouts",
+    "\\resources\\views\\vendor",
+    "\\resources\\views\\vendor\\adminlte",
+    "\\resources\\views\\vendor\\adminlte\\partials"
   ],
+  "SelectedNode": "\\resources\\css\\app.css",
   "PreviewInSolutionExplorer": false
 }

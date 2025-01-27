@@ -33,7 +33,7 @@ class ProductoController extends Controller
             'categoria_id' => 'required|exists:categorias,id',
             'cantidad_stock' => 'required|integer|min:0',
             'precio_compra' => 'required|numeric|min:0',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
@@ -42,7 +42,7 @@ class ProductoController extends Controller
             // Procesar la imagen si existe
             if ($request->hasFile('imagen')) {
                 $imagePath = $request->file('imagen')->store('productos', 'public');
-                $data['imagen_url'] = "storage/{$imagePath}"; // Guardar la ruta de la imagen
+                $data['imagen_url'] = "storage/{$imagePath}";
             }
 
             // Crear el producto con los datos procesados
@@ -54,14 +54,27 @@ class ProductoController extends Controller
         }
     }
 
-
-
     public function show(Producto $producto)
     {
         $producto->load(['categoria', 'proveedor', 'departamento']);
 
         return view('productos.show', compact('producto'));
     }
+
+    public function downloadQR($id)
+    {
+        $fileName = sprintf('PROD-%06d.png', $id);
+        $filePath = public_path("storage/qrcodes/{$fileName}");
+
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'El código QR no está disponible para este producto.');
+        }
+
+        return response()->download($filePath, "QR_{$fileName}");
+    }
+
+
+
 
     public function edit(Producto $producto)
     {

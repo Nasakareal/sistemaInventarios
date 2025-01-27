@@ -36,6 +36,12 @@ class RolesAndPermissionsSeeder extends Seeder
             'crear productos',
             'editar productos',
             'eliminar productos',
+
+            // Proveedores
+            'ver proveedores',
+            'crear proveedores',
+            'editar proveedores',
+            'eliminar proveedores',
         ];
 
         // Crear permisos si no existen
@@ -60,6 +66,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'ver requisiciones',
                 'ver requisiciones por cuenta',
                 'ver productos',
+                'ver proveedores',
             ],
             'Observador' => [
                 'ver configuraciones',

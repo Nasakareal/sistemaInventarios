@@ -8,35 +8,65 @@ use Illuminate\Support\Facades\Validator;
 
 class ProveedorController extends Controller
 {
-    /**
-     * Almacena un nuevo proveedor en la base de datos.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function index()
+    {
+        $proveedores = Proveedor::all();
+
+        return view('proveedores.index', compact('proveedores'));
+    }
+
+    public function create()
+    {
+        return view('proveedores.create');
+    }
+
     public function store(Request $request)
     {
-        // Validación de los datos recibidos
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:255|unique:proveedores,nombre',
+        $request->validate([
+            'nombre' => 'required|string|max:150|unique:proveedores,nombre',
+            'contacto' => 'nullable|string|max:100',
+            'telefono' => 'nullable|string|max:15',
+            'email' => 'nullable|email|max:100',
+            'direccion' => 'nullable|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-            ], 422);
-        }
+        Proveedor::create($request->all());
 
-        // Crear el nuevo proveedor
-        $proveedor = Proveedor::create([
-            'nombre' => $request->nombre,
+        return redirect()->route('proveedores.index')
+            ->with('success', 'Proveedor creado correctamente.');
+    }
+
+    public function show(Proveedor $proveedor)
+    {
+        return view('proveedores.show', compact('proveedor'));
+    }
+
+    public function edit(Proveedor $proveedor)
+    {
+        return view('proveedores.edit', compact('proveedor'));
+    }
+
+    public function update(Request $request, Proveedor $proveedor)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:150|unique:proveedores,nombre,' . $proveedor->id,
+            'contacto' => 'nullable|string|max:100',
+            'telefono' => 'nullable|string|max:15',
+            'email' => 'nullable|email|max:100',
+            'direccion' => 'nullable|string',
         ]);
 
-        // Retornar una respuesta JSON exitosa
-        return response()->json([
-            'success' => true,
-            'proveedor' => $proveedor,
-        ]);
+        $proveedor->update($request->all());
+
+        return redirect()->route('proveedores.index')
+            ->with('success', 'Proveedor actualizado correctamente.');
+    }
+
+    public function destroy(Proveedor $proveedor)
+    {
+        $proveedor->delete();
+
+        return redirect()->route('proveedores.index')
+            ->with('success', 'Proveedor eliminado correctamente.');
     }
 }
