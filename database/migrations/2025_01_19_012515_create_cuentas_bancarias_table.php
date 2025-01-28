@@ -14,10 +14,10 @@ class CreateCuentasBancariasTable extends Migration
     public function up()
     {
         Schema::create('cuentas_bancarias', function (Blueprint $table) {
-            $table->id(); // ID único de la cuenta
-            $table->string('nombre'); // Nombre de la cuenta bancaria (e.g., General, BBVA 7227)
-            $table->string('numero')->nullable(); // Número de cuenta bancaria (opcional)
-            $table->timestamps(); // created_at y updated_at
+            $table->id();
+            $table->string('nombre');
+            $table->string('numero')->nullable();
+            $table->timestamps();
         });
     }
 

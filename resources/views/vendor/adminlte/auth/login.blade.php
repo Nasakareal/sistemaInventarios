@@ -1,7 +1,7 @@
 @extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
 
 @section('adminlte_css_pre')
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('Favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 @stop
 
@@ -95,15 +95,4 @@
             </div>
         </div>
     </form>
-@stop
-
-@section('auth_footer')
-    {{-- Enlace para recuperar contraseña --}}
-    @if ($password_reset_url)
-        <p class="my-0">
-            <a href="{{ $password_reset_url }}">
-                {{ __('adminlte::adminlte.i_forgot_my_password') }}
-            </a>
-        </p>
-    @endif
 @stop

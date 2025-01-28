@@ -16,12 +16,6 @@ Route::get('/scan', function () {
     return view('scan.scan_qr');
 })->middleware('auth')->name('scan.qr');
 
-
-// Rutas para Proveedores
-Route::prefix('proveedores')->middleware('auth')->group(function () {
-    Route::post('/store', [ProveedorController::class, 'store'])->name('proveedores.store');
-});
-
 // Rutas para Productos
 Route::prefix('productos')->middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index');

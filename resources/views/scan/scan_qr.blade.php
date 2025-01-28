@@ -89,6 +89,7 @@
                         console.log("Número de producto extraído:", numero);
                         
                         html5QrCode.stop().then(() => {
+                            // Redirige a la ruta deseada con el número encontrado
                             window.location.href = `/sistemaInventarios/public/productos/${numero}`;
                         }).catch(err => {
                             console.error("Error al detener el escaneo:", err);
@@ -107,7 +108,7 @@
             const qrCodeErrorCallback = (errorMessage) => {
             };
 
-            // Opciones de configuración
+            // Opciones de configuración del escáner
             const config = {
                 fps: 10,
                 qrbox: {
@@ -116,9 +117,23 @@
                 }
             };
 
+            // Obtener la lista de cámaras y elegir la trasera
             Html5Qrcode.getCameras().then(devices => {
                 if (devices && devices.length) {
-                    const cameraId = devices[0].id;
+                    let cameraId = devices[0].id;
+                    
+                    for (const device of devices) {
+                        if (
+                            device.label.toLowerCase().includes('back') ||
+                            device.label.toLowerCase().includes('rear') ||
+                            device.label.toLowerCase().includes('env')
+                        ) {
+                            cameraId = device.id;
+                            break;
+                        }
+                    }
+
+                    // Inicia el escaneo con la cámara seleccionada
                     html5QrCode.start(
                         cameraId,
                         config,
@@ -137,7 +152,7 @@
             });
 
             document.getElementById('stopScan').addEventListener('click', function () {
-                html5QrCode.stop().then(ignore => {
+                html5QrCode.stop().then(() => {
                     alert("Escaneo detenido.");
                 }).catch(err => {
                     console.error("Error al detener el escaneo:", err);
