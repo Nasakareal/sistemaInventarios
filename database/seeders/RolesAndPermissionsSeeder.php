@@ -42,6 +42,18 @@ class RolesAndPermissionsSeeder extends Seeder
             'crear proveedores',
             'editar proveedores',
             'eliminar proveedores',
+
+            // Cuentas
+            'ver cuentas',
+            'crear cuentas',
+            'editar cuentas',
+            'eliminar cuentas',
+
+            // Categorias
+            'ver categorias',
+            'crear categorias',
+            'editar categorias',
+            'eliminar categorias',
         ];
 
         // Crear permisos si no existen
@@ -61,6 +73,10 @@ class RolesAndPermissionsSeeder extends Seeder
                 'editar requisiciones',
                 'eliminar requisiciones',
                 'ver requisiciones por cuenta',
+                'ver categorias',
+                'crear categorias',
+                'editar categorias',
+                'eliminar categorias',
             ],
             'Empleado' => [
                 'ver requisiciones',
@@ -69,7 +85,6 @@ class RolesAndPermissionsSeeder extends Seeder
                 'ver proveedores',
             ],
             'Observador' => [
-                'ver configuraciones',
                 'ver requisiciones',
                 'ver productos',
             ],

@@ -37,7 +37,7 @@
                 <span class="info-box-icon bg-info"><i class="fa-solid fa-university"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text"><b>Cuentas Bancarias</b></span>
-                    <a href="{{ url('#') }}" class="btn btn-primary btn-sm">Acceder</a>
+                    <a href="{{ url('/admin/settings/cuentas') }}" class="btn btn-primary btn-sm">Acceder</a>
                 </div>
             </div>
         </div>

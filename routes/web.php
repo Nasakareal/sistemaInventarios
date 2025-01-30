@@ -16,6 +16,17 @@ Route::get('/scan', function () {
     return view('scan.scan_qr');
 })->middleware('auth')->name('scan.qr');
 
+// Rutas para Categorias
+Route::prefix('categorias')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\CategoriaController::class, 'index'])->name('categorias.index');
+    Route::get('/create', [App\Http\Controllers\CategoriaController::class, 'create'])->middleware('can:crear categorias')->name('categorias.create');
+    Route::post('/', [App\Http\Controllers\CategoriaController::class, 'store'])->middleware('can:crear categorias')->name('categorias.store');
+    Route::get('/{categoria}', [App\Http\Controllers\CategoriaController::class, 'show'])->middleware('can:ver categorias')->name('categorias.show');
+    Route::get('/{categoria}/edit', [App\Http\Controllers\CategoriaController::class, 'edit'])->middleware('can:editar categorias')->name('categorias.edit');
+    Route::put('/{categoria}', [App\Http\Controllers\CategoriaController::class, 'update'])->middleware('can:editar categorias')->name('categorias.update');
+    Route::delete('/{categoria}', [App\Http\Controllers\CategoriaController::class, 'destroy'])->middleware('can:eliminar categorias')->name('categorias.destroy');
+});
+
 // Rutas para Productos
 Route::prefix('productos')->middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index');
@@ -39,16 +50,9 @@ Route::prefix('proveedores')->middleware('auth')->group(function () {
     Route::delete('/{proveedor}', [App\Http\Controllers\ProveedorController::class, 'destroy'])->middleware('can:eliminar proveedores')->name('proveedores.destroy');
 });
 
-
-// Rutas para Cuentas Bancarias
-Route::prefix('cuentas')->middleware('auth')->group(function () {
-    Route::get('/', [App\Http\Controllers\CuentaBancariaController::class, 'index'])->name('cuentas.index');
-    Route::get('/{cuenta}', [App\Http\Controllers\CuentaBancariaController::class, 'show'])->name('cuentas.show');
-});
-
 // Rutas para Requisiciones
 Route::prefix('requisiciones')->middleware('auth')->group(function () {
-    Route::get('/', [App\Http\Controllers\CuentaBancariaController::class, 'index'])->name('requisiciones.index');
+    Route::get('/', [App\Http\Controllers\RequisicionesController::class, 'index'])->name('requisiciones.index');
     Route::get('/{cuenta}/index', [App\Http\Controllers\RequisicionesController::class, 'indexByCuenta'])->name('requisiciones.cuenta.index');
     Route::get('/create', [App\Http\Controllers\RequisicionesController::class, 'create'])->middleware('can:crear requisiciones')->name('requisiciones.create');
     Route::post('/', [App\Http\Controllers\RequisicionesController::class, 'store'])->middleware('can:crear requisiciones')->name('requisiciones.store');
@@ -59,12 +63,21 @@ Route::prefix('requisiciones')->middleware('auth')->group(function () {
     Route::get('/global', [App\Http\Controllers\RequisicionesController::class, 'index'])->middleware('can:ver requisiciones')->name('requisiciones.global.index');
 });
 
-
-
 // Configuraciones generales
 Route::prefix('admin/settings')->middleware('can:ver configuraciones')->group(function () {
     // Configuración general
     Route::get('/', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
+
+    // Cuentas
+    Route::prefix('cuentas')->middleware('can:ver cuentas')->group(function () {
+        Route::get('/', [App\Http\Controllers\CuentaBancariaController::class, 'index'])->name('cuentas.index');
+        Route::get('/create', [App\Http\Controllers\CuentaBancariaController::class, 'create'])->middleware('can:crear cuentas')->name('cuentas.create');
+        Route::post('/', [App\Http\Controllers\CuentaBancariaController::class, 'store'])->middleware('can:crear cuentas')->name('cuentas.store');
+        Route::get('/{cuenta}', [App\Http\Controllers\CuentaBancariaController::class, 'show'])->middleware('can:ver cuentas')->name('cuentas.show');
+        Route::get('/{cuenta}/edit', [App\Http\Controllers\CuentaBancariaController::class, 'edit'])->middleware('can:editar cuentas')->name('cuentas.edit');
+        Route::put('/{cuenta}', [App\Http\Controllers\CuentaBancariaController::class, 'update'])->middleware('can:editar cuentas')->name('cuentas.update');
+        Route::delete('/{cuenta}', [App\Http\Controllers\CuentaBancariaController::class, 'destroy'])->middleware('can:eliminar cuentas')->name('cuentas.destroy');
+    });
 
     // Usuarios
     Route::prefix('users')->middleware('can:ver usuarios')->group(function () {

@@ -1,11 +1,17 @@
 {
   "ExpandedNodes": [
     "",
+    "\\app",
+    "\\app\\Http",
+    "\\app\\Http\\Controllers",
+    "\\app\\Models",
     "\\database",
-    "\\database\\migrations",
+    "\\database\\seeders",
     "\\resources",
-    "\\resources\\views"
+    "\\resources\\views",
+    "\\resources\\views\\categorias",
+    "\\routes"
   ],
-  "SelectedNode": "\\database\\migrations\\2025_01_19_012515_create_cuentas_bancarias_table.php",
+  "SelectedNode": "\\resources\\views\\categorias\\show.blade.php",
   "PreviewInSolutionExplorer": false
 }

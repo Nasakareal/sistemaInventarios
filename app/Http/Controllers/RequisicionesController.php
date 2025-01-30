@@ -20,7 +20,7 @@ class RequisicionesController extends Controller
     // Método para listar todas las requisiciones con filtros y cuentas bancarias
     public function index(Request $request)
     {
-        $query = Requisiciones::query()->with('cuentaBancaria'); // Relación con cuenta bancaria
+        $query = Requisiciones::query()->with('cuentaBancaria');
 
         // Aplicar filtros según los parámetros del request
         if ($request->filled('numero_requisicion')) {
@@ -39,10 +39,7 @@ class RequisicionesController extends Controller
             $query->where('monto', '<=', $request->input('monto_max'));
         }
 
-        // Obtener los resultados filtrados
         $requisiciones = $query->get();
-
-        // Cargar todas las cuentas bancarias para usarlas en el filtro
         $cuentas = CuentaBancaria::all();
 
         return view('requisiciones.index', compact('requisiciones', 'cuentas'));
