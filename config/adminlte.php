@@ -361,12 +361,6 @@ return [
                     'icon' => 'fa-regular fa-rectangle-list',
                     'url' => 'requisiciones',
                 ],
-
-                [
-                    'text' => 'Listado de proveedores',
-                    'icon' => 'fa-solid fa-truck-ramp-box',
-                    'url' => 'proveedores',
-                ],
             ],
         ],
 
@@ -382,15 +376,15 @@ return [
                 ],
                 
                 [
-                    'text' => 'Listado de',
-                    'icon' => 'fa-solid fa-user',
-                    'url' => '#',
+                    'text' => 'Listado de Categorías',
+                    'icon' => 'fas fa-tags',
+                    'url' => 'categorias',
                 ],
 
                 [
-                    'text' => 'Listado de',
-                    'icon' => 'fa-solid fa-barcode',
-                    'url' => '#',
+                    'text' => 'Listado de proveedores',
+                    'icon' => 'fa-solid fa-truck-ramp-box',
+                    'url' => 'proveedores',
                 ],
             ],
         ],
