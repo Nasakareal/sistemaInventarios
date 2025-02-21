@@ -18,6 +18,6 @@ class CuentaBancaria extends Model
 
     public function requisiciones()
     {
-        return $this->hasMany(Requisiciones::class, 'cuenta_bancaria_id');
+        return $this->hasMany(\App\Models\Requisiciones::class, 'cuenta_bancaria_id');
     }
 }

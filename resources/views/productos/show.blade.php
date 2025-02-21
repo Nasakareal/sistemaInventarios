@@ -15,7 +15,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        {{-- Código y --}}
+                        {{-- Código --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="codigo">Código</label>
@@ -53,7 +53,7 @@
                                 <p class="form-control-static">{{ $producto->departamento->nombre ?? 'No especificado' }}</p>
                             </div>
                         </div>
-                        {{-- Cantidad en Stock--}}
+                        {{-- Cantidad en Stock --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="cantidad_stock">Cantidad en Stock</label>
@@ -63,7 +63,7 @@
                     </div>           
 
                     <div class="row">
-                        {{-- Precio --}}
+                        {{-- Precio de Compra --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="precio_compra">Precio de Compra</label>
@@ -86,10 +86,33 @@
                         </div>
                     </div>
 
-
+                    {{-- Fila para Área, UR y Partida --}}
+                    <div class="row">
+                        {{-- Área --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="area">Área</label>
+                                <p class="form-control-static">{{ $producto->area ?? 'No especificada' }}</p>
+                            </div>
+                        </div>
+                        {{-- UR --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="ur">UR</label>
+                                <p class="form-control-static">{{ $producto->ur ?? 'No especificada' }}</p>
+                            </div>
+                        </div>
+                        {{-- Partida --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="partida">Partida</label>
+                                <p class="form-control-static">{{ $producto->partida ?? 'No especificada' }}</p>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
-                    {{-- Descripción  --}}
+                        {{-- Descripción  --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="descripcion">Descripción</label>
@@ -102,8 +125,7 @@
                                 <label for="imagen">Imagen del Producto</label>
                                 @if ($producto->imagen_url)
                                     <div>
-                                       <img src="{{ asset($producto->imagen_url) }}" alt="Imagen del Producto" style="max-width: 200px; max-height: 200px;" class="img-thumbnail">
-
+                                        <img src="{{ asset($producto->imagen_url) }}" alt="Imagen del Producto" style="max-width: 200px; max-height: 200px;" class="img-thumbnail">
                                     </div>
                                 @else
                                     <p class="form-control-static">No tiene imagen.</p>
@@ -111,6 +133,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <hr>
                     <div class="row">
                         {{-- Botón de regreso --}}

@@ -29,6 +29,9 @@ class Producto extends Model
         'imagen_url',
         'estado',
         'qr_url',
+        'area',
+        'ur',
+        'partida',
     ];
 
     protected static function booted()

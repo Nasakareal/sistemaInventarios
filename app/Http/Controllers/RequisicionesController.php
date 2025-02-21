@@ -40,11 +40,11 @@ class RequisicionesController extends Controller
         }
 
         $requisiciones = $query->get();
-        $cuentas = CuentaBancaria::all();
+        // Aquí cambiamos para incluir el conteo de requisiciones en cada cuenta
+        $cuentas = CuentaBancaria::withCount('requisiciones')->get();
 
         return view('requisiciones.index', compact('requisiciones', 'cuentas'));
     }
-
 
 
     // Mostrar formulario para crear una requisición
@@ -101,7 +101,9 @@ class RequisicionesController extends Controller
     // Mostrar formulario para editar una requisición
     public function edit(Requisiciones $requisicion)
     {
-        return view('requisiciones.edit', compact('requisicion'));
+        // Se agrega la lista de proveedores para que la vista de edición funcione igual que el create
+        $proveedores = \App\Models\Proveedor::all();
+        return view('requisiciones.cuentas.edit', compact('requisicion', 'proveedores'));
     }
 
     // Actualizar una requisición existente

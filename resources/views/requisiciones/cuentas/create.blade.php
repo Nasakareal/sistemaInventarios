@@ -139,8 +139,8 @@
                                     <select name="status_requisicion" id="status_requisicion"
                                             class="form-control @error('status_requisicion') is-invalid @enderror" required>
                                         <option value="" disabled selected>Seleccione un estado</option>
-                                        <option value="Pendiente" {{ old('status_requisicion') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                        <option value="Pagado" {{ old('status_requisicion') == 'Pagado' ? 'selected' : '' }}>Pagado</option>
+                                        <option value="Pedido" {{ old('status_requisicion') == 'Pedido' ? 'selected' : '' }}>Pedido</option>
+                                        <option value="Entregado" {{ old('status_requisicion') == 'Entregado' ? 'selected' : '' }}>Entregado</option>
                                     </select>
                                     @error('status_requisicion')
                                         <span class="invalid-feedback" role="alert">
@@ -194,8 +194,6 @@
                                 </div>
                             </div>
                         </div>
-
-                       
 
                         <!-- Botones del Formulario Principal -->
                         <hr>

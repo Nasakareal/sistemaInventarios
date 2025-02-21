@@ -10,11 +10,29 @@ use App\Models\Departamento;
 
 class ProductoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $productos = Producto::with(['categoria', 'proveedor', 'departamento'])->get();
+        $query = Producto::with(['categoria', 'proveedor', 'departamento']);
 
-        return view('productos.index', compact('productos'));
+        // Aplicar filtros si están seleccionados
+        if ($request->filled('area')) {
+            $query->where('area', $request->area);
+        }
+        if ($request->filled('ur')) {
+            $query->where('ur', $request->ur);
+        }
+        if ($request->filled('partida')) {
+            $query->where('partida', $request->partida);
+        }
+
+        $productos = $query->get();
+
+        // Obtener valores únicos de área, ur y partida para los filtros
+        $areas = Producto::select('area')->distinct()->pluck('area');
+        $unidades = Producto::select('ur')->distinct()->pluck('ur');
+        $partidas = Producto::select('partida')->distinct()->pluck('partida');
+
+        return view('productos.index', compact('productos', 'areas', 'unidades', 'partidas'));
     }
 
     public function create()
@@ -23,7 +41,12 @@ class ProductoController extends Controller
         $proveedores = Proveedor::all();
         $departamentos = Departamento::all();
 
-        return view('productos.create', compact('categorias', 'proveedores', 'departamentos'));
+        // Obtener valores únicos para los selects
+        $areas = Producto::select('area')->distinct()->pluck('area');
+        $unidades = Producto::select('ur')->distinct()->pluck('ur');
+        $partidas = Producto::select('partida')->distinct()->pluck('partida');
+
+        return view('productos.create', compact('categorias', 'proveedores', 'departamentos', 'areas', 'unidades', 'partidas'));
     }
 
     public function store(Request $request)
@@ -31,9 +54,11 @@ class ProductoController extends Controller
         $request->validate([
             'nombre' => 'required|max:150',
             'categoria_id' => 'required|exists:categorias,id',
-            'cantidad_stock' => 'required|integer|min:0',
             'precio_compra' => 'required|numeric|min:0',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'area' => 'nullable|string|max:100',
+            'ur' => 'nullable|string|max:50',
+            'partida' => 'nullable|string|max:50',
         ]);
 
         try {
@@ -45,7 +70,6 @@ class ProductoController extends Controller
                 $data['imagen_url'] = "storage/{$imagePath}";
             }
 
-            // Crear el producto con los datos procesados
             Producto::create($data);
 
             return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
@@ -73,16 +97,18 @@ class ProductoController extends Controller
         return response()->download($filePath, "QR_{$fileName}");
     }
 
-
-
-
     public function edit(Producto $producto)
     {
         $categorias = Categoria::all();
         $proveedores = Proveedor::all();
         $departamentos = Departamento::all();
 
-        return view('productos.edit', compact('producto', 'categorias', 'proveedores', 'departamentos'));
+        // Obtener valores únicos para los selects
+        $areas = Producto::select('area')->distinct()->pluck('area');
+        $unidades = Producto::select('ur')->distinct()->pluck('ur');
+        $partidas = Producto::select('partida')->distinct()->pluck('partida');
+
+        return view('productos.edit', compact('producto', 'categorias', 'proveedores', 'departamentos', 'areas', 'unidades', 'partidas'));
     }
 
     public function update(Request $request, Producto $producto)
@@ -90,7 +116,9 @@ class ProductoController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'categoria_id' => 'required|exists:categorias,id',
-            'cantidad_stock' => 'required|integer|min:0',
+            'area' => 'nullable|string|max:100',
+            'ur' => 'nullable|string|max:50',
+            'partida' => 'nullable|string|max:50',
         ]);
 
         try {

@@ -18,14 +18,52 @@
                         </a>
                     </div>
                 </div>
+
                 <div class="card-body">
+                    <!-- Filtros -->
+                    <form method="GET" action="{{ route('productos.index') }}">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="area">Área:</label>
+                                <select class="form-control" name="area">
+                                    <option value="">Todos</option>
+                                    @foreach($areas as $area)
+                                        <option value="{{ $area }}" {{ request('area') == $area ? 'selected' : '' }}>{{ $area }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ur">UR:</label>
+                                <select class="form-control" name="ur">
+                                    <option value="">Todos</option>
+                                    @foreach($unidades as $ur)
+                                        <option value="{{ $ur }}" {{ request('ur') == $ur ? 'selected' : '' }}>{{ $ur }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="partida">Partida:</label>
+                                <select class="form-control" name="partida">
+                                    <option value="">Todos</option>
+                                    @foreach($partidas as $partida)
+                                        <option value="{{ $partida }}" {{ request('partida') == $partida ? 'selected' : '' }}>{{ $partida }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                        <a href="{{ route('productos.index') }}" class="btn btn-secondary">Limpiar</a>
+                    </form>
+
                     <table id="productos" class="table table-striped table-bordered table-hover table-sm">
                         <thead>
                             <tr>
                                 <th><center>Número</center></th>
                                 <th><center>Nombre del Producto</center></th>
                                 <th><center>Categoría</center></th>
-                                <th><center>Stock Disponible</center></th>
+                                <th><center>Área</center></th>
+                                <th><center>UR</center></th>
+                                <th><center>Partida</center></th>
                                 <th><center>Precio</center></th>
                                 <th><center>Acciones</center></th>
                             </tr>
@@ -36,7 +74,9 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $producto->nombre }}</td>
                                     <td>{{ $producto->categoria->nombre ?? 'Sin categoría' }}</td>
-                                    <td>{{ $producto->cantidad_stock }}</td>
+                                    <td>{{ $producto->area ?? 'No especificado' }}</td>
+                                    <td>{{ $producto->ur ?? 'No especificado' }}</td>
+                                    <td>{{ $producto->partida ?? 'No especificado' }}</td>
                                     <td>${{ number_format($producto->precio_compra, 2) }}</td>
                                     <td style="text-align: center">
                                         <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-info btn-sm">
@@ -48,7 +88,6 @@
                                         <a href="{{ route('productos.qr', $producto->id) }}" class="btn btn-warning btn-sm">
                                             <i class="fa-solid fa-qrcode"></i> QR
                                         </a>
-
                                         <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')

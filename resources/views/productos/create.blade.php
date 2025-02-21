@@ -76,7 +76,6 @@
                         </div>
 
                         <div class="row">
-                            
                             <!-- Departamento -->
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -98,22 +97,7 @@
                                 </div>
                             </div>
 
-                            <!-- Cantidad en Stock -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="cantidad_stock">Cantidad en Stock</label>
-                                    <input type="number" name="cantidad_stock" id="cantidad_stock" 
-                                           class="form-control @error('cantidad_stock') is-invalid @enderror" 
-                                           value="{{ old('cantidad_stock', 0) }}" min="0" required>
-                                    @error('cantidad_stock')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                             <!-- Precio de Compra -->
+                            <!-- Precio de Compra -->
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="precio_compra">Precio de Compra</label>
@@ -127,9 +111,7 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
                             <!-- Imagen -->
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -137,6 +119,54 @@
                                     <input type="file" name="imagen" id="imagen" 
                                            class="form-control-file @error('imagen') is-invalid @enderror" accept="image/*">
                                     @error('imagen')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nuevos campos para Área, UR y Partida -->
+                        <div class="row mt-3">
+                            <!-- Área -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="area">Área</label>
+                                    <input type="text" name="area" id="area" 
+                                           class="form-control @error('area') is-invalid @enderror" 
+                                           value="{{ old('area') }}" placeholder="Ingrese el área">
+                                    @error('area')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- UR -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ur">UR</label>
+                                    <input type="text" name="ur" id="ur" 
+                                           class="form-control @error('ur') is-invalid @enderror" 
+                                           value="{{ old('ur') }}" placeholder="Ingrese la UR">
+                                    @error('ur')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Partida -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="partida">Partida</label>
+                                    <input type="text" name="partida" id="partida" 
+                                           class="form-control @error('partida') is-invalid @enderror" 
+                                           value="{{ old('partida') }}" placeholder="Ingrese la partida">
+                                    @error('partida')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

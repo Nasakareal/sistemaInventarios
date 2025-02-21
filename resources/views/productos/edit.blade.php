@@ -19,7 +19,6 @@
                         @method('PUT') <!-- Para actualizar usamos PUT -->
 
                         <div class="row">
-
                             <!-- Nombre -->
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -119,6 +118,39 @@
                                     <input type="text" name="ubicacion" id="ubicacion" class="form-control"
                                            value="{{ old('ubicacion', $producto->ubicacion) }}"
                                            placeholder="Ingrese la ubicación del producto">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nuevos campos para Área, UR y Partida -->
+                        <div class="row">
+                            <!-- Área -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="area">Área</label>
+                                    <input type="text" name="area" id="area" class="form-control"
+                                           value="{{ old('area', $producto->area) }}"
+                                           placeholder="Ingrese el área">
+                                </div>
+                            </div>
+
+                            <!-- UR -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ur">UR</label>
+                                    <input type="text" name="ur" id="ur" class="form-control"
+                                           value="{{ old('ur', $producto->ur) }}"
+                                           placeholder="Ingrese la UR">
+                                </div>
+                            </div>
+
+                            <!-- Partida -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="partida">Partida</label>
+                                    <input type="text" name="partida" id="partida" class="form-control"
+                                           value="{{ old('partida', $producto->partida) }}"
+                                           placeholder="Ingrese la partida">
                                 </div>
                             </div>
                         </div>

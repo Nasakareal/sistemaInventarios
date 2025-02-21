@@ -30,7 +30,8 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $cuenta->nombre }}</td>
                                     <td>{{ $cuenta->numero }}</td>
-                                    <td>{{ $cuenta->requisiciones_count }}</td> 
+                                    <td>{{ $cuenta->requisiciones_count }}</td>
+
                                     <td style="text-align: center">
                                         <a href="{{ route('requisiciones.cuenta.index', $cuenta->id) }}" class="btn btn-info btn-sm">
                                             <i class="fa-regular fa-eye"></i> Ver Requisiciones
