@@ -9,10 +9,8 @@ class CuentaBancariaController extends Controller
 {
     public function index()
     {
-        // Obtiene las cuentas bancarias junto con el conteo de requisiciones
         $cuentas = CuentaBancaria::withCount('requisiciones')->get();
 
-        // Renderiza la vista del índice de cuentas bancarias
         return view('admin.settings.cuentas.index', compact('cuentas'));
     }
 

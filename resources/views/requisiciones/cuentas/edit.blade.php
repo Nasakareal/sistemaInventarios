@@ -179,6 +179,24 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <!-- Número de Factura -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="numero_factura">Número de Factura</label>
+                                    <input type="text" name="numero_factura" id="numero_factura"
+                                           class="form-control @error('numero_factura') is-invalid @enderror"
+                                           value="{{ old('numero_factura', $requisicion->numero_factura) }}" 
+                                           placeholder="Ingrese el número de factura">
+                                    @error('numero_factura')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Justificación -->
                         <div class="row">
                             <div class="col-md-12">

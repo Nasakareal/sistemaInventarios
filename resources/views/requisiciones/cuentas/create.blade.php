@@ -3,8 +3,9 @@
 @section('title', 'Crear Requisición')
 
 @section('content_header')
-    <h1>Creación de una Nueva Requisición</h1>
+    <h1>Creación de una Nueva Requisición: {{ $cuentaBancaria->nombre }}</h1>
 @stop
+
 
 @section('content')
     <div class="row">
@@ -17,7 +18,10 @@
                     <!-- Formulario Principal -->
                     <form action="{{ route('requisiciones.store') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="cuenta_bancaria_id" value="{{ $cuentaBancariaId }}">
+                       <input type="hidden" name="cuenta_bancaria_id" value="{{ $cuentaBancariaId }}">
+                       <input type="hidden" name="banco" value="{{ $cuentaBancaria->nombre }}"> <!-- ✅ CORRECTO -->
+
+
 
                         <!-- Primer Row -->
                         <div class="row">
@@ -176,6 +180,39 @@
                                     @enderror
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Número de Factura, turnado a -->
+                        <div class="row">
+                            <!-- Número de Factura -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="numero_factura">Número de Factura</label>
+                                    <input type="text" name="numero_factura" id="numero_factura"
+                                           class="form-control @error('numero_factura') is-invalid @enderror"
+                                           value="{{ old('numero_factura') }}" placeholder="Ingrese el número de factura">
+                                    @error('numero_factura')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <!-- Turnado a -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="turnado_a">Turnado a</label>
+                                    <input type="text" name="turnado_a" id="turnado_a"
+                                           class="form-control @error('turnado_a') is-invalid @enderror"
+                                           value="{{ old('turnado_a') }}" placeholder="Ingresa dónde fue turnado">
+                                    @error('turnado_a')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                         </div>
 
                         <!-- Justificación -->

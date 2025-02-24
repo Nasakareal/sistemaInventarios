@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class RequisicionesController extends Controller
 {
-    // Método para listar requisiciones asociadas a una cuenta bancaria
     public function indexByCuenta($cuentaId)
     {
         $cuentaBancaria = CuentaBancaria::findOrFail($cuentaId);
@@ -17,12 +16,10 @@ class RequisicionesController extends Controller
         return view('requisiciones.cuentas.index', compact('cuentaBancaria', 'requisiciones'));
     }
 
-    // Método para listar todas las requisiciones con filtros y cuentas bancarias
     public function index(Request $request)
     {
         $query = Requisiciones::query()->with('cuentaBancaria');
 
-        // Aplicar filtros según los parámetros del request
         if ($request->filled('numero_requisicion')) {
             $query->where('numero_requisicion', 'like', '%' . $request->input('numero_requisicion') . '%');
         }
@@ -40,14 +37,11 @@ class RequisicionesController extends Controller
         }
 
         $requisiciones = $query->get();
-        // Aquí cambiamos para incluir el conteo de requisiciones en cada cuenta
         $cuentas = CuentaBancaria::withCount('requisiciones')->get();
 
         return view('requisiciones.index', compact('requisiciones', 'cuentas'));
     }
 
-
-    // Mostrar formulario para crear una requisición
     public function create(Request $request)
     {
         $cuentaBancariaId = $request->input('cuenta_bancaria_id');
@@ -57,7 +51,7 @@ class RequisicionesController extends Controller
         return view('requisiciones.cuentas.create', compact('cuentaBancariaId', 'cuentaBancaria', 'proveedores'));
     }
 
-    // Guardar una nueva requisición en la base de datos
+
     public function store(Request $request)
     {
         $request->validate([
@@ -68,7 +62,6 @@ class RequisicionesController extends Controller
             'partida' => 'required|string|max:255',
             'producto_material' => 'required|string|max:255',
             'justificacion' => 'nullable|string',
-            'oficio_pago' => 'nullable|string|max:255',
             'numero_factura' => 'nullable|string|max:255',
             'proveedor' => 'nullable|string|max:255',
             'monto' => 'required|numeric',
@@ -76,19 +69,29 @@ class RequisicionesController extends Controller
             'turnado_a' => 'nullable|string|max:255',
             'fecha_entrega_rf' => 'nullable|date',
             'fecha_pago' => 'nullable|date',
-            'banco' => 'nullable|string|max:255',
             'pago' => 'nullable|numeric',
             'observaciones' => 'nullable|string',
             'referencia' => 'nullable|string|max:255',
             'cuenta_bancaria_id' => 'required|exists:cuentas_bancarias,id',
         ]);
 
-        Requisiciones::create($request->all());
+        $cuentaBancaria = CuentaBancaria::findOrFail($request->cuenta_bancaria_id);
 
-        return redirect()->route('requisiciones.index')->with('success', 'Requisición creada exitosamente.');
+        $ultimoOficio = Requisiciones::whereNotNull('oficio_pago')
+            ->orderBy('oficio_pago', 'desc')
+            ->value('oficio_pago');
+
+        $nuevoOficio = $ultimoOficio ? str_pad((int)$ultimoOficio + 1, 3, '0', STR_PAD_LEFT) : '001';
+
+        $data = $request->all();
+        $data['oficio_pago'] = $nuevoOficio;
+        $data['banco'] = $cuentaBancaria->nombre;
+
+        Requisiciones::create($data);
+
+        return redirect()->route('requisiciones.index')->with('success', 'Requisición creada exitosamente con número de oficio ' . $nuevoOficio);
     }
 
-    // Mostrar detalles de una requisición
     public function show(Requisiciones $requisicion)
     {
         if (!$requisicion) {
@@ -98,15 +101,12 @@ class RequisicionesController extends Controller
         return view('requisiciones.cuentas.show', compact('requisicion'));
     }
 
-    // Mostrar formulario para editar una requisición
     public function edit(Requisiciones $requisicion)
     {
-        // Se agrega la lista de proveedores para que la vista de edición funcione igual que el create
         $proveedores = \App\Models\Proveedor::all();
         return view('requisiciones.cuentas.edit', compact('requisicion', 'proveedores'));
     }
 
-    // Actualizar una requisición existente
     public function update(Request $request, Requisiciones $requisicion)
     {
         $request->validate([
@@ -137,7 +137,6 @@ class RequisicionesController extends Controller
         return redirect()->route('requisiciones.index')->with('success', 'Requisición actualizada exitosamente.');
     }
 
-    // Eliminar una requisición
     public function destroy(Requisiciones $requisicion)
     {
         $requisicion->delete();
