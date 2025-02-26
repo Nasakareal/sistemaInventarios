@@ -155,6 +155,98 @@
                             </div>
                         </div>
 
+                        <div class="row mt-3">
+                            <!-- Número de Inventario Patrimonial -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="numero_inventario_patrimonial">Número de Inventario Patrimonial</label>
+                                    <input type="text" name="numero_inventario_patrimonial" id="numero_inventario_patrimonial"
+                                           class="form-control @error('numero_inventario_patrimonial') is-invalid @enderror"
+                                           value="{{ old('numero_inventario_patrimonial', $producto->numero_inventario_patrimonial ?? '') }}"
+                                           placeholder="Ingrese el número de inventario patrimonial">
+                                    @error('numero_inventario_patrimonial')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Factura (PDF) -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="factura">Factura (PDF)</label>
+                                    <input type="file" name="factura" id="factura" accept="application/pdf"
+                                           class="form-control @error('factura') is-invalid @enderror">
+                                    @error('factura')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    @if(isset($producto) && $producto->factura_url)
+                                        <a href="{{ asset('storage/' . $producto->factura_url) }}" target="_blank">Ver factura</a>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- Resguardo del Bien (Imagen) -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="resguardo">Resguardo del Bien (Imagen)</label>
+                                    <input type="file" name="resguardo" id="resguardo" accept="image/*"
+                                           class="form-control @error('resguardo') is-invalid @enderror">
+                                    @error('resguardo')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    @if(isset($producto) && $producto->resguardo_url)
+                                        <img src="{{ asset('storage/' . $producto->resguardo_url) }}" class="img-fluid mt-2" width="150">
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo para Imagen del Producto -->
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="imagen">Imagen del Producto</label>
+                                    <input type="file" name="imagen" id="imagen" accept="image/*"
+                                           class="form-control @error('imagen') is-invalid @enderror">
+                                    @error('imagen')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    @if(isset($producto) && $producto->imagen_url)
+                                        <img src="{{ asset('storage/' . $producto->imagen_url) }}" class="img-fluid mt-2" width="150">
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos para Vida Útil y Depreciación Anual -->
+                        <div class="row mt-3">
+                            <!-- Vida Útil -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="vida_util">Vida Útil (años)</label>
+                                    <input type="number" name="vida_util" id="vida_util" class="form-control" 
+                                           value="{{ old('vida_util', $producto->vida_util) }}" min="1">
+                                </div>
+                            </div>
+                            
+                            <!-- Depreciación Anual -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="depreciacion_anual">Depreciación Anual ($)</label>
+                                    <input type="text" name="depreciacion_anual" id="depreciacion_anual" class="form-control" 
+                                           value="{{ old('depreciacion_anual', $producto->depreciacion_anual) }}" readonly>
+                                </div>
+                            </div>
+                        </div>
+
                         <hr>
                         <div class="row">
                             <div class="col-md-12 text-center">
@@ -182,6 +274,18 @@
 @stop
 
 @section('js')
+    <script>
+        document.getElementById('vida_util').addEventListener('input', function() {
+            let vidaUtil = parseInt(this.value);
+            let precioCompra = parseFloat("{{ old('precio_compra', $producto->precio_compra) }}");
+            if (!isNaN(vidaUtil) && vidaUtil > 0) {
+                let depreciacion = (precioCompra / vidaUtil).toFixed(2);
+                document.getElementById('depreciacion_anual').value = depreciacion;
+            } else {
+                document.getElementById('depreciacion_anual').value = '';
+            }
+        });
+    </script>
     <script>
         @if (session('success'))
             Swal.fire({

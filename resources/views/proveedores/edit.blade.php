@@ -94,6 +94,22 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <!-- Número de Padrón -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="numero_padron">Número de Padrón</label>
+                                    <input type="text" name="numero_padron" id="numero_padron" 
+                                           class="form-control @error('numero_padron') is-invalid @enderror" 
+                                           value="{{ old('numero_padron', $proveedor->numero_padron ?? '') }}" 
+                                           placeholder="Ingrese el número de padrón">
+                                    @error('numero_padron')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <hr>

@@ -12,14 +12,10 @@ define('LARAVEL_START', microtime(true));
 |
 | If the user accesses the root directory of the application, this script
 | will immediately redirect them to the login page located at
-| "/sistemaInventarios/public/login".
+| "/sistemaEstadistico/public/login".
 |
 */
 
-if ($_SERVER['REQUEST_URI'] === '/sistemaInventarios/public/' || $_SERVER['REQUEST_URI'] === '/sistemaInventarios/public') {
-    header('Location: /sistemaInventarios/public/login');
-    exit;
-}
 
 /*
 |--------------------------------------------------------------------------

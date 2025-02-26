@@ -54,6 +54,18 @@ class RolesAndPermissionsSeeder extends Seeder
             'crear categorias',
             'editar categorias',
             'eliminar categorias',
+
+            // Bajas
+            'ver bajas',
+            'crear bajas',
+            'editar bajas',
+            'eliminar bajas',
+
+            // Servicios
+            'ver servicios',
+            'crear servicios',
+            'editar servicios',
+            'eliminar servicios',
         ];
 
         // Crear permisos si no existen

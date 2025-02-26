@@ -119,13 +119,13 @@
                                 <p class="form-control-static">{{ $producto->descripcion ?? 'No especificada' }}</p>
                             </div>
                         </div>
-                        {{-- Imagen --}}
+                        {{-- Imagen del Producto --}}
                         <div class="col-md-8">
                             <div class="form-group text-center">
                                 <label for="imagen">Imagen del Producto</label>
                                 @if ($producto->imagen_url)
                                     <div>
-                                        <img src="{{ asset($producto->imagen_url) }}" alt="Imagen del Producto" style="max-width: 200px; max-height: 200px;" class="img-thumbnail">
+                                        <img src="{{ asset('storage/' . $producto->imagen_url) }}" alt="Imagen del Producto" style="max-width: 200px; max-height: 200px;" class="img-thumbnail">
                                     </div>
                                 @else
                                     <p class="form-control-static">No tiene imagen.</p>
@@ -133,7 +133,60 @@
                             </div>
                         </div>
                     </div>
-                    
+
+                    <div class="row">
+                        {{-- Número de Inventario Patrimonial --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="numero_inventario_patrimonial">Número de Inventario Patrimonial</label>
+                                <p class="form-control-static">{{ $producto->numero_inventario_patrimonial ?? 'No asignado' }}</p>
+                            </div>
+                        </div>
+                        {{-- Factura --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="factura">Factura</label>
+                                @if($producto->factura_url)
+                                    <p class="form-control-static"><a href="{{ asset('storage/' . $producto->factura_url) }}" target="_blank">Ver Factura</a></p>
+                                @else
+                                    <p class="form-control-static">No se subió factura.</p>
+                                @endif
+                            </div>
+                        </div>
+                        {{-- Resguardo del Bien --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="resguardo">Resguardo del Bien</label>
+                                @if($producto->resguardo_url)
+                                    <p class="form-control-static">
+                                        <img src="{{ asset('storage/' . $producto->resguardo_url) }}" alt="Resguardo" style="max-width:150px; max-height:150px;" class="img-thumbnail">
+                                    </p>
+                                @else
+                                    <p class="form-control-static">No se subió resguardo.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        {{-- Vida Útil --}}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="vida_util">Vida Útil (años)</label>
+                                <p class="form-control-static">{{ $producto->vida_util ?? 'No definida' }}</p>
+                            </div>
+                        </div>
+                        {{-- Depreciación Anual --}}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="depreciacion_anual">Depreciación Anual ($)</label>
+                                <p class="form-control-static">
+                                    $ {{ $producto->depreciacion_anual ? number_format($producto->depreciacion_anual, 2) : 'No calculada' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                     <hr>
                     <div class="row">
                         {{-- Botón de regreso --}}

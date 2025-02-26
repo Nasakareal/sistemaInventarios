@@ -314,6 +314,13 @@ return [
             'icon' => 'fa-solid fa-qrcode',
         ],
         [
+            'type' => 'link',
+            'text' => 'Cambiar Sistema',
+            'url' => '/',
+            'topnav_right' => true, 
+            'icon' => 'fa-solid fa-person-booth',
+        ],
+        [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
@@ -395,21 +402,9 @@ return [
             'classes' => 'bg-blue text-white',
             'submenu' => [
                 [
-                    'text' => 'Listado de inventarios',
+                    'text' => 'Listado de Servicios',
                     'icon' => 'fa-solid fa-clipboard-list',
-                    'url' => '#',
-                ],
-                
-                [
-                    'text' => 'Listado de',
-                    'icon' => 'fa-solid fa-user',
-                    'url' => '#',
-                ],
-
-                [
-                    'text' => 'Listado de',
-                    'icon' => 'fa-solid fa-barcode',
-                    'url' => '#',
+                    'url' => 'servicios',
                 ],
             ],
         ],
@@ -435,6 +430,19 @@ return [
                     'text' => 'Listado de',
                     'icon' => 'fa-solid fa-barcode',
                     'url' => '#',
+                ],
+            ],
+        ],
+
+        [
+            'text' => 'Bajas',
+            'icon' => 'fa-solid fa-minus-circle',
+            'classes' => 'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de Bajas',
+                    'icon' => 'fa-solid fa-clipboard-list',
+                    'url' => 'bajas',
                 ],
             ],
         ],

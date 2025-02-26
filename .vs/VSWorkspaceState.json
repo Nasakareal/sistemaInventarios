@@ -4,12 +4,12 @@
     "\\app",
     "\\app\\Http",
     "\\app\\Http\\Controllers",
-    "\\app\\Models",
     "\\resources",
     "\\resources\\views",
-    "\\resources\\views\\requisiciones",
-    "\\resources\\views\\requisiciones\\cuentas"
+    "\\resources\\views\\vendor",
+    "\\resources\\views\\vendor\\adminlte",
+    "\\routes"
   ],
-  "SelectedNode": "\\app\\Models\\Requisiciones.php",
+  "SelectedNode": "\\resources\\views\\welcome.blade.php",
   "PreviewInSolutionExplorer": false
 }

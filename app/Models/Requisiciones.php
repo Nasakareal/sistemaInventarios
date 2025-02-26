@@ -37,7 +37,9 @@ class Requisiciones extends Model
         'pago',
         'observaciones',
         'referencia',
+        'mes',
         'cuenta_bancaria_id',
+        'status_pago',
     ];
 
     protected $casts = [

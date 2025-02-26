@@ -22,16 +22,19 @@ class Producto extends Model
         'categoria_id',
         'proveedor_id',
         'departamento_id',
-        'cantidad_stock',
-        'stock_minimo',
         'precio_compra',
         'ubicacion',
         'imagen_url',
-        'estado',
         'qr_url',
+        'estado',
         'area',
         'ur',
         'partida',
+        'numero_inventario_patrimonial',
+        'factura_url',
+        'resguardo_url',
+        'vida_util',
+        'depreciacion_anual',
     ];
 
     protected static function booted()
@@ -76,4 +79,10 @@ class Producto extends Model
     {
         return $this->belongsTo(Departamento::class);
     }
+
+    public function bajas()
+    {
+        return $this->hasOne(Baja::class, 'bien_id');
+    }
+
 }

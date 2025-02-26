@@ -51,7 +51,6 @@ class RequisicionesController extends Controller
         return view('requisiciones.cuentas.create', compact('cuentaBancariaId', 'cuentaBancaria', 'proveedores'));
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
@@ -72,6 +71,8 @@ class RequisicionesController extends Controller
             'pago' => 'nullable|numeric',
             'observaciones' => 'nullable|string',
             'referencia' => 'nullable|string|max:255',
+            'mes' => 'nullable|string|max:20',
+            'status_pago' => 'required|string|in:Pendiente,Pagado',
             'cuenta_bancaria_id' => 'required|exists:cuentas_bancarias,id',
         ]);
 
@@ -86,6 +87,7 @@ class RequisicionesController extends Controller
         $data = $request->all();
         $data['oficio_pago'] = $nuevoOficio;
         $data['banco'] = $cuentaBancaria->nombre;
+        $data['status_pago'] = $request->input('status_pago', 'Pendiente');
 
         Requisiciones::create($data);
 
@@ -101,9 +103,12 @@ class RequisicionesController extends Controller
         return view('requisiciones.cuentas.show', compact('requisicion'));
     }
 
-    public function edit(Requisiciones $requisicion)
+    public function edit($id)
     {
+        $requisicion = Requisiciones::where('id', $id)->firstOrFail();
+
         $proveedores = \App\Models\Proveedor::all();
+
         return view('requisiciones.cuentas.edit', compact('requisicion', 'proveedores'));
     }
 
@@ -129,10 +134,15 @@ class RequisicionesController extends Controller
             'pago' => 'nullable|numeric',
             'observaciones' => 'nullable|string',
             'referencia' => 'nullable|string|max:255',
+            'mes' => 'nullable|string|max:20',
+            'status_pago' => 'required|string|in:Pendiente,Pagado',
             'cuenta_bancaria_id' => 'required|exists:cuentas_bancarias,id',
         ]);
 
-        $requisicion->update($request->all());
+        $data = $request->all();
+        $data['status_pago'] = $request->input('status_pago');
+
+        $requisicion->update($data);
 
         return redirect()->route('requisiciones.index')->with('success', 'Requisición actualizada exitosamente.');
     }

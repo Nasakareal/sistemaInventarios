@@ -6,6 +6,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/servicios/json', [App\Http\Controllers\ServicioController::class, 'json'])->name('servicios.json');
+});
+
 Auth::routes();
 
 // Home
@@ -15,6 +19,28 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/scan', function () {
     return view('scan.scan_qr');
 })->middleware('auth')->name('scan.qr');
+
+// Rutas para Servicios
+Route::prefix('servicios')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\ServicioController::class, 'index'])->name('servicios.index');
+    Route::get('/create', [App\Http\Controllers\ServicioController::class, 'create'])->middleware('can:crear servicios')->name('servicios.create');
+    Route::post('/', [App\Http\Controllers\ServicioController::class, 'store'])->middleware('can:crear servicios')->name('servicios.store');
+    Route::get('/{servicio}', [App\Http\Controllers\ServicioController::class, 'show'])->middleware('can:ver servicios')->name('servicios.show');
+    Route::get('/{servicio}/edit', [App\Http\Controllers\ServicioController::class, 'edit'])->middleware('can:editar servicios')->name('servicios.edit');
+    Route::put('/{servicio}', [App\Http\Controllers\ServicioController::class, 'update'])->middleware('can:editar servicios')->name('servicios.update');
+    Route::delete('/{servicio}', [App\Http\Controllers\ServicioController::class, 'destroy'])->middleware('can:eliminar servicios')->name('servicios.destroy');
+});
+
+// Rutas para Bajas
+Route::prefix('bajas')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\BajaController::class, 'index'])->name('bajas.index');
+    Route::get('/create', [App\Http\Controllers\BajaController::class, 'create'])->middleware('can:crear bajas')->name('bajas.create');
+    Route::post('/', [App\Http\Controllers\BajaController::class, 'store'])->middleware('can:crear bajas')->name('bajas.store');
+    Route::get('/{baja}', [App\Http\Controllers\BajaController::class, 'show'])->middleware('can:ver bajas')->name('bajas.show');
+    Route::get('/{baja}/edit', [App\Http\Controllers\BajaController::class, 'edit'])->middleware('can:editar bajas')->name('bajas.edit');
+    Route::put('/{baja}', [App\Http\Controllers\BajaController::class, 'update'])->middleware('can:editar bajas')->name('bajas.update');
+    Route::delete('/{baja}', [App\Http\Controllers\BajaController::class, 'destroy'])->middleware('can:eliminar bajas')->name('bajas.destroy');
+});
 
 // Rutas para Categorias
 Route::prefix('categorias')->middleware('auth')->group(function () {

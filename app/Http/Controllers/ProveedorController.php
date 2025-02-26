@@ -11,7 +11,6 @@ class ProveedorController extends Controller
     public function index()
     {
         $proveedores = Proveedor::all();
-
         return view('proveedores.index', compact('proveedores'));
     }
 
@@ -24,6 +23,7 @@ class ProveedorController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:150|unique:proveedores,nombre',
+            'numero_padron' => 'nullable|string|max:50|unique:proveedores,numero_padron',
             'contacto' => 'nullable|string|max:100',
             'telefono' => 'nullable|string|max:15',
             'email' => 'nullable|email|max:100',
@@ -50,6 +50,7 @@ class ProveedorController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:150|unique:proveedores,nombre,' . $proveedor->id,
+            'numero_padron' => 'nullable|string|max:50|unique:proveedores,numero_padron,' . $proveedor->id,
             'contacto' => 'nullable|string|max:100',
             'telefono' => 'nullable|string|max:15',
             'email' => 'nullable|email|max:100',

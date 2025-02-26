@@ -127,7 +127,7 @@
                             </div>
                         </div>
 
-                        <!-- Nuevos campos para Área, UR y Partida -->
+                        <!-- Nuevos campos para Área, UR, Partida, Número de Inventario, Factura, Resguardo -->
                         <div class="row mt-3">
                             <!-- Área -->
                             <div class="col-md-4">
@@ -173,6 +173,67 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <!-- Número de Inventario Patrimonial -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="numero_inventario_patrimonial">Número de Inventario Patrimonial</label>
+                                    <input type="text" name="numero_inventario_patrimonial" id="numero_inventario_patrimonial"
+                                           class="form-control @error('numero_inventario_patrimonial') is-invalid @enderror"
+                                           value="{{ old('numero_inventario_patrimonial') }}"
+                                           placeholder="Ingrese el número de inventario patrimonial">
+                                    @error('numero_inventario_patrimonial')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Factura (PDF) -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="factura">Factura (PDF)</label>
+                                    <input type="file" name="factura" id="factura" accept="application/pdf"
+                                           class="form-control @error('factura') is-invalid @enderror">
+                                    @error('factura')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Resguardo del Bien (Imagen) -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="resguardo">Resguardo del Bien (Imagen)</label>
+                                    <input type="file" name="resguardo" id="resguardo" accept="image/*"
+                                           class="form-control @error('resguardo') is-invalid @enderror">
+                                    @error('resguardo')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Vida Útil y Depreciación Anual -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="vida_util">Vida Útil (años)</label>
+                                    <input type="number" name="vida_util" id="vida_util" class="form-control" 
+                                           value="{{ old('vida_util') }}" min="1">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="depreciacion_anual">Depreciación Anual ($)</label>
+                                    <input type="text" name="depreciacion_anual" id="depreciacion_anual" class="form-control" 
+                                           value="{{ old('depreciacion_anual') }}" readonly>
+                                </div>
+                            </div>
                         </div>
 
                         <hr>
@@ -204,6 +265,18 @@
 @stop
 
 @section('js')
+    <script>
+        document.getElementById('vida_util').addEventListener('input', function() {
+            let vidaUtil = parseInt(this.value);
+            let precioCompra = parseFloat("{{ old('precio_compra', 0) }}");
+            if (!isNaN(vidaUtil) && vidaUtil > 0) {
+                let depreciacion = (precioCompra / vidaUtil).toFixed(2);
+                document.getElementById('depreciacion_anual').value = depreciacion;
+            } else {
+                document.getElementById('depreciacion_anual').value = '';
+            }
+        });
+    </script>
     <script>
         @if ($errors->any())
             Swal.fire({

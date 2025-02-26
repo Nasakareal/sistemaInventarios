@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use App\Models\Categoria;
-use Illuminate\Http\Request;
 use App\Models\Proveedor;
 use App\Models\Departamento;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Producto::with(['categoria', 'proveedor', 'departamento']);
+        $query = Producto::with(['categoria', 'proveedor', 'departamento'])
+                         ->whereDoesntHave('bajas');
 
-        // Aplicar filtros si están seleccionados
         if ($request->filled('area')) {
             $query->where('area', $request->area);
         }
@@ -26,8 +27,6 @@ class ProductoController extends Controller
         }
 
         $productos = $query->get();
-
-        // Obtener valores únicos de área, ur y partida para los filtros
         $areas = Producto::select('area')->distinct()->pluck('area');
         $unidades = Producto::select('ur')->distinct()->pluck('ur');
         $partidas = Producto::select('partida')->distinct()->pluck('partida');
@@ -41,12 +40,7 @@ class ProductoController extends Controller
         $proveedores = Proveedor::all();
         $departamentos = Departamento::all();
 
-        // Obtener valores únicos para los selects
-        $areas = Producto::select('area')->distinct()->pluck('area');
-        $unidades = Producto::select('ur')->distinct()->pluck('ur');
-        $partidas = Producto::select('partida')->distinct()->pluck('partida');
-
-        return view('productos.create', compact('categorias', 'proveedores', 'departamentos', 'areas', 'unidades', 'partidas'));
+        return view('productos.create', compact('categorias', 'proveedores', 'departamentos'));
     }
 
     public function store(Request $request)
@@ -55,33 +49,56 @@ class ProductoController extends Controller
             'nombre' => 'required|max:150',
             'categoria_id' => 'required|exists:categorias,id',
             'precio_compra' => 'required|numeric|min:0',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'area' => 'nullable|string|max:100',
             'ur' => 'nullable|string|max:50',
             'partida' => 'nullable|string|max:50',
+            'numero_inventario_patrimonial' => 'nullable|string|max:100|unique:productos,numero_inventario_patrimonial',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'factura' => 'nullable|file|mimes:pdf|max:2048',
+            'resguardo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'vida_util' => 'nullable|integer|min:1',
         ]);
 
         try {
             $data = $request->all();
 
-            // Procesar la imagen si existe
+            // Procesar imagen del producto
             if ($request->hasFile('imagen')) {
-                $imagePath = $request->file('imagen')->store('productos', 'public');
-                $data['imagen_url'] = "storage/{$imagePath}";
+                $data['imagen_url'] = $request->file('imagen')->store('productos', 'public');
+            }
+
+            // Procesar subida de factura (PDF)
+            if ($request->hasFile('factura')) {
+                $data['factura_url'] = $request->file('factura')->store('facturas', 'public');
+            }
+
+            // Procesar subida de resguardo (imagen)
+            if ($request->hasFile('resguardo')) {
+                $data['resguardo_url'] = $request->file('resguardo')->store('resguardos', 'public');
+            }
+
+            // Calcular depreciación anual si se proporciona vida útil
+            if (!empty($request->vida_util)) {
+                $data['depreciacion_anual'] = $request->precio_compra / $request->vida_util;
+            } else {
+                $data['depreciacion_anual'] = null;
             }
 
             Producto::create($data);
 
             return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->route('productos.create')->withErrors(['error' => 'Hubo un problema al crear el producto. Inténtalo de nuevo.']);
+            return redirect()->route('productos.create')->withErrors(['error' => 'Hubo un problema al crear el producto.']);
         }
     }
 
     public function show(Producto $producto)
     {
-        $producto->load(['categoria', 'proveedor', 'departamento']);
+        if ($producto->bajas()->exists()) {
+            return redirect()->route('productos.index')->withErrors(['error' => 'Este bien ha sido dado de baja y no se puede visualizar.']);
+        }
 
+        $producto->load(['categoria', 'proveedor', 'departamento']);
         return view('productos.show', compact('producto'));
     }
 
@@ -103,12 +120,7 @@ class ProductoController extends Controller
         $proveedores = Proveedor::all();
         $departamentos = Departamento::all();
 
-        // Obtener valores únicos para los selects
-        $areas = Producto::select('area')->distinct()->pluck('area');
-        $unidades = Producto::select('ur')->distinct()->pluck('ur');
-        $partidas = Producto::select('partida')->distinct()->pluck('partida');
-
-        return view('productos.edit', compact('producto', 'categorias', 'proveedores', 'departamentos', 'areas', 'unidades', 'partidas'));
+        return view('productos.edit', compact('producto', 'categorias', 'proveedores', 'departamentos'));
     }
 
     public function update(Request $request, Producto $producto)
@@ -119,25 +131,74 @@ class ProductoController extends Controller
             'area' => 'nullable|string|max:100',
             'ur' => 'nullable|string|max:50',
             'partida' => 'nullable|string|max:50',
+            'precio_compra' => 'required|numeric|min:0',
+            'numero_inventario_patrimonial' => 'nullable|string|max:100|unique:productos,numero_inventario_patrimonial,' . $producto->id,
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'factura' => 'nullable|file|mimes:pdf|max:2048',
+            'resguardo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'vida_util' => 'nullable|integer|min:1',
         ]);
 
         try {
-            $producto->update($request->all());
+            $data = $request->all();
+
+            // Procesar actualización de imagen del producto
+            if ($request->hasFile('imagen')) {
+                if ($producto->imagen_url) {
+                    Storage::delete('public/' . $producto->imagen_url);
+                }
+                $data['imagen_url'] = $request->file('imagen')->store('productos', 'public');
+            }
+
+            // Procesar actualización de factura (PDF)
+            if ($request->hasFile('factura')) {
+                if ($producto->factura_url) {
+                    Storage::delete('public/' . $producto->factura_url);
+                }
+                $data['factura_url'] = $request->file('factura')->store('facturas', 'public');
+            }
+
+            // Procesar actualización de resguardo (imagen)
+            if ($request->hasFile('resguardo')) {
+                if ($producto->resguardo_url) {
+                    Storage::delete('public/' . $producto->resguardo_url);
+                }
+                $data['resguardo_url'] = $request->file('resguardo')->store('resguardos', 'public');
+            }
+
+            // Calcular depreciación anual si se proporciona vida útil
+            if (!empty($request->vida_util)) {
+                $data['depreciacion_anual'] = $request->precio_compra / $request->vida_util;
+            } else {
+                $data['depreciacion_anual'] = null;
+            }
+
+            $producto->update($data);
 
             return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito.');
         } catch (\Exception $e) {
-            return redirect()->route('productos.edit', $producto)->withErrors(['error' => 'Hubo un problema al actualizar el producto. Inténtalo de nuevo.']);
+            return redirect()->route('productos.edit', $producto)->withErrors(['error' => 'Hubo un problema al actualizar el producto.']);
         }
     }
 
     public function destroy(Producto $producto)
     {
         try {
+            if ($producto->imagen_url) {
+                Storage::delete('public/' . $producto->imagen_url);
+            }
+            if ($producto->factura_url) {
+                Storage::delete('public/' . $producto->factura_url);
+            }
+            if ($producto->resguardo_url) {
+                Storage::delete('public/' . $producto->resguardo_url);
+            }
+
             $producto->delete();
 
             return redirect()->route('productos.index')->with('success', 'Producto eliminado con éxito.');
         } catch (\Exception $e) {
-            return redirect()->route('productos.index')->withErrors(['error' => 'Hubo un problema al eliminar el producto. Inténtalo de nuevo.']);
+            return redirect()->route('productos.index')->withErrors(['error' => 'Hubo un problema al eliminar el producto.']);
         }
     }
 }
