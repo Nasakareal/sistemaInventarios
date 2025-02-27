@@ -26,7 +26,7 @@
 @section('body')
     <div class="{{ $auth_type ?? 'login' }}-box">
 
-    <center><img src="{{asset('img/UTM.png')}}" width="100%" alt=""></center>
+    <center><img src="{{asset('img/Logo-aniversario-25-UTM-bco.png')}}" width="100%" alt=""></center>
 
     <br>
 

@@ -1,15 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\app",
-    "\\app\\Http",
-    "\\app\\Http\\Controllers",
+    "\\config",
     "\\resources",
     "\\resources\\views",
-    "\\resources\\views\\vendor",
-    "\\resources\\views\\vendor\\adminlte",
-    "\\routes"
+    "\\resources\\views\\requisiciones",
+    "\\resources\\views\\requisiciones\\scan"
   ],
-  "SelectedNode": "\\resources\\views\\welcome.blade.php",
+  "SelectedNode": "\\resources\\views",
   "PreviewInSolutionExplorer": false
 }

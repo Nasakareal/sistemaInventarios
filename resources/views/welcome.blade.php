@@ -69,8 +69,8 @@
         }
         /* Logo UTM */
         .utm-logo {
-            width: 120px !important;
-            max-width: 120px;
+            width: 480px !important;
+            max-width: 480px;
             height: auto;
             margin-bottom: 15px;
         }
@@ -147,16 +147,23 @@
             <div class="buttons-container">
                 <!-- Sistema de Inventarios -->
                 <div class="system-card">
-                    <img src="{{ asset('images/logo_inventarios.png') }}" alt="Sistema Inventarios" class="system-logo">
+                    <img src="{{ asset('img/logo_inventarios.png') }}" alt="Sistema Inventarios" class="system-logo">
                     <a href="{{ request()->getHost() === 'localhost' ? '/sistemaInventarios/public/login' : '/sistemaInventarios/public/login' }}">
                         <i class="fa-solid fa-boxes-stacked"></i> Sistema de Inventarios
                     </a>
                 </div>
-                <!-- Sistema de Carga Horaria -->
+                <!-- Sistema Contable -->
                 <div class="system-card">
-                    <img src="{{ asset('images/logo_carga_horaria.png') }}" alt="Carga Horaria" class="system-logo">
-                    <a href="{{ request()->getHost() === 'localhost' ? '/cargaHoraria/login' : '/cargaHoraria' }}">
-                        <i class="fa-solid fa-calendar-alt"></i> Sistema de Carga Horaria
+                    <img src="{{ asset('img/logo_contable.png') }}" alt="Sistema Contable" class="system-logo">
+                    <a href="{{ request()->getHost() === 'localhost' ? '/sistemaContable/public/login' : '/sistemaContable/public/login' }}">
+                        <i class="fa-solid fa-calendar-alt"></i> Sistema Contable
+                    </a>
+                </div>
+                <!-- Sistema Recursos Humanos -->
+                <div class="system-card">
+                    <img src="{{ asset('img/logo_humanos.png') }}" alt="Recursos Humanos" class="system-logo">
+                    <a href="{{ request()->getHost() === 'localhost' ? '/sistemaHumanos/public/login' : '/sistemaHumanos/public/login' }}">
+                        <i class="fa-solid fa-calendar-alt"></i> Recursos Humanos
                     </a>
                 </div>
             </div>
