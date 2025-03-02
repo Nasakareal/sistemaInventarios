@@ -66,6 +66,12 @@ class RolesAndPermissionsSeeder extends Seeder
             'crear servicios',
             'editar servicios',
             'eliminar servicios',
+
+            // Almacen
+            'ver almacenes',
+            'crear almacenes',
+            'editar almacenes',
+            'eliminar almacenes',
         ];
 
         // Crear permisos si no existen

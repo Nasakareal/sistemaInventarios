@@ -417,19 +417,7 @@ return [
                 [
                     'text' => 'Listado de inventarios',
                     'icon' => 'fa-solid fa-clipboard-list',
-                    'url' => '#',
-                ],
-                
-                [
-                    'text' => 'Listado de',
-                    'icon' => 'fa-solid fa-user',
-                    'url' => '#',
-                ],
-
-                [
-                    'text' => 'Listado de',
-                    'icon' => 'fa-solid fa-barcode',
-                    'url' => '#',
+                    'url' => 'almacen',
                 ],
             ],
         ],

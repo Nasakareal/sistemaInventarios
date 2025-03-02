@@ -20,6 +20,17 @@ Route::get('/scan', function () {
     return view('scan.scan_qr');
 })->middleware('auth')->name('scan.qr');
 
+// Rutas para Almacen
+Route::prefix('almacen')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\AlmacenController::class, 'index'])->name('almacen.index');
+    Route::get('/create', [App\Http\Controllers\AlmacenController::class, 'create'])->middleware('can:crear almacenes')->name('almacen.create');
+    Route::post('/', [App\Http\Controllers\AlmacenController::class, 'store'])->middleware('can:crear almacenes')->name('almacen.store');
+    Route::get('/{almacen}', [App\Http\Controllers\AlmacenController::class, 'show'])->middleware('can:ver almacenes')->name('almacen.show');
+    Route::get('/{almacen}/edit', [App\Http\Controllers\AlmacenController::class, 'edit'])->middleware('can:editar almacenes')->name('almacen.edit');
+    Route::put('/{almacen}', [App\Http\Controllers\AlmacenController::class, 'update'])->middleware('can:editar almacenes')->name('almacen.update');
+    Route::delete('/{almacen}', [App\Http\Controllers\AlmacenController::class, 'destroy'])->middleware('can:eliminar almacenes')->name('almacen.destroy');
+});
+
 // Rutas para Servicios
 Route::prefix('servicios')->middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\ServicioController::class, 'index'])->name('servicios.index');
