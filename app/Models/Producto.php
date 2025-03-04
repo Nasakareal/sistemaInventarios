@@ -9,6 +9,7 @@ use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Producto extends Model
 {
@@ -38,11 +39,33 @@ class Producto extends Model
         'depreciacion_anual',
     ];
 
-     // Define los atributos que se auditarán
-    protected static $logAttributes = ['codigo', 'nombre', 'descripcion', 'categoria_id', 'proveedor_id', 'departamento_id', 'precio_compra', 'ubicacion', 'imagen_url',
-                                       'qr_url', 'estado', 'area', 'ur', 'partida', 'numero_inventario_patrimonial', 'factura_url', 'resguardo_url', 'vida_util', 'depreciacion_anual'];
-    protected static $logName = 'producto';
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'codigo',
+                'nombre',
+                'descripcion',
+                'categoria_id',
+                'proveedor_id',
+                'departamento_id',
+                'precio_compra',
+                'ubicacion',
+                'imagen_url',
+                'qr_url',
+                'estado',
+                'area',
+                'ur',
+                'partida',
+                'numero_inventario_patrimonial',
+                'factura_url',
+                'resguardo_url',
+                'vida_util',
+                'depreciacion_anual',
+            ])
+            ->setLogName('producto')
+            ->logOnlyDirty();
+    }
 
     public function getDescriptionForEvent(string $eventName): string
     {
@@ -67,6 +90,7 @@ class Producto extends Model
 
                 Storage::disk('public')->put($qrPath, $qrCode->getString());
 
+                // Actualiza el producto con el código y la URL del QR
                 $producto->update([
                     'codigo' => $codigo,
                     'qr_url' => "storage/{$qrPath}",
@@ -96,5 +120,4 @@ class Producto extends Model
     {
         return $this->hasOne(Baja::class, 'bien_id');
     }
-
 }

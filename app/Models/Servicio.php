@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 use Carbon\Carbon;
 
 class Servicio extends Model
@@ -21,10 +22,19 @@ class Servicio extends Model
         'proxima_realizacion',
     ];
 
-    // Define los atributos que se auditarán
-    protected static $logAttributes = ['nombre', 'descripcion', 'frecuencia_semanas', 'ultima_realizacion', 'proxima_realizacion'];
-    protected static $logName = 'servicios';
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'nombre', 
+                'descripcion', 
+                'frecuencia_semanas', 
+                'ultima_realizacion', 
+                'proxima_realizacion'
+            ])
+            ->setLogName('servicios')
+            ->logOnlyDirty();
+    }
 
     public function getDescriptionForEvent(string $eventName): string
     {

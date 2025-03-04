@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Requisiciones extends Model
 {
@@ -43,13 +44,36 @@ class Requisiciones extends Model
         'status_pago',
     ];
 
-    // Define los atributos que se auditarán
-    protected static $logAttributes = ['fecha_requisicion', 'numero_requisicion', 'ur', 'departamento', 'partida', 'producto_material',
-                                        'justificacion', 'oficio_pago', 'numero_factura', 'proveedor', 'monto', 'status_requisicion',
-                                        'turnado_a', 'fecha_entrega_rf', 'fecha_pago', 'banco', 'pago', 'observaciones',
-                                        'referencia', 'mes', 'fecha_pago', 'cuenta_bancaria_id', 'status_pago'];
-    protected static $logName = 'requisiciones';
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'fecha_requisicion', 
+                'numero_requisicion', 
+                'ur', 
+                'departamento', 
+                'partida', 
+                'producto_material',
+                'justificacion', 
+                'oficio_pago', 
+                'numero_factura', 
+                'proveedor', 
+                'monto', 
+                'status_requisicion',
+                'turnado_a', 
+                'fecha_entrega_rf', 
+                'fecha_pago', 
+                'banco', 
+                'pago', 
+                'observaciones',
+                'referencia', 
+                'mes', 
+                'cuenta_bancaria_id', 
+                'status_pago'
+            ])
+            ->setLogName('requisiciones')
+            ->logOnlyDirty();
+    }
 
     public function getDescriptionForEvent(string $eventName): string
     {

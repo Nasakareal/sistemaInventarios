@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class CuentaBancaria extends Model
 {
@@ -17,10 +18,13 @@ class CuentaBancaria extends Model
         'numero',
     ];
 
-     // Define los atributos que se auditarán
-    protected static $logAttributes = ['nombre', 'numero'];
-    protected static $logName = 'CuentaBancaria';
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['nombre', 'numero'])
+            ->setLogName('CuentaBancaria')
+            ->logOnlyDirty();
+    }
 
     public function getDescriptionForEvent(string $eventName): string
     {

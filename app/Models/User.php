@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class User extends Authenticatable
 {
@@ -23,16 +24,6 @@ class User extends Authenticatable
         'area',
     ];
 
-    // Define los atributos que se auditarán
-    protected static $logAttributes = ['name', 'email', 'password', 'estado', 'foto_perfil', 'area'];
-    protected static $logName = 'users';
-    protected static $logOnlyDirty = true;
-
-    public function getDescriptionForEvent(string $eventName): string
-    {
-        return "El usuario ha sido {$eventName}";
-    }
-
     protected $hidden = [
         'password',
         'remember_token',
@@ -41,4 +32,28 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Configuración para registrar la actividad.
+     *
+     * @return \Spatie\Activitylog\LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'email', 'password', 'estado', 'foto_perfil', 'area'])
+            ->setLogName('users')
+            ->logOnlyDirty();
+    }
+
+    /**
+     * Personaliza la descripción del evento.
+     *
+     * @param string $eventName
+     * @return string
+     */
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "El usuario ha sido {$eventName}";
+    }
 }

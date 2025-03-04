@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Baja extends Model
 {
@@ -22,10 +23,13 @@ class Baja extends Model
         'documento_url',
     ];
 
-     // Define los atributos que se auditarán
-    protected static $logAttributes = ['bien_id', 'fecha_baja', 'motivo', 'responsable', 'observaciones', 'documento_url'];
-    protected static $logName = 'baja';
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['bien_id', 'fecha_baja', 'motivo', 'responsable', 'observaciones', 'documento_url'])
+            ->setLogName('baja')
+            ->logOnlyDirty();
+    }
 
     public function getDescriptionForEvent(string $eventName): string
     {

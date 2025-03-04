@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Categoria extends Model
 {
@@ -12,10 +13,13 @@ class Categoria extends Model
 
     protected $fillable = ['nombre', 'descripcion'];
 
-     // Define los atributos que se auditarán
-    protected static $logAttributes = ['nombre', 'descripcion'];
-    protected static $logName = 'categoria';
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['nombre', 'descripcion'])
+            ->setLogName('categoria')
+            ->logOnlyDirty();
+    }
 
     public function getDescriptionForEvent(string $eventName): string
     {

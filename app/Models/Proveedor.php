@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Proveedor extends Model
 {
@@ -14,10 +15,13 @@ class Proveedor extends Model
 
     protected $fillable = ['nombre', 'contacto', 'telefono', 'email', 'direccion', 'numero_padron'];
 
-    // Define los atributos que se auditarán
-    protected static $logAttributes = ['nombre', 'contacto', 'telefono', 'email', 'direccion', 'numero_padron'];
-    protected static $logName = 'proveedor';
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['nombre', 'contacto', 'telefono', 'email', 'direccion', 'numero_padron'])
+            ->setLogName('proveedor')
+            ->logOnlyDirty();
+    }
 
     public function getDescriptionForEvent(string $eventName): string
     {
