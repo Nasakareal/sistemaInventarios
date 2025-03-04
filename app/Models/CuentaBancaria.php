@@ -22,7 +22,7 @@ class CuentaBancaria extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['nombre', 'numero'])
-            ->setLogName('CuentaBancaria')
+            ->useLogName('CuentaBancaria')
             ->logOnlyDirty();
     }
 

@@ -63,7 +63,7 @@ class Producto extends Model
                 'vida_util',
                 'depreciacion_anual',
             ])
-            ->setLogName('producto')
+            ->useLogName('producto')
             ->logOnlyDirty();
     }
 
@@ -90,7 +90,6 @@ class Producto extends Model
 
                 Storage::disk('public')->put($qrPath, $qrCode->getString());
 
-                // Actualiza el producto con el código y la URL del QR
                 $producto->update([
                     'codigo' => $codigo,
                     'qr_url' => "storage/{$qrPath}",

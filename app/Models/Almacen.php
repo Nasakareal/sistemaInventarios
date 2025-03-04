@@ -26,7 +26,7 @@ class Almacen extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['tipo', 'fecha_compra', 'nombre_proveedor', 'fecha_entrada', 'recibido_por', 'fecha_salida', 'stock', 'departamento'])
-            ->setLogName('almacen')
+            ->useLogName('almacen')
             ->logOnlyDirty();
     }
 

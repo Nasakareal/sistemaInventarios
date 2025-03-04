@@ -27,7 +27,7 @@ class Baja extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['bien_id', 'fecha_baja', 'motivo', 'responsable', 'observaciones', 'documento_url'])
-            ->setLogName('baja')
+            ->useLogName('baja')
             ->logOnlyDirty();
     }
 

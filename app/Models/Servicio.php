@@ -32,7 +32,7 @@ class Servicio extends Model
                 'ultima_realizacion', 
                 'proxima_realizacion'
             ])
-            ->setLogName('servicios')
+            ->useLogName('servicios')
             ->logOnlyDirty();
     }
 

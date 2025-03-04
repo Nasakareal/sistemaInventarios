@@ -17,7 +17,7 @@ class Categoria extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['nombre', 'descripcion'])
-            ->setLogName('categoria')
+            ->useLogName('categoria')
             ->logOnlyDirty();
     }
 

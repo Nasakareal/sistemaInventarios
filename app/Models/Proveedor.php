@@ -19,7 +19,7 @@ class Proveedor extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['nombre', 'contacto', 'telefono', 'email', 'direccion', 'numero_padron'])
-            ->setLogName('proveedor')
+            ->useLogName('proveedor')
             ->logOnlyDirty();
     }
 
