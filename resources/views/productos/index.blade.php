@@ -51,6 +51,13 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="fecha_registro">Fecha de Registro:</label>
+                                <input type="date" name="fecha_registro" id="fecha_registro" class="form-control"
+                                       value="{{ request('fecha_registro') }}">
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary">Filtrar</button>
                         <a href="{{ route('productos.index') }}" class="btn btn-secondary">Limpiar</a>
                     </form>
@@ -119,7 +126,7 @@
     <script>
         $(function () {
             $('#productos').DataTable({
-                "pageLength": 5,
+                "pageLength": 10,
                 "language": {
                     "emptyTable": "No hay información disponible",
                     "info": "Mostrando _START_ a _END_ de _TOTAL_ productos",

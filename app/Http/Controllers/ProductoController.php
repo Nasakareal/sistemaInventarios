@@ -25,6 +25,9 @@ class ProductoController extends Controller
         if ($request->filled('partida')) {
             $query->where('partida', $request->partida);
         }
+        if ($request->filled('fecha_registro')) {
+            $query->whereDate('created_at', $request->fecha_registro);
+        }
 
         $productos = $query->get();
         $areas = Producto::select('area')->distinct()->pluck('area');
@@ -33,6 +36,7 @@ class ProductoController extends Controller
 
         return view('productos.index', compact('productos', 'areas', 'unidades', 'partidas'));
     }
+
 
     public function create()
     {

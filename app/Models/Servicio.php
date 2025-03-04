@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Carbon\Carbon;
 
 class Servicio extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'servicios';
 
@@ -19,6 +20,16 @@ class Servicio extends Model
         'ultima_realizacion',
         'proxima_realizacion',
     ];
+
+    // Define los atributos que se auditarán
+    protected static $logAttributes = ['nombre', 'descripcion', 'frecuencia_semanas', 'ultima_realizacion', 'proxima_realizacion'];
+    protected static $logName = 'servicios';
+    protected static $logOnlyDirty = true;
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "El servicio ha sido {$eventName}";
+    }
 
     protected static function booted()
     {

@@ -46,18 +46,18 @@
                             </div>
 
                             <!-- Área -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="area">Área</label>
-                                    <input type="text" name="area" id="area" class="form-control @error('area') is-invalid @enderror" 
-                                           value="{{ old('area') }}" placeholder="Ingrese el área">
-                                    @error('area')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="area">Área</label>
+                                        <input type="text" name="area" id="area" class="form-control @error('area') is-invalid @enderror" 
+                                               value="{{ old('area') }}" placeholder="Ingrese el área" required>
+                                        @error('area')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
                         </div>
 
                         <div class="row">

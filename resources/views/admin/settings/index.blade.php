@@ -63,6 +63,17 @@
                 </div>
             </div>
         </div>
+
+        <!-- Registro de Actividad  -->
+        <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-indigo"><i class="fa-solid fa-user-secret"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text"><b>Registro de Actividad</b></span>
+                    <a href="{{ url('/admin/settings/actividad') }}" class="btn btn-primary btn-sm">Acceder</a>
+                </div>
+            </div>
+        </div>
     </div>
 @stop
 

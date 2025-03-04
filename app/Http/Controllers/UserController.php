@@ -37,12 +37,11 @@ class UserController extends Controller
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
-                'password' => bcrypt($validatedData['password']), // Encripta la contraseña
-                'estado' => 'Activo', // Estado por defecto
+                'password' => bcrypt($validatedData['password']),
+                'estado' => 'Activo',
                 'area' => $validatedData['area'] ?? null,
             ]);
 
-            // Asignar rol al usuario
             $user->assignRole($validatedData['role']);
 
             Log::info("Usuario creado exitosamente: {$user->name}");

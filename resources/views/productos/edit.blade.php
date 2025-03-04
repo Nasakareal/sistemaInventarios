@@ -16,8 +16,9 @@
                 <div class="card-body">
                     <form action="{{ route('productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT') <!-- Para actualizar usamos PUT -->
+                        @method('PUT')
 
+                        <!-- Nombre, Categoría y Proveedor-->
                         <div class="row">
                             <!-- Nombre -->
                             <div class="col-md-4">
@@ -44,9 +45,7 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
                             <!-- Proveedor -->
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -62,7 +61,10 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
 
+                        <!-- Departamento, Precio de Compra y  -->
+                        <div class="row">
                             <!-- Departamento -->
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -76,28 +78,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
-                            </div>
-
-                            <!-- Cantidad en Stock -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="cantidad_stock">Cantidad en Stock</label>
-                                    <input type="number" name="cantidad_stock" id="cantidad_stock" class="form-control"
-                                           value="{{ old('cantidad_stock', $producto->cantidad_stock) }}"
-                                           placeholder="Ingrese la cantidad en stock" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <!-- Stock Mínimo -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="stock_minimo">Stock Mínimo</label>
-                                    <input type="number" name="stock_minimo" id="stock_minimo" class="form-control"
-                                           value="{{ old('stock_minimo', $producto->stock_minimo) }}"
-                                           placeholder="Ingrese el stock mínimo">
                                 </div>
                             </div>
 
@@ -207,8 +187,8 @@
                             </div>
                         </div>
 
-                        <!-- Campo para Imagen del Producto -->
-                        <div class="row mt-3">
+                        <!-- Campo para Imagen del Producto, Vida Útil y Depreciación Anual-->
+                        <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="imagen">Imagen del Producto</label>
@@ -224,12 +204,8 @@
                                     @endif
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Campos para Vida Útil y Depreciación Anual -->
-                        <div class="row mt-3">
                             <!-- Vida Útil -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="vida_util">Vida Útil (años)</label>
                                     <input type="number" name="vida_util" id="vida_util" class="form-control" 
@@ -238,7 +214,7 @@
                             </div>
                             
                             <!-- Depreciación Anual -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="depreciacion_anual">Depreciación Anual ($)</label>
                                     <input type="text" name="depreciacion_anual" id="depreciacion_anual" class="form-control" 

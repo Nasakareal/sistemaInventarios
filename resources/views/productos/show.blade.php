@@ -53,13 +53,6 @@
                                 <p class="form-control-static">{{ $producto->departamento->nombre ?? 'No especificado' }}</p>
                             </div>
                         </div>
-                        {{-- Cantidad en Stock --}}
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="cantidad_stock">Cantidad en Stock</label>
-                                <p class="form-control-static">{{ $producto->cantidad_stock }}</p>
-                            </div>
-                        </div>
                     </div>           
 
                     <div class="row">

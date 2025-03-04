@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Baja extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'bajas';
 
@@ -20,6 +21,16 @@ class Baja extends Model
         'observaciones',
         'documento_url',
     ];
+
+     // Define los atributos que se auditarán
+    protected static $logAttributes = ['bien_id', 'fecha_baja', 'motivo', 'responsable', 'observaciones', 'documento_url'];
+    protected static $logName = 'baja';
+    protected static $logOnlyDirty = true;
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "La baja ha sido {$eventName}";
+    }
 
     public function bien()
     {

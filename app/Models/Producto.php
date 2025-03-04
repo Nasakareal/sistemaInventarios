@@ -8,10 +8,11 @@ use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Producto extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'productos';
 
@@ -36,6 +37,17 @@ class Producto extends Model
         'vida_util',
         'depreciacion_anual',
     ];
+
+     // Define los atributos que se auditarán
+    protected static $logAttributes = ['codigo', 'nombre', 'descripcion', 'categoria_id', 'proveedor_id', 'departamento_id', 'precio_compra', 'ubicacion', 'imagen_url',
+                                       'qr_url', 'estado', 'area', 'ur', 'partida', 'numero_inventario_patrimonial', 'factura_url', 'resguardo_url', 'vida_util', 'depreciacion_anual'];
+    protected static $logName = 'producto';
+    protected static $logOnlyDirty = true;
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "El inventario ha sido {$eventName}";
+    }
 
     protected static function booted()
     {

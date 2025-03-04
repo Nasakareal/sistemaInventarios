@@ -45,7 +45,7 @@
                                     <label for="area">Área</label>
                                     <input type="text" name="area" id="area" class="form-control"
                                            value="{{ old('area', $user->area ?? '') }}"
-                                           placeholder="Ingrese el área">
+                                           placeholder="Ingrese el área" required>
                                 </div>
                             </div>
                         </div>
