@@ -18,10 +18,7 @@
                         </a>
                     </div>
                 </div>
-
                 <div class="card-body">
-                    
-
                     <table id="bajas" class="table table-striped table-bordered table-hover table-sm">
                         <thead>
                             <tr>
@@ -70,8 +67,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-            </div>
+                </div><!-- /.card-body -->
+            </div><!-- /.card -->
         </div>
     </div>
 @stop
@@ -83,19 +80,30 @@
             vertical-align: middle;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 @stop
 
 @section('js')
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
     <script>
-        $(function () {
-            $('#bajas').DataTable({
-                "pageLength": 5,
+        $(document).ready(function () {
+            $('#bajas').DataTable({ // Cambiar el selector '#bajas' al id de la tabla.
+                "dom": '<"row"<"col-sm-6"l><"col-sm-6"Bf>>rtip',
+                "pageLength": 10,
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
                 "language": {
                     "emptyTable": "No hay información disponible",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ bajas",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ bajas",  // Mensaje de información.
                     "infoEmpty": "Mostrando 0 a 0 de 0 bajas",
-                    "infoFiltered": "(filtrado de _MAX_ bajas en total)",
-                    "lengthMenu": "Mostrar _MENU_ bajas",
+                    "infoFiltered": "(filtrado de _MAX_ bajas en total)",  // Mensaje de información.
+                    "lengthMenu": "Mostrar _MENU_ bajas",  // Mensaje de información.
                     "loadingRecords": "Cargando...",
                     "processing": "Procesando...",
                     "search": "Buscar:",
@@ -122,9 +130,12 @@
                             { extend: 'print', text: 'Imprimir' }
                         ]
                     },
-                    { extend: 'colvis', text: 'Visor de columnas' }
-                ],
-            }).buttons().container().appendTo('#bajas_wrapper .col-md-6:eq(0)');
+                    { 
+                        extend: 'colvis', 
+                        text: 'Visor de columnas'
+                    }
+                ]
+            });
         });
 
         @if (session('success'))
@@ -137,11 +148,10 @@
             });
         @endif
 
+        
         $(document).on('click', '.delete-btn', function (e) {
             e.preventDefault();
-
-            let form = $(this).closest('form');
-
+            var form = $(this).closest('form');
             Swal.fire({
                 title: '¿Estás seguro de eliminar esta baja?',
                 text: "¡No podrás revertir esta acción!",
@@ -159,3 +169,4 @@
         });
     </script>
 @stop
+

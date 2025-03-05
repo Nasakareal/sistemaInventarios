@@ -72,23 +72,34 @@
             vertical-align: middle;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 @stop
 
 @section('js')
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
     <script>
-        $(function () {
-            $('#categorias_table').DataTable({
-                "pageLength": 5,
+        $(document).ready(function () {
+            $('#categorias_table').DataTable({ // Cambiar el selector '#categorias' al id de la tabla.
+                "dom": '<"row"<"col-sm-6"l><"col-sm-6"Bf>>rtip',
+                "pageLength": 10,
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
                 "language": {
-                    "emptyTable": "No hay información",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Categorías",
-                    "infoEmpty": "Mostrando 0 a 0 de 0 Categorías",
-                    "infoFiltered": "(Filtrado de _MAX_ total Categorías)",
-                    "lengthMenu": "Mostrar _MENU_ Categorías",
+                    "emptyTable": "No hay información disponible",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ categorias",  // Mensaje de información.
+                    "infoEmpty": "Mostrando 0 a 0 de 0 categorias",
+                    "infoFiltered": "(filtrado de _MAX_ categorias en total)",  // Mensaje de información.
+                    "lengthMenu": "Mostrar _MENU_ categorias",  // Mensaje de información.
                     "loadingRecords": "Cargando...",
                     "processing": "Procesando...",
-                    "search": "Buscador:",
-                    "zeroRecords": "Sin resultados encontrados",
+                    "search": "Buscar:",
+                    "zeroRecords": "No se encontraron resultados",
                     "paginate": {
                         "first": "Primero",
                         "last": "Último",
@@ -111,9 +122,12 @@
                             { extend: 'print', text: 'Imprimir' }
                         ]
                     },
-                    { extend: 'colvis', text: 'Visor de columnas' }
-                ],
-            }).buttons().container().appendTo('#categorias_table_wrapper .col-md-6:eq(0)');
+                    { 
+                        extend: 'colvis', 
+                        text: 'Visor de columnas'
+                    }
+                ]
+            });
         });
 
         @if (session('success'))
@@ -122,17 +136,16 @@
                 icon: 'success',
                 title: '{{ session('success') }}',
                 showConfirmButton: false,
-                timer: 15000
+                timer: 1500
             });
         @endif
 
+        
         $(document).on('click', '.delete-btn', function (e) {
             e.preventDefault();
-
-            let form = $(this).closest('form');
-
+            var form = $(this).closest('form');
             Swal.fire({
-                title: '¿Estás seguro de eliminar esta categoría?',
+                title: '¿Estás seguro de eliminar esta baja?',
                 text: "¡No podrás revertir esta acción!",
                 icon: 'warning',
                 showCancelButton: true,
