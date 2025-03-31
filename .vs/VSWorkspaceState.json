@@ -6,6 +6,6 @@
     "\\resources\\views\\bajas",
     "\\resources\\views\\servicios"
   ],
-  "SelectedNode": "\\resources\\views\\servicios\\index.blade.php",
+  "SelectedNode": "\\resources\\views\\welcome.blade.php",
   "PreviewInSolutionExplorer": false
 }
