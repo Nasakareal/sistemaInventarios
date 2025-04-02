@@ -79,12 +79,15 @@ class Producto extends Model
                 $codigo = 'PROD-' . str_pad($producto->id, 6, '0', STR_PAD_LEFT);
 
                 $qrCode = Builder::create()
-                    ->data("Producto: {$producto->nombre}, Código: {$codigo}")
-                    ->encoding(new Encoding('UTF-8'))
-                    ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
-                    ->size(200)
-                    ->margin(10)
-                    ->build();
+                ->data("Producto: {$producto->nombre}, Código: {$codigo}")
+                ->encoding(new Encoding('UTF-8'))
+                ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+                ->size(300)
+                ->margin(10)
+                ->logoPath(public_path('utm_logo2.png'))
+                ->logoResizeToWidth(140)
+                ->build();
+
 
                 $qrPath = "qrcodes/{$codigo}.png";
 

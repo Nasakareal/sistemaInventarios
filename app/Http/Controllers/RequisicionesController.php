@@ -8,39 +8,26 @@ use Illuminate\Http\Request;
 
 class RequisicionesController extends Controller
 {
-    public function indexByCuenta($cuentaId)
-    {
-        $cuentaBancaria = CuentaBancaria::findOrFail($cuentaId);
-        $requisiciones = $cuentaBancaria->requisiciones()->with('cuentaBancaria')->get();
-
-        return view('requisiciones.cuentas.index', compact('cuentaBancaria', 'requisiciones'));
-    }
-
+    
     public function index(Request $request)
     {
-        $query = Requisiciones::query()->with('cuentaBancaria');
+        $cuentas = CuentaBancaria::all();
+        $requisicionesPorCuenta = Requisiciones::select('cuenta_bancaria_id', \DB::raw('count(*) as total'))->groupBy('cuenta_bancaria_id')->pluck('total', 'cuenta_bancaria_id');
 
-        if ($request->filled('numero_requisicion')) {
-            $query->where('numero_requisicion', 'like', '%' . $request->input('numero_requisicion') . '%');
-        }
+
+        $query = Requisiciones::query()->with('cuentaBancaria');
 
         if ($request->filled('cuenta_bancaria_id')) {
             $query->where('cuenta_bancaria_id', $request->input('cuenta_bancaria_id'));
         }
 
-        if ($request->filled('monto_min')) {
-            $query->where('monto', '>=', $request->input('monto_min'));
-        }
-
-        if ($request->filled('monto_max')) {
-            $query->where('monto', '<=', $request->input('monto_max'));
-        }
-
         $requisiciones = $query->get();
-        $cuentas = CuentaBancaria::withCount('requisiciones')->get();
 
-        return view('requisiciones.index', compact('requisiciones', 'cuentas'));
+        $totalRequisiciones = Requisiciones::count();
+
+        return view('requisiciones.index', compact('requisiciones', 'cuentas', 'totalRequisiciones'));
     }
+
 
     public function create(Request $request)
     {
@@ -96,12 +83,9 @@ class RequisicionesController extends Controller
 
     public function show(Requisiciones $requisicion)
     {
-        if (!$requisicion) {
-            abort(404, "La requisición no fue encontrada.");
-        }
-
-        return view('requisiciones.cuentas.show', compact('requisicion'));
+        return view('requisiciones.show', compact('requisicion'));
     }
+
 
     public function edit($id)
     {

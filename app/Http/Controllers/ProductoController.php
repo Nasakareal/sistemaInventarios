@@ -66,22 +66,18 @@ class ProductoController extends Controller
         try {
             $data = $request->all();
 
-            // Procesar imagen del producto
             if ($request->hasFile('imagen')) {
                 $data['imagen_url'] = $request->file('imagen')->store('productos', 'public');
             }
 
-            // Procesar subida de factura (PDF)
             if ($request->hasFile('factura')) {
                 $data['factura_url'] = $request->file('factura')->store('facturas', 'public');
             }
 
-            // Procesar subida de resguardo (imagen)
             if ($request->hasFile('resguardo')) {
                 $data['resguardo_url'] = $request->file('resguardo')->store('resguardos', 'public');
             }
 
-            // Calcular depreciación anual si se proporciona vida útil
             if (!empty($request->vida_util)) {
                 $data['depreciacion_anual'] = $request->precio_compra / $request->vida_util;
             } else {
@@ -146,7 +142,6 @@ class ProductoController extends Controller
         try {
             $data = $request->all();
 
-            // Procesar actualización de imagen del producto
             if ($request->hasFile('imagen')) {
                 if ($producto->imagen_url) {
                     Storage::delete('public/' . $producto->imagen_url);
@@ -154,7 +149,6 @@ class ProductoController extends Controller
                 $data['imagen_url'] = $request->file('imagen')->store('productos', 'public');
             }
 
-            // Procesar actualización de factura (PDF)
             if ($request->hasFile('factura')) {
                 if ($producto->factura_url) {
                     Storage::delete('public/' . $producto->factura_url);
@@ -162,7 +156,6 @@ class ProductoController extends Controller
                 $data['factura_url'] = $request->file('factura')->store('facturas', 'public');
             }
 
-            // Procesar actualización de resguardo (imagen)
             if ($request->hasFile('resguardo')) {
                 if ($producto->resguardo_url) {
                     Storage::delete('public/' . $producto->resguardo_url);
@@ -170,7 +163,6 @@ class ProductoController extends Controller
                 $data['resguardo_url'] = $request->file('resguardo')->store('resguardos', 'public');
             }
 
-            // Calcular depreciación anual si se proporciona vida útil
             if (!empty($request->vida_util)) {
                 $data['depreciacion_anual'] = $request->precio_compra / $request->vida_util;
             } else {

@@ -89,16 +89,15 @@ Route::prefix('proveedores')->middleware('auth')->group(function () {
 
 // Rutas para Requisiciones
 Route::prefix('requisiciones')->middleware('auth')->group(function () {
-    Route::get('/', [App\Http\Controllers\RequisicionesController::class, 'index'])->name('requisiciones.index');
-    Route::get('/{cuenta}/index', [App\Http\Controllers\RequisicionesController::class, 'indexByCuenta'])->name('requisiciones.cuenta.index');
+    Route::get('/', [App\Http\Controllers\RequisicionesController::class, 'index'])->middleware('can:ver requisiciones')->name('requisiciones.index');
     Route::get('/create', [App\Http\Controllers\RequisicionesController::class, 'create'])->middleware('can:crear requisiciones')->name('requisiciones.create');
     Route::post('/', [App\Http\Controllers\RequisicionesController::class, 'store'])->middleware('can:crear requisiciones')->name('requisiciones.store');
     Route::get('/{requisicion}', [App\Http\Controllers\RequisicionesController::class, 'show'])->middleware('can:ver requisiciones')->name('requisiciones.show');
     Route::get('/{requisicion}/edit', [App\Http\Controllers\RequisicionesController::class, 'edit'])->middleware('can:editar requisiciones')->name('requisiciones.edit');
     Route::put('/{requisicion}', [App\Http\Controllers\RequisicionesController::class, 'update'])->middleware('can:editar requisiciones')->name('requisiciones.update');
     Route::delete('/{requisicion}', [App\Http\Controllers\RequisicionesController::class, 'destroy'])->middleware('can:eliminar requisiciones')->name('requisiciones.destroy');
-    Route::get('/global', [App\Http\Controllers\RequisicionesController::class, 'index'])->middleware('can:ver requisiciones')->name('requisiciones.global.index');
 });
+
 
 // Configuraciones generales
 Route::prefix('admin/settings')->middleware('can:ver configuraciones')->group(function () {

@@ -7,10 +7,9 @@ use Illuminate\Http\Request;
 
 class CuentaBancariaController extends Controller
 {
-    public function index()
+   public function index()
     {
-        $cuentas = CuentaBancaria::withCount('requisiciones')->get();
-
+        $cuentas = CuentaBancaria::all();
         return view('admin.settings.cuentas.index', compact('cuentas'));
     }
 
