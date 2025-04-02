@@ -96,6 +96,8 @@ Route::prefix('requisiciones')->middleware('auth')->group(function () {
     Route::get('/{requisicion}/edit', [App\Http\Controllers\RequisicionesController::class, 'edit'])->middleware('can:editar requisiciones')->name('requisiciones.edit');
     Route::put('/{requisicion}', [App\Http\Controllers\RequisicionesController::class, 'update'])->middleware('can:editar requisiciones')->name('requisiciones.update');
     Route::delete('/{requisicion}', [App\Http\Controllers\RequisicionesController::class, 'destroy'])->middleware('can:eliminar requisiciones')->name('requisiciones.destroy');
+    Route::get('/partidas-por-capitulo/{capitulo}', [App\Http\Controllers\RequisicionesController::class, 'porCapitulo'])->name('requisiciones.partidasPorCapitulo');
+
 });
 
 

@@ -54,7 +54,7 @@
 
                         <!-- Número de Requisición, UR, Departamento, Partida -->
                         <div class="row">
-                            <!-- Número de Requisición -->
+                           <!-- Número de Requisición -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="numero_requisicion">Número de Requisición</label>
@@ -96,17 +96,33 @@
                                 </div>
                             </div>
 
-                            <!-- Partida -->
+                             <!-- Select para Capítulo (dinámico: si se selecciona 10000, usamos "10000") -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="capitulo">Capítulo</label>
+                                    <select id="capitulo" class="form-control">
+                                        <option value="">Seleccione un capítulo</option>
+                                        <option value="10000">10000 - Servicios Personales</option>
+                                        <option value="20000">20000 - Otro Capítulo</option>
+                                        <option value="30000">30000 - Otro Capítulo</option>
+                                        <option value="40000">40000 - Otro Capítulo</option>
+                                        <option value="50000">50000 - Otro Capítulo</option>
+                                        <option value="60000">60000 - Otro Capítulo</option>
+                                        <option value="70000">70000 - Otro Capítulo</option>
+                                        <option value="80000">80000 - Otro Capítulo</option>
+                                        <option value="90000">90000 - Otro Capítulo</option>
+                                        <!-- Agrega más opciones si es necesario -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Select para Partida -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="partida">Partida</label>
-                                    <input type="text" name="partida" id="partida"
-                                           class="form-control @error('partida') is-invalid @enderror"
-                                           value="{{ old('partida') }}"
-                                           placeholder="Ingrese la partida" required>
-                                    @error('partida')
-                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
-                                    @enderror
+                                    <select name="partida" id="partida" class="form-control" required>
+                                        <option value="">Seleccione una partida</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -392,4 +408,37 @@
             });
         @endif
     </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const capituloSelect = document.getElementById('capitulo');
+    const partidaSelect = document.getElementById('partida');
+
+    capituloSelect.addEventListener('change', function () {
+        const capitulo = this.value;
+        if (!capitulo) {
+            partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
+            return;
+        }
+        const url = `{{ url('/requisiciones/partidas-por-capitulo') }}/${capitulo}`;
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar partidas');
+                }
+                return response.json();
+            })
+            .then(data => {
+                partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
+                data.forEach(partida => {
+                    partidaSelect.innerHTML += `<option value="${partida.clave}">${partida.clave} - ${partida.descripcion}</option>`;
+                });
+            })
+            .catch(error => {
+                console.error('Error al cargar partidas:', error);
+                alert('Error al cargar partidas. Revisa la consola.');
+            });
+    });
+});
+</script>
 @stop
