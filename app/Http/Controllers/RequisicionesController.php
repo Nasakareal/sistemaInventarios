@@ -31,12 +31,18 @@ class RequisicionesController extends Controller
 
     public function create(Request $request)
     {
-        $cuentaBancariaId = $request->input('cuenta_bancaria_id');
-        $cuentaBancaria = CuentaBancaria::findOrFail($cuentaBancariaId);
         $proveedores = \App\Models\Proveedor::all();
+        $cuentas = CuentaBancaria::all();
+        $cuentaBancariaId = $request->input('cuenta_bancaria_id');
+        $cuentaBancaria = null;
 
-        return view('requisiciones.cuentas.create', compact('cuentaBancariaId', 'cuentaBancaria', 'proveedores'));
+        if ($cuentaBancariaId) {
+            $cuentaBancaria = CuentaBancaria::find($cuentaBancariaId);
+        }
+
+        return view('requisiciones.create', compact('cuentaBancaria', 'cuentaBancariaId', 'cuentas', 'proveedores'));
     }
+
 
     public function store(Request $request)
     {
@@ -89,12 +95,13 @@ class RequisicionesController extends Controller
 
     public function edit($id)
     {
-        $requisicion = Requisiciones::where('id', $id)->firstOrFail();
-
+        $requisicion = Requisiciones::findOrFail($id);
+        $cuentas = CuentaBancaria::all();
         $proveedores = \App\Models\Proveedor::all();
 
-        return view('requisiciones.cuentas.edit', compact('requisicion', 'proveedores'));
+        return view('requisiciones.edit', compact('requisicion', 'cuentas', 'proveedores'));
     }
+
 
     public function update(Request $request, Requisiciones $requisicion)
     {

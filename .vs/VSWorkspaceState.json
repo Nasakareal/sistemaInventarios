@@ -11,6 +11,6 @@
     "\\resources\\views\\requisiciones",
     "\\routes"
   ],
-  "SelectedNode": "\\app\\Models\\Producto.php",
+  "SelectedNode": "\\resources\\views\\requisiciones\\edit.blade.php",
   "PreviewInSolutionExplorer": false
 }
