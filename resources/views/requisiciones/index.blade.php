@@ -51,25 +51,65 @@
             <table id="requisiciones_table" class="table table-striped table-bordered table-hover table-sm">
                 <thead>
                     <tr>
-                        <th><center>#</center></th>
-                        <th><center>Número de Requisición</center></th>
-                        <th><center>Monto</center></th>
-                        <th><center>Cuenta Bancaria</center></th>
-                        <th><center>Fecha</center></th>
-                        <th><center>Acciones</center></th>
+                        <!-- Columnas a exportar (se pueden ocultar las que no se quieren ver en pantalla) -->
+                        <th class="d-none">ID</th>
+                        <th>Fecha Requisición</th>
+                        <th>Número de Requisición</th>
+                        <th class="d-none">UR</th>
+                        <th class="d-none">Departamento</th>
+                        <th class="d-none">Partida</th>
+                        <th class="d-none">Producto/Material</th>
+                        <th class="d-none">Justificación</th>
+                        <th class="d-none">Oficio Pago</th>
+                        <th class="d-none">Número Factura</th>
+                        <th class="d-none">Proveedor</th>
+                        <th>Monto</th>
+                        <th>Status Requisición</th>
+                        <th>Turnado A</th>
+                        <th class="d-none">Fecha Entrega RF</th>
+                        <th class="d-none">Fecha Pago</th>
+                        <th>Banco</th>
+                        <th>Pago</th>
+                        <th>Status Pago</th>
+                        <th>Observaciones</th>
+                        <th>Referencia</th>
+                        <th>Mes</th>
+                        <th>Cuenta Bancaria ID</th>
+                        <th class="d-none">Created At</th>
+                        <th class="d-none">Updated At</th>
+                        <!-- Columna de Acciones: no se exporta -->
+                        <th class="noExport">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($requisiciones as $index => $req)
+                    @foreach ($requisiciones as $req)
                         <tr>
-                            <td style="text-align: center;">{{ $index + 1 }}</td>
+                            <td class="d-none">{{ $req->id }}</td>
+                            <td>{{ $req->fecha_requisicion ? \Carbon\Carbon::parse($req->fecha_requisicion)->format('d-m-Y') : '' }}</td>
                             <td>{{ $req->numero_requisicion }}</td>
+                            <td class="d-none">{{ $req->ur }}</td>
+                            <td class="d-none">{{ $req->departamento }}</td>
+                            <td class="d-none">{{ $req->partida }}</td>
+                            <td class="d-none">{{ $req->producto_material }}</td>
+                            <td class="d-none">{{ $req->justificacion }}</td>
+                            <td class="d-none">{{ $req->oficio_pago }}</td>
+                            <td class="d-none">{{ $req->numero_factura }}</td>
+                            <td class="d-none">{{ $req->proveedor }}</td>
                             <td>${{ number_format($req->monto, 2) }}</td>
-                            <td>{{ optional($req->cuentaBancaria)->nombre ?? 'N/A' }}</td>
-                            <td>
-                                {{ $req->created_at ? $req->created_at->format('d-m-Y') : 'Sin fecha' }}
-                            </td>
-                            <td style="text-align: center;">
+                            <td>{{ $req->status_requisicion }}</td>
+                            <td>{{ $req->turnado_a }}</td>
+                            <td class="d-none">{{ $req->fecha_entrega_rf ? \Carbon\Carbon::parse($req->fecha_entrega_rf)->format('d-m-Y') : '' }}</td>
+                            <td class="d-none">{{ $req->fecha_pago ? \Carbon\Carbon::parse($req->fecha_pago)->format('d-m-Y') : '' }}</td>
+                            <td>{{ $req->banco }}</td>
+                            <td>{{ $req->pago }}</td>
+                            <td>{{ $req->status_pago }}</td>
+                            <td>{{ $req->observaciones }}</td>
+                            <td>{{ $req->referencia }}</td>
+                            <td>{{ $req->mes }}</td>
+                            <td>{{ $req->cuenta_bancaria_id }}</td>
+                            <td class="d-none">{{ $req->created_at }}</td>
+                            <td class="d-none">{{ $req->updated_at }}</td>
+                            <td class="noExport">
                                 <div class="btn-group" role="group">
                                     <a href="{{ route('requisiciones.show', $req->id) }}" class="btn btn-info btn-sm">
                                         <i class="fa-regular fa-eye"></i>
@@ -96,28 +136,36 @@
 
 @section('css')
     <style>
-        .table th, .table td {
-            text-align: center;
-            vertical-align: middle;
-        }
+        /* Esto oculta las columnas que tienen la clase d-none en la vista */
+        .d-none { display: none !important; }
     </style>
 @stop
 
 @section('js')
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
     <script>
-        $(function () {
+        $(document).ready(function () {
             $('#requisiciones_table').DataTable({
+                "dom": '<"row"<"col-sm-6"l><"col-sm-6"Bf>>rtip',
                 "pageLength": 10,
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
                 "language": {
-                    "emptyTable": "No hay información",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ requisiciones",
-                    "infoEmpty": "Mostrando 0 a 0 de 0 requisiciones",
-                    "infoFiltered": "(Filtrado de _MAX_ total requisiciones)",
-                    "lengthMenu": "Mostrar _MENU_ requisiciones",
+                    "emptyTable": "No hay información disponible",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Requisiciones",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 Requisiciones",
+                    "infoFiltered": "(filtrado de _MAX_ Requisiciones en total)",
+                    "lengthMenu": "Mostrar _MENU_ Requisiciones",
                     "loadingRecords": "Cargando...",
                     "processing": "Procesando...",
-                    "search": "Buscador:",
-                    "zeroRecords": "Sin resultados encontrados",
+                    "search": "Buscar:",
+                    "zeroRecords": "No se encontraron resultados",
                     "paginate": {
                         "first": "Primero",
                         "last": "Último",
@@ -133,16 +181,49 @@
                         extend: 'collection',
                         text: 'Opciones',
                         buttons: [
-                            { extend: 'copy', text: 'Copiar' },
-                            { extend: 'pdf', text: 'PDF' },
-                            { extend: 'csv', text: 'CSV' },
-                            { extend: 'excel', text: 'Excel' },
-                            { extend: 'print', text: 'Imprimir' }
+                            {
+                                extend: 'copy',
+                                text: 'Copiar',
+                                exportOptions: {
+                                    columns: ':not(.noExport)'
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                text: 'PDF',
+                                exportOptions: {
+                                    columns: ':not(.noExport)'
+                                }
+                            },
+                            {
+                                extend: 'csv',
+                                text: 'CSV',
+                                exportOptions: {
+                                    columns: ':not(.noExport)'
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                text: 'Excel',
+                                exportOptions: {
+                                    columns: ':not(.noExport)'
+                                }
+                            },
+                            {
+                                extend: 'print',
+                                text: 'Imprimir',
+                                exportOptions: {
+                                    columns: ':not(.noExport)'
+                                }
+                            }
                         ]
                     },
-                    { extend: 'colvis', text: 'Visor de columnas' }
-                ],
-            }).buttons().container().appendTo('#requisiciones_table_wrapper .col-md-6:eq(0)');
+                    {
+                        extend: 'colvis',
+                        text: 'Visor de columnas'
+                    }
+                ]
+            });
         });
 
         @if (session('success'))
@@ -151,15 +232,15 @@
                 icon: 'success',
                 title: '{{ session('success') }}',
                 showConfirmButton: false,
-                timer: 15000
+                timer: 1500
             });
         @endif
 
         $(document).on('click', '.delete-btn', function (e) {
             e.preventDefault();
-            let form = $(this).closest('form');
+            var form = $(this).closest('form');
             Swal.fire({
-                title: '¿Estás seguro de eliminar esta requisición?',
+                title: '¿Estás seguro de eliminar esta partida?',
                 text: "¡No podrás revertir esta acción!",
                 icon: 'warning',
                 showCancelButton: true,

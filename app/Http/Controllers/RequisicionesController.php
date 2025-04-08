@@ -37,9 +37,6 @@ class RequisicionesController extends Controller
         if ($cuentaBancariaId) {
             $cuentaBancaria = CuentaBancaria::find($cuentaBancariaId);
         }
-        
-        // Opcional: aquí podrías cargar dinámicamente los "capítulos" si lo deseas,
-        // pero en este ejemplo lo dejaremos para el select en la vista.
         return view('requisiciones.create', compact('cuentaBancaria', 'cuentaBancariaId', 'cuentas', 'proveedores'));
     }
 

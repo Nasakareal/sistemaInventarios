@@ -10,5 +10,5 @@ class Capitulo extends Model
     protected $connection = 'contable';
     public $timestamps = false;
 
-    protected $fillable = ['nombre']; // Agrega otros campos si es necesario
+    protected $fillable = ['nombre'];
 }

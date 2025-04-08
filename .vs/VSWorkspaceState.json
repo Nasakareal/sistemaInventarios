@@ -11,6 +11,6 @@
     "\\resources\\views\\requisiciones",
     "\\routes"
   ],
-  "SelectedNode": "\\app\\Models\\CuentaBancaria.php",
+  "SelectedNode": "\\app\\Http\\Controllers\\RequisicionesController.php",
   "PreviewInSolutionExplorer": false
 }
