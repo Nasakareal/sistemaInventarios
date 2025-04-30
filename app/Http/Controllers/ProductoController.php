@@ -29,19 +29,18 @@ class ProductoController extends Controller
             $query->whereDate('created_at', $request->fecha_registro);
         }
 
-        $productos = $query->get();
-        $areas = Producto::select('area')->distinct()->pluck('area');
-        $unidades = Producto::select('ur')->distinct()->pluck('ur');
-        $partidas = Producto::select('partida')->distinct()->pluck('partida');
+        $productos  = $query->get();
+        $areas      = Producto::select('area')->distinct()->pluck('area');
+        $unidades   = Producto::select('ur')->distinct()->pluck('ur');
+        $partidas   = Producto::select('partida')->distinct()->pluck('partida');
 
         return view('productos.index', compact('productos', 'areas', 'unidades', 'partidas'));
     }
 
-
     public function create()
     {
-        $categorias = Categoria::all();
-        $proveedores = Proveedor::all();
+        $categorias    = Categoria::all();
+        $proveedores   = Proveedor::all();
         $departamentos = Departamento::all();
 
         return view('productos.create', compact('categorias', 'proveedores', 'departamentos'));
@@ -50,17 +49,23 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|max:150',
-            'categoria_id' => 'required|exists:categorias,id',
-            'precio_compra' => 'required|numeric|min:0',
-            'area' => 'nullable|string|max:100',
-            'ur' => 'nullable|string|max:50',
-            'partida' => 'nullable|string|max:50',
-            'numero_inventario_patrimonial' => 'nullable|string|max:100|unique:productos,numero_inventario_patrimonial',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'factura' => 'nullable|file|mimes:pdf|max:2048',
-            'resguardo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'vida_util' => 'nullable|integer|min:1',
+            'nombre'                           => 'required|string|max:150',
+            'descripcion'                      => 'nullable|string',
+            'categoria_id'                     => 'required|exists:categorias,id',
+            'proveedor_id'                     => 'nullable|exists:proveedores,id',
+            'departamento_id'                  => 'nullable|exists:departamentos,id',
+            'precio_compra'                    => 'required|numeric|min:0',
+            'ubicacion'                        => 'nullable|string|max:100',
+            'estado'                           => 'required|in:ACTIVO,INACTIVO',
+            'area'                             => 'nullable|string|max:100',
+            'ur'                               => 'nullable|string|max:50',
+            'partida'                          => 'nullable|string|max:50',
+            'numero_inventario_patrimonial'    => 'nullable|string|max:100|unique:productos,numero_inventario_patrimonial',
+            'numero_inventario_saacg'          => 'nullable|string|max:100',
+            'imagen'                           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'factura'                          => 'nullable|file|mimes:pdf|max:2048',
+            'resguardo'                        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'vida_util'                        => 'nullable|integer|min:1',
         ]);
 
         try {
@@ -69,11 +74,9 @@ class ProductoController extends Controller
             if ($request->hasFile('imagen')) {
                 $data['imagen_url'] = $request->file('imagen')->store('productos', 'public');
             }
-
             if ($request->hasFile('factura')) {
                 $data['factura_url'] = $request->file('factura')->store('facturas', 'public');
             }
-
             if ($request->hasFile('resguardo')) {
                 $data['resguardo_url'] = $request->file('resguardo')->store('resguardos', 'public');
             }
@@ -86,16 +89,19 @@ class ProductoController extends Controller
 
             Producto::create($data);
 
-            return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
+            return redirect()->route('productos.index')
+                             ->with('success', 'Producto creado exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->route('productos.create')->withErrors(['error' => 'Hubo un problema al crear el producto.']);
+            return redirect()->route('productos.create')
+                             ->withErrors(['error' => 'Hubo un problema al crear el producto.']);
         }
     }
 
     public function show(Producto $producto)
     {
         if ($producto->bajas()->exists()) {
-            return redirect()->route('productos.index')->withErrors(['error' => 'Este bien ha sido dado de baja y no se puede visualizar.']);
+            return redirect()->route('productos.index')
+                             ->withErrors(['error' => 'Este bien ha sido dado de baja y no se puede visualizar.']);
         }
 
         $producto->load(['categoria', 'proveedor', 'departamento']);
@@ -108,7 +114,8 @@ class ProductoController extends Controller
         $filePath = public_path("storage/qrcodes/{$fileName}");
 
         if (!file_exists($filePath)) {
-            return redirect()->back()->with('error', 'El código QR no está disponible para este producto.');
+            return redirect()->back()
+                             ->with('error', 'El código QR no está disponible para este producto.');
         }
 
         return response()->download($filePath, "QR_{$fileName}");
@@ -116,8 +123,8 @@ class ProductoController extends Controller
 
     public function edit(Producto $producto)
     {
-        $categorias = Categoria::all();
-        $proveedores = Proveedor::all();
+        $categorias    = Categoria::all();
+        $proveedores   = Proveedor::all();
         $departamentos = Departamento::all();
 
         return view('productos.edit', compact('producto', 'categorias', 'proveedores', 'departamentos'));
@@ -126,17 +133,23 @@ class ProductoController extends Controller
     public function update(Request $request, Producto $producto)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'categoria_id' => 'required|exists:categorias,id',
-            'area' => 'nullable|string|max:100',
-            'ur' => 'nullable|string|max:50',
-            'partida' => 'nullable|string|max:50',
-            'precio_compra' => 'required|numeric|min:0',
-            'numero_inventario_patrimonial' => 'nullable|string|max:100|unique:productos,numero_inventario_patrimonial,' . $producto->id,
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'factura' => 'nullable|file|mimes:pdf|max:2048',
-            'resguardo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'vida_util' => 'nullable|integer|min:1',
+            'nombre'                           => 'required|string|max:150',
+            'descripcion'                      => 'nullable|string',
+            'categoria_id'                     => 'required|exists:categorias,id',
+            'proveedor_id'                     => 'nullable|exists:proveedores,id',
+            'departamento_id'                  => 'nullable|exists:departamentos,id',
+            'precio_compra'                    => 'required|numeric|min:0',
+            'ubicacion'                        => 'nullable|string|max:100',
+            'estado'                           => 'required|in:ACTIVO,INACTIVO',
+            'area'                             => 'nullable|string|max:100',
+            'ur'                               => 'nullable|string|max:50',
+            'partida'                          => 'nullable|string|max:50',
+            'numero_inventario_patrimonial'    => 'nullable|string|max:100|unique:productos,numero_inventario_patrimonial,' . $producto->id,
+            'numero_inventario_saacg'          => 'nullable|string|max:100',
+            'imagen'                           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'factura'                          => 'nullable|file|mimes:pdf|max:2048',
+            'resguardo'                        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'vida_util'                        => 'nullable|integer|min:1',
         ]);
 
         try {
@@ -144,21 +157,19 @@ class ProductoController extends Controller
 
             if ($request->hasFile('imagen')) {
                 if ($producto->imagen_url) {
-                    Storage::delete('public/' . $producto->imagen_url);
+                    Storage::disk('public')->delete($producto->imagen_url);
                 }
                 $data['imagen_url'] = $request->file('imagen')->store('productos', 'public');
             }
-
             if ($request->hasFile('factura')) {
                 if ($producto->factura_url) {
-                    Storage::delete('public/' . $producto->factura_url);
+                    Storage::disk('public')->delete($producto->factura_url);
                 }
                 $data['factura_url'] = $request->file('factura')->store('facturas', 'public');
             }
-
             if ($request->hasFile('resguardo')) {
                 if ($producto->resguardo_url) {
-                    Storage::delete('public/' . $producto->resguardo_url);
+                    Storage::disk('public')->delete($producto->resguardo_url);
                 }
                 $data['resguardo_url'] = $request->file('resguardo')->store('resguardos', 'public');
             }
@@ -171,9 +182,11 @@ class ProductoController extends Controller
 
             $producto->update($data);
 
-            return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito.');
+            return redirect()->route('productos.index')
+                             ->with('success', 'Producto actualizado con éxito.');
         } catch (\Exception $e) {
-            return redirect()->route('productos.edit', $producto)->withErrors(['error' => 'Hubo un problema al actualizar el producto.']);
+            return redirect()->route('productos.edit', $producto)
+                             ->withErrors(['error' => 'Hubo un problema al actualizar el producto.']);
         }
     }
 
@@ -181,20 +194,22 @@ class ProductoController extends Controller
     {
         try {
             if ($producto->imagen_url) {
-                Storage::delete('public/' . $producto->imagen_url);
+                Storage::disk('public')->delete($producto->imagen_url);
             }
             if ($producto->factura_url) {
-                Storage::delete('public/' . $producto->factura_url);
+                Storage::disk('public')->delete($producto->factura_url);
             }
             if ($producto->resguardo_url) {
-                Storage::delete('public/' . $producto->resguardo_url);
+                Storage::disk('public')->delete($producto->resguardo_url);
             }
 
             $producto->delete();
 
-            return redirect()->route('productos.index')->with('success', 'Producto eliminado con éxito.');
+            return redirect()->route('productos.index')
+                             ->with('success', 'Producto eliminado con éxito.');
         } catch (\Exception $e) {
-            return redirect()->route('productos.index')->withErrors(['error' => 'Hubo un problema al eliminar el producto.']);
+            return redirect()->route('productos.index')
+                             ->withErrors(['error' => 'Hubo un problema al eliminar el producto.']);
         }
     }
 }

@@ -37,6 +37,7 @@ class Producto extends Model
         'resguardo_url',
         'vida_util',
         'depreciacion_anual',
+        'numero_inventario_saacg',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -62,6 +63,7 @@ class Producto extends Model
                 'resguardo_url',
                 'vida_util',
                 'depreciacion_anual',
+                'numero_inventario_saacg',
             ])
             ->useLogName('producto')
             ->logOnlyDirty();

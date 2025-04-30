@@ -4,13 +4,9 @@
     "\\app",
     "\\app\\Http",
     "\\app\\Http\\Controllers",
-    "\\app\\Models",
-    "\\config",
     "\\resources",
-    "\\resources\\views",
-    "\\resources\\views\\requisiciones",
-    "\\routes"
+    "\\resources\\views"
   ],
-  "SelectedNode": "\\app\\Http\\Controllers\\RequisicionesController.php",
+  "SelectedNode": "\\app\\Http\\Controllers\\UserController.php",
   "PreviewInSolutionExplorer": false
 }

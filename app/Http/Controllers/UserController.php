@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::where('estado', 'activo')->get();
         return view('admin.settings.users.index', compact('users'));
     }
 

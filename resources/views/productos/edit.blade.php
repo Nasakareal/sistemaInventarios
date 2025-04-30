@@ -14,223 +14,282 @@
                     <h3 class="card-title">Actualizar Datos del Producto</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('productos.update', $producto->id) }}"
+                          method="POST"
+                          enctype="multipart/form-data"
+                          id="form-producto-edit">
                         @csrf
                         @method('PUT')
 
-                        <!-- Nombre, Categoría y Proveedor-->
+                        {{-- Nombre, Estado, Categoría --}}
                         <div class="row">
-                            <!-- Nombre -->
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="nombre">Nombre</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control"
+                                    <label for="nombre">Nombre <span class="text-danger">*</span></label>
+                                    <input type="text" name="nombre" id="nombre"
+                                           class="form-control @error('nombre') is-invalid @enderror"
                                            value="{{ old('nombre', $producto->nombre) }}"
-                                           placeholder="Ingrese el nombre del producto" required>
+                                           placeholder="Ingrese nombre" required>
+                                    @error('nombre')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
                                 </div>
                             </div>
-
-                            <!-- Categoría -->
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="categoria_id">Categoría</label>
-                                    <select name="categoria_id" id="categoria_id" class="form-control" required>
-                                        <option value="" disabled>Seleccione una categoría</option>
-                                        @foreach ($categorias as $categoria)
-                                            <option value="{{ $categoria->id }}" 
-                                                {{ $producto->categoria_id == $categoria->id ? 'selected' : '' }}>
-                                                {{ $categoria->nombre }}
+                                    <label for="estado">Estado <span class="text-danger">*</span></label>
+                                    <select name="estado" id="estado"
+                                            class="form-control @error('estado') is-invalid @enderror"
+                                            required>
+                                        <option value="" disabled>Seleccione</option>
+                                        <option value="ACTIVO"   {{ old('estado', $producto->estado)=='ACTIVO'   ? 'selected':'' }}>ACTIVO</option>
+                                        <option value="INACTIVO" {{ old('estado', $producto->estado)=='INACTIVO' ? 'selected':'' }}>INACTIVO</option>
+                                    </select>
+                                    @error('estado')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="categoria_id">Categoría <span class="text-danger">*</span></label>
+                                    <select name="categoria_id" id="categoria_id"
+                                            class="form-control @error('categoria_id') is-invalid @enderror"
+                                            required>
+                                        <option value="" disabled>Seleccione</option>
+                                        @foreach($categorias as $cat)
+                                            <option value="{{ $cat->id }}"
+                                                {{ old('categoria_id', $producto->categoria_id)==$cat->id ? 'selected':'' }}>
+                                                {{ $cat->nombre }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('categoria_id')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Proveedor -->
+                        {{-- Descripción --}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="descripcion">Descripción</label>
+                                    <textarea name="descripcion" id="descripcion" rows="3"
+                                              class="form-control @error('descripcion') is-invalid @enderror"
+                                              placeholder="Opcional">{{ old('descripcion', $producto->descripcion) }}</textarea>
+                                    @error('descripcion')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Proveedor, Departamento, Precio de compra --}}
+                        <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="proveedor_id">Proveedor</label>
-                                    <select name="proveedor_id" id="proveedor_id" class="form-control">
-                                        <option value="" disabled>Seleccione un proveedor</option>
-                                        @foreach ($proveedores as $proveedor)
-                                            <option value="{{ $proveedor->id }}" 
-                                                {{ $producto->proveedor_id == $proveedor->id ? 'selected' : '' }}>
-                                                {{ $proveedor->nombre }}
+                                    <select name="proveedor_id" id="proveedor_id"
+                                            class="form-control @error('proveedor_id') is-invalid @enderror">
+                                        <option value="" disabled>Seleccione</option>
+                                        @foreach($proveedores as $prov)
+                                            <option value="{{ $prov->id }}"
+                                                {{ old('proveedor_id', $producto->proveedor_id)==$prov->id ? 'selected':'' }}>
+                                                {{ $prov->nombre }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('proveedor_id')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Departamento, Precio de Compra y  -->
-                        <div class="row">
-                            <!-- Departamento -->
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="departamento_id">Departamento</label>
-                                    <select name="departamento_id" id="departamento_id" class="form-control">
-                                        <option value="" disabled>Seleccione un departamento</option>
-                                        @foreach ($departamentos as $departamento)
-                                            <option value="{{ $departamento->id }}" 
-                                                {{ $producto->departamento_id == $departamento->id ? 'selected' : '' }}>
-                                                {{ $departamento->nombre }}
+                                    <select name="departamento_id" id="departamento_id"
+                                            class="form-control @error('departamento_id') is-invalid @enderror">
+                                        <option value="" disabled>Seleccione</option>
+                                        @foreach($departamentos as $dep)
+                                            <option value="{{ $dep->id }}"
+                                                {{ old('departamento_id', $producto->departamento_id)==$dep->id ? 'selected':'' }}>
+                                                {{ $dep->nombre }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('departamento_id')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
                                 </div>
                             </div>
-
-                            <!-- Precio de Compra -->
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="precio_compra">Precio de Compra</label>
-                                    <input type="number" step="0.01" name="precio_compra" id="precio_compra" class="form-control"
+                                    <label for="precio_compra">Precio de Compra ($) <span class="text-danger">*</span></label>
+                                    <input type="number" name="precio_compra" id="precio_compra"
+                                           class="form-control @error('precio_compra') is-invalid @enderror"
                                            value="{{ old('precio_compra', $producto->precio_compra) }}"
-                                           placeholder="Ingrese el precio de compra" required>
-                                </div>
-                            </div>
-
-                            <!-- Ubicación -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="ubicacion">Ubicación</label>
-                                    <input type="text" name="ubicacion" id="ubicacion" class="form-control"
-                                           value="{{ old('ubicacion', $producto->ubicacion) }}"
-                                           placeholder="Ingrese la ubicación del producto">
+                                           min="0" step="0.01" required>
+                                    @error('precio_compra')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Nuevos campos para Área, UR y Partida -->
-                        <div class="row">
-                            <!-- Área -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="area">Área</label>
-                                    <input type="text" name="area" id="area" class="form-control"
-                                           value="{{ old('area', $producto->area) }}"
-                                           placeholder="Ingrese el área">
-                                </div>
-                            </div>
-
-                            <!-- UR -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="ur">UR</label>
-                                    <input type="text" name="ur" id="ur" class="form-control"
-                                           value="{{ old('ur', $producto->ur) }}"
-                                           placeholder="Ingrese la UR">
-                                </div>
-                            </div>
-
-                            <!-- Partida -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="partida">Partida</label>
-                                    <input type="text" name="partida" id="partida" class="form-control"
-                                           value="{{ old('partida', $producto->partida) }}"
-                                           placeholder="Ingrese la partida">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <!-- Número de Inventario Patrimonial -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="numero_inventario_patrimonial">Número de Inventario Patrimonial</label>
-                                    <input type="text" name="numero_inventario_patrimonial" id="numero_inventario_patrimonial"
-                                           class="form-control @error('numero_inventario_patrimonial') is-invalid @enderror"
-                                           value="{{ old('numero_inventario_patrimonial', $producto->numero_inventario_patrimonial ?? '') }}"
-                                           placeholder="Ingrese el número de inventario patrimonial">
-                                    @error('numero_inventario_patrimonial')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Factura (PDF) -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="factura">Factura (PDF)</label>
-                                    <input type="file" name="factura" id="factura" accept="application/pdf"
-                                           class="form-control @error('factura') is-invalid @enderror">
-                                    @error('factura')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                    @if(isset($producto) && $producto->factura_url)
-                                        <a href="{{ asset('storage/' . $producto->factura_url) }}" target="_blank">Ver factura</a>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Resguardo del Bien (Imagen) -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="resguardo">Resguardo del Bien (Imagen)</label>
-                                    <input type="file" name="resguardo" id="resguardo" accept="image/*"
-                                           class="form-control @error('resguardo') is-invalid @enderror">
-                                    @error('resguardo')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                    @if(isset($producto) && $producto->resguardo_url)
-                                        <img src="{{ asset('storage/' . $producto->resguardo_url) }}" class="img-fluid mt-2" width="150">
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Campo para Imagen del Producto, Vida Útil y Depreciación Anual-->
+                        {{-- Imagen, Factura, Resguardo --}}
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="imagen">Imagen del Producto</label>
-                                    <input type="file" name="imagen" id="imagen" accept="image/*"
-                                           class="form-control @error('imagen') is-invalid @enderror">
+                                    <input type="file" name="imagen" id="imagen"
+                                           class="form-control-file @error('imagen') is-invalid @enderror"
+                                           accept="image/*">
                                     @error('imagen')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                     @enderror
-                                    @if(isset($producto) && $producto->imagen_url)
-                                        <img src="{{ asset('storage/' . $producto->imagen_url) }}" class="img-fluid mt-2" width="150">
+                                    @if($producto->imagen_url)
+                                        <img src="{{ asset('storage/'.$producto->imagen_url) }}"
+                                             class="img-thumbnail mt-2" width="120">
                                     @endif
                                 </div>
                             </div>
-                            <!-- Vida Útil -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="factura">Factura (PDF)</label>
+                                    <input type="file" name="factura" id="factura"
+                                           class="form-control-file @error('factura') is-invalid @enderror"
+                                           accept="application/pdf">
+                                    @error('factura')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                    @if($producto->factura_url)
+                                        <a href="{{ asset('storage/'.$producto->factura_url) }}"
+                                           target="_blank">Ver factura actual</a>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="resguardo">Resguardo del Bien</label>
+                                    <input type="file" name="resguardo" id="resguardo"
+                                           class="form-control-file @error('resguardo') is-invalid @enderror"
+                                           accept="image/*">
+                                    @error('resguardo')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                    @if($producto->resguardo_url)
+                                        <img src="{{ asset('storage/'.$producto->resguardo_url) }}"
+                                             class="img-thumbnail mt-2" width="120">
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Área, UR, Partida, Inventarios --}}
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="area">Área</label>
+                                    <input type="text" name="area" id="area"
+                                           class="form-control @error('area') is-invalid @enderror"
+                                           value="{{ old('area', $producto->area) }}"
+                                           placeholder="Opcional">
+                                    @error('area')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ur">UR</label>
+                                    <input type="text" name="ur" id="ur"
+                                           class="form-control @error('ur') is-invalid @enderror"
+                                           value="{{ old('ur', $producto->ur) }}"
+                                           placeholder="Opcional">
+                                    @error('ur')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="partida">Partida</label>
+                                    <input type="text" name="partida" id="partida"
+                                           class="form-control @error('partida') is-invalid @enderror"
+                                           value="{{ old('partida', $producto->partida) }}"
+                                           placeholder="Opcional">
+                                    @error('partida')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="numero_inventario_patrimonial">Nº Inventario Patrimonial</label>
+                                    <input type="text" name="numero_inventario_patrimonial"
+                                           id="numero_inventario_patrimonial"
+                                           class="form-control @error('numero_inventario_patrimonial') is-invalid @enderror"
+                                           value="{{ old('numero_inventario_patrimonial', $producto->numero_inventario_patrimonial) }}"
+                                           placeholder="Opcional">
+                                    @error('numero_inventario_patrimonial')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Nº Inventario SAACG --}}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="numero_inventario_saacg">Nº Inventario SAACG</label>
+                                    <input type="text" name="numero_inventario_saacg"
+                                           id="numero_inventario_saacg"
+                                           class="form-control @error('numero_inventario_saacg') is-invalid @enderror"
+                                           value="{{ old('numero_inventario_saacg', $producto->numero_inventario_saacg) }}"
+                                           placeholder="Opcional">
+                                    @error('numero_inventario_saacg')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Vida útil & depreciación --}}
+                        <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="vida_util">Vida Útil (años)</label>
-                                    <input type="number" name="vida_util" id="vida_util" class="form-control" 
-                                           value="{{ old('vida_util', $producto->vida_util) }}" min="1">
+                                    <input type="number" name="vida_util" id="vida_util"
+                                           class="form-control @error('vida_util') is-invalid @enderror"
+                                           value="{{ old('vida_util', $producto->vida_util) }}"
+                                           min="1">
+                                    @error('vida_util')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
                                 </div>
                             </div>
-                            
-                            <!-- Depreciación Anual -->
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="depreciacion_anual">Depreciación Anual ($)</label>
-                                    <input type="text" name="depreciacion_anual" id="depreciacion_anual" class="form-control" 
-                                           value="{{ old('depreciacion_anual', $producto->depreciacion_anual) }}" readonly>
+                                    <input type="text" name="depreciacion_anual" id="depreciacion_anual"
+                                           class="form-control" readonly
+                                           value="{{ old('depreciacion_anual', $producto->depreciacion_anual) }}">
                                 </div>
                             </div>
                         </div>
 
                         <hr>
+
                         <div class="row">
-                            <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa-solid fa-check"></i> Guardar Cambios
+                            <div class="col-md-12 text-right">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fa fa-check"></i> Guardar Cambios
                                 </button>
                                 <a href="{{ route('productos.index') }}" class="btn btn-secondary">
-                                    <i class="fa-solid fa-ban"></i> Cancelar
+                                    <i class="fa fa-ban"></i> Cancelar
                                 </a>
                             </div>
                         </div>
@@ -240,6 +299,21 @@
         </div>
     </div>
 @stop
+
+@push('js')
+<script>
+    // recalcula depreciación cuando cambian precio o vida útil
+    ['precio_compra','vida_util'].forEach(id => {
+        document.getElementById(id).addEventListener('input', () => {
+            const precio = parseFloat(document.getElementById('precio_compra').value) || 0;
+            const vida   = parseInt(document.getElementById('vida_util').value) || 0;
+            document.getElementById('depreciacion_anual').value =
+                (vida > 0 ? (precio/vida).toFixed(2) : '');
+        });
+    });
+</script>
+@endpush
+
 
 @section('css')
     <style>
