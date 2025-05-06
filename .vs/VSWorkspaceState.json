@@ -4,9 +4,13 @@
     "\\app",
     "\\app\\Http",
     "\\app\\Http\\Controllers",
+    "\\app\\Models",
+    "\\database",
+    "\\database\\migrations",
     "\\resources",
-    "\\resources\\views"
+    "\\resources\\views",
+    "\\resources\\views\\productos"
   ],
-  "SelectedNode": "\\app\\Http\\Controllers\\UserController.php",
+  "SelectedNode": "\\resources\\views\\productos\\edit.blade.php",
   "PreviewInSolutionExplorer": false
 }

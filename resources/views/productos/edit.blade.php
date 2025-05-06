@@ -280,6 +280,51 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Tres Nuevas Columnas -->
+                        <div class="row">
+                            <!-- Marca -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="marca">Marca</label>
+                                    <input type="text" name="marca" id="marca"
+                                           class="form-control @error('marca') is-invalid @enderror"
+                                           value="{{ old('marca', $producto->marca) }}"
+                                           placeholder="Ingrese la marca">
+                                    @error('marca')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Modelo -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="modelo">Modelo</label>
+                                    <input type="text" name="modelo" id="modelo"
+                                           class="form-control @error('modelo') is-invalid @enderror"
+                                           value="{{ old('modelo', $producto->modelo) }}"
+                                           placeholder="Ingrese el modelo">
+                                    @error('modelo')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Serie -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="serie">Serie</label>
+                                    <input type="text" name="serie" id="serie"
+                                           class="form-control @error('serie') is-invalid @enderror"
+                                           value="{{ old('serie', $producto->serie) }}"
+                                           placeholder="Ingrese el número de serie">
+                                    @error('serie')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
 
                         <hr>
 

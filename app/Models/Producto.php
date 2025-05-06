@@ -38,6 +38,9 @@ class Producto extends Model
         'vida_util',
         'depreciacion_anual',
         'numero_inventario_saacg',
+        'marca',
+        'modelo',
+        'serie',
     ];
 
     public function getActivitylogOptions(): LogOptions
