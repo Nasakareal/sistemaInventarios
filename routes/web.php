@@ -12,6 +12,10 @@ Route::middleware(['auth'])->group(function () {
 
 Auth::routes();
 
+Route::get('productos/import', [App\Http\Controllers\ProductoController::class, 'showImportForm'])->name('productos.import.form');
+Route::post('productos/import', [App\Http\Controllers\ProductoController::class, 'import'])->name('productos.import');
+
+
 // Home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

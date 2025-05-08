@@ -16,6 +16,11 @@
                         <a href="{{ url('productos/create') }}" class="btn btn-primary">
                             <i class="fa-solid fa-plus"></i> Añadir Inventario
                         </a>
+
+                        <!-- BOTÓN DE IMPORTACIÓN -->
+                        <a href="{{ route('productos.import.form') }}" class="btn btn-success">
+                            <i class="fa-solid fa-file-import"></i> Importar CSV
+                        </a>
                     </div>
                 </div>
 

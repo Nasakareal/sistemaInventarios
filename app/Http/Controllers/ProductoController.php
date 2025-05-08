@@ -8,6 +8,8 @@ use App\Models\Proveedor;
 use App\Models\Departamento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Imports\ProductosImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductoController extends Controller
 {
@@ -211,5 +213,22 @@ class ProductoController extends Controller
             return redirect()->route('productos.index')
                              ->withErrors(['error' => 'Hubo un problema al eliminar el producto.']);
         }
+    }
+
+    public function showImportForm()
+    {
+        return view('productos.import');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt'
+        ]);
+
+        Excel::import(new ProductosImport, $request->file('file'));
+
+        return redirect()->route('productos.index')
+                         ->with('success', 'Importación de productos completada.');
     }
 }
