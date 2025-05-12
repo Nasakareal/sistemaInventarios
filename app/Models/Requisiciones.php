@@ -71,7 +71,7 @@ class Requisiciones extends Model
                 'cuenta_bancaria_id', 
                 'status_pago'
             ])
-            ->useLogName('requisiciones')
+            ->setLogName('requisiciones')
             ->logOnlyDirty();
     }
 

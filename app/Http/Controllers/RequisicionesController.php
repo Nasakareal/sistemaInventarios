@@ -53,6 +53,7 @@ class RequisicionesController extends Controller
             'partida'             => 'required|string|max:255',
             'producto_material'   => 'required|string|max:255',
             'justificacion'       => 'nullable|string',
+            'oficio_pago'         => 'required|string|max:255',  // <--- ahora viene del formulario
             'numero_factura'      => 'nullable|string|max:255',
             'proveedor'           => 'nullable|string|max:255',
             'monto'               => 'required|numeric',
@@ -68,9 +69,8 @@ class RequisicionesController extends Controller
             'cuenta_bancaria_id'  => 'required|integer',
         ]);
 
-        // Validación manual con el modelo (usa la conexión del modelo)
-        $existe = CuentaBancaria::where('id', $request->cuenta_bancaria_id)->exists();
-        if (! $existe) {
+        // Validación de cuenta en su conexión
+        if (! CuentaBancaria::where('id', $request->cuenta_bancaria_id)->exists()) {
             return back()
                 ->withErrors(['cuenta_bancaria_id' => 'La cuenta bancaria seleccionada no existe.'])
                 ->withInput();
@@ -78,16 +78,8 @@ class RequisicionesController extends Controller
 
         $cuentaBancaria = CuentaBancaria::findOrFail($request->cuenta_bancaria_id);
 
-        // Generar nuevo oficio
-        $ultimoOficio = Requisiciones::whereNotNull('oficio_pago')
-            ->orderBy('oficio_pago', 'desc')
-            ->value('oficio_pago');
-        $nuevoOficio = $ultimoOficio
-            ? str_pad((int)$ultimoOficio + 1, 3, '0', STR_PAD_LEFT)
-            : '001';
-
         $data = $request->all();
-        $data['oficio_pago'] = $nuevoOficio;
+        // oficio_pago ya viene en $request
         $data['banco']       = $cuentaBancaria->nombre;
         $data['status_pago'] = $request->input('status_pago', 'Pendiente');
 
@@ -95,7 +87,7 @@ class RequisicionesController extends Controller
 
         return redirect()
             ->route('requisiciones.index')
-            ->with('success', 'Requisición creada exitosamente con número de oficio ' . $nuevoOficio);
+            ->with('success', 'Requisición creada exitosamente con número de oficio ' . $data['oficio_pago']);
     }
 
     public function show(Requisiciones $requisicion)
@@ -139,16 +131,13 @@ class RequisicionesController extends Controller
             'cuenta_bancaria_id'  => 'required|integer',
         ]);
 
-        // Validación manual con el modelo
-        $existe = CuentaBancaria::where('id', $request->cuenta_bancaria_id)->exists();
-        if (! $existe) {
+        if (! CuentaBancaria::where('id', $request->cuenta_bancaria_id)->exists()) {
             return back()
                 ->withErrors(['cuenta_bancaria_id' => 'La cuenta bancaria seleccionada no existe.'])
                 ->withInput();
         }
 
         $data = $request->all();
-        $data['status_pago'] = $request->input('status_pago');
         $requisicion->update($data);
 
         return redirect()

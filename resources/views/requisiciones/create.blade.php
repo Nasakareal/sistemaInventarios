@@ -115,8 +115,11 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Select para Partida -->
+                        <!-- Select para Partida, Oficio Pago -->
+                         <div class="row">
+                         <!-- Select para Partida -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="partida">Partida</label>
@@ -125,7 +128,20 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                            <!-- Select para oficio_pago -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="oficio_pago">Oficio Pago</label>
+                                    <input type="text" name="oficio_pago" id="oficio_pago"
+                                           class="form-control @error('oficio_pago') is-invalid @enderror"
+                                           value="{{ old('oficio_pago') }}"
+                                           placeholder="Ingrese la el Oficio de Pago" required>
+                                    @error('oficio_pago')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                         </div>
 
                         <!-- Fecha Entrega RF, Fecha Pago, Fecha Requisición, Mes -->
                         <div class="row">
