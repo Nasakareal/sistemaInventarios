@@ -2,12 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\Imports",
-    "\\resources",
-    "\\resources\\views",
-    "\\resources\\views\\productos",
-    "\\routes"
+    "\\app\\Http",
+    "\\app\\Http\\Controllers",
+    "\\app\\Models",
+    "\\database",
+    "\\database\\migrations"
   ],
-  "SelectedNode": "\\resources\\views\\productos\\index.blade.php",
+  "SelectedNode": "\\app\\Models\\CuentaBancaria.php",
   "PreviewInSolutionExplorer": false
 }
