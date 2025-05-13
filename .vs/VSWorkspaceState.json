@@ -1,9 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\app",
-    "\\app\\Models"
+    "\\database",
+    "\\database\\migrations"
   ],
-  "SelectedNode": "\\app\\Models\\Producto.php",
+  "SelectedNode": "\\database\\migrations\\2025_05_13_200357_remove_unique_from_numero_requisicion_in_requisiciones_table.php",
   "PreviewInSolutionExplorer": false
 }
