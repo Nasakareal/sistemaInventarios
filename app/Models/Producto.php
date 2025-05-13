@@ -68,7 +68,7 @@ class Producto extends Model
                 'depreciacion_anual',
                 'numero_inventario_saacg',
             ])
-            ->useLogName('producto')
+            ->setLogName('producto')
             ->logOnlyDirty();
     }
 

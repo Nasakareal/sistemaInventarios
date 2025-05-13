@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\wamp64\\www\\sistemaInventarios\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\wamp64\\www\\sistemaInventarios\\resources\\views\\requisiciones\\create.blade.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:resources\\views\\requisiciones\\create.blade.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\wamp64\\www\\sistemaInventarios\\app\\Imports\\ProductosImport.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\Imports\\ProductosImport.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\wamp64\\www\\sistemaInventarios\\app\\Http\\Controllers\\RequisicionesController.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\Http\\Controllers\\RequisicionesController.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\wamp64\\www\\sistemaInventarios\\app\\Http\\Controllers\\ProductoController.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\Http\\Controllers\\ProductoController.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\wamp64\\www\\sistemaInventarios\\app\\Models\\Producto.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\Models\\Producto.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +27,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "create.blade.php",
-              "DocumentMoniker": "C:\\wamp64\\www\\sistemaInventarios\\resources\\views\\requisiciones\\create.blade.php",
-              "RelativeDocumentMoniker": "resources\\views\\requisiciones\\create.blade.php",
-              "ToolTip": "C:\\wamp64\\www\\sistemaInventarios\\resources\\views\\requisiciones\\create.blade.php",
-              "RelativeToolTip": "resources\\views\\requisiciones\\create.blade.php",
-              "ViewState": "AgIAAG8AAAAAAAAAAAAAAJsAAAAiAAAAAAAAAA==",
+              "Title": "ProductosImport.php",
+              "DocumentMoniker": "C:\\wamp64\\www\\sistemaInventarios\\app\\Imports\\ProductosImport.php",
+              "RelativeDocumentMoniker": "app\\Imports\\ProductosImport.php",
+              "ToolTip": "C:\\wamp64\\www\\sistemaInventarios\\app\\Imports\\ProductosImport.php",
+              "RelativeToolTip": "app\\Imports\\ProductosImport.php",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwC4AAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002338|",
-              "WhenOpened": "2025-05-13T00:50:17.205Z",
+              "WhenOpened": "2025-05-13T01:59:18.822Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Producto.php",
+              "DocumentMoniker": "C:\\wamp64\\www\\sistemaInventarios\\app\\Models\\Producto.php",
+              "RelativeDocumentMoniker": "app\\Models\\Producto.php",
+              "ToolTip": "C:\\wamp64\\www\\sistemaInventarios\\app\\Models\\Producto.php",
+              "RelativeToolTip": "app\\Models\\Producto.php",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAAIIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002338|",
+              "WhenOpened": "2025-05-13T01:53:11.759Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "RequisicionesController.php",
-              "DocumentMoniker": "C:\\wamp64\\www\\sistemaInventarios\\app\\Http\\Controllers\\RequisicionesController.php",
-              "RelativeDocumentMoniker": "app\\Http\\Controllers\\RequisicionesController.php",
-              "ToolTip": "C:\\wamp64\\www\\sistemaInventarios\\app\\Http\\Controllers\\RequisicionesController.php",
-              "RelativeToolTip": "app\\Http\\Controllers\\RequisicionesController.php",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAAEUAAAAeAAAAAAAAAA==",
+              "Title": "ProductoController.php",
+              "DocumentMoniker": "C:\\wamp64\\www\\sistemaInventarios\\app\\Http\\Controllers\\ProductoController.php",
+              "RelativeDocumentMoniker": "app\\Http\\Controllers\\ProductoController.php",
+              "ToolTip": "C:\\wamp64\\www\\sistemaInventarios\\app\\Http\\Controllers\\ProductoController.php",
+              "RelativeToolTip": "app\\Http\\Controllers\\ProductoController.php",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAAAMsAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002338|",
-              "WhenOpened": "2025-05-13T00:50:15.435Z",
+              "WhenOpened": "2025-05-13T01:50:29.74Z",
               "EditorCaption": ""
             }
           ]

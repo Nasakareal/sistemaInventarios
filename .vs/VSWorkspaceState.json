@@ -2,15 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\Http",
-    "\\app\\Http\\Controllers",
-    "\\app\\Imports",
-    "\\app\\Models",
-    "\\database",
-    "\\database\\migrations",
-    "\\resources",
-    "\\resources\\views"
+    "\\app\\Models"
   ],
-  "SelectedNode": "\\database\\migrations\\2025_05_13_020122_modify_categoria_precio_nullable_in_productos_table.php",
+  "SelectedNode": "\\app\\Models\\Producto.php",
   "PreviewInSolutionExplorer": false
 }
