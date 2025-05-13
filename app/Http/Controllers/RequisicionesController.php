@@ -53,7 +53,7 @@ class RequisicionesController extends Controller
             'partida'             => 'required|string|max:255',
             'producto_material'   => 'required|string|max:255',
             'justificacion'       => 'nullable|string',
-            'oficio_pago'         => 'required|string|max:255',  // <--- ahora viene del formulario
+            'oficio_pago'         => 'required|string|max:255',
             'numero_factura'      => 'nullable|string|max:255',
             'proveedor'           => 'nullable|string|max:255',
             'monto'               => 'required|numeric',
@@ -67,6 +67,7 @@ class RequisicionesController extends Controller
             'mes'                 => 'nullable|string|max:20',
             'status_pago'         => 'required|string|in:Pendiente,Pagado',
             'cuenta_bancaria_id'  => 'required|integer',
+            'fecha_oficio_pago'  => 'required|date',
         ]);
 
         // Validación de cuenta en su conexión
@@ -129,6 +130,7 @@ class RequisicionesController extends Controller
             'mes'                 => 'nullable|string|max:20',
             'status_pago'         => 'required|string|in:Pendiente,Pagado',
             'cuenta_bancaria_id'  => 'required|integer',
+            'fecha_oficio_pago'  => 'required|date',
         ]);
 
         if (! CuentaBancaria::where('id', $request->cuenta_bancaria_id)->exists()) {

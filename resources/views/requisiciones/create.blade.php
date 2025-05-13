@@ -141,6 +141,19 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <!-- Fecha oficio Pago -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="fecha_oficio_pago">Fecha de Oficio de Pago</label>
+                                    <input type="date" name="fecha_oficio_pago" id="fecha_oficio_pago"
+                                           class="form-control @error('fecha_oficio_pago') is-invalid @enderror"
+                                           value="{{ old('fecha_oficio_pago') }}">
+                                    @error('fecha_oficio_pago')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
                          </div>
 
                         <!-- Fecha Entrega RF, Fecha Pago, Fecha Requisición, Mes -->

@@ -42,6 +42,7 @@ class Requisiciones extends Model
         'mes',
         'cuenta_bancaria_id',
         'status_pago',
+        'fecha_oficio_pago',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -69,7 +70,8 @@ class Requisiciones extends Model
                 'referencia', 
                 'mes', 
                 'cuenta_bancaria_id', 
-                'status_pago'
+                'status_pago',
+                'fecha_oficio_pago'
             ])
             ->setLogName('requisiciones')
             ->logOnlyDirty();

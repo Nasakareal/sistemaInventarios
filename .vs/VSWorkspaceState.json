@@ -4,13 +4,10 @@
     "\\app",
     "\\app\\Http",
     "\\app\\Http\\Controllers",
-    "\\app\\Models",
-    "\\database",
-    "\\database\\migrations",
     "\\resources",
     "\\resources\\views",
     "\\resources\\views\\requisiciones"
   ],
-  "SelectedNode": "\\resources\\views\\requisiciones\\edit.blade.php",
+  "SelectedNode": "\\resources\\views\\requisiciones\\create.blade.php",
   "PreviewInSolutionExplorer": false
 }
