@@ -20,7 +20,7 @@ class ProductosImport implements ToModel, WithHeadingRow, WithValidation
             : null;
 
         return new Producto([
-            'codigo'                         => $row['codigo'],
+            // 'codigo' eliminado: lo genera el Model en el evento created
             'nombre'                         => $row['nombre'],
             'descripcion'                    => $row['descripcion'],
             'categoria_id'                   => $row['categoria_id'],
@@ -45,9 +45,7 @@ class ProductosImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'codigo'         => 'required|string|max:50|unique:productos,codigo',
             'nombre'         => 'required|string|max:150',
-            'categoria_id'   => 'required|exists:categorias,id',
             'proveedor_id'   => 'nullable|exists:proveedores,id',
             'precio_compra'  => 'nullable|numeric|min:0',
             'estado'         => ['required', Rule::in(['ACTIVO','INACTIVO'])],

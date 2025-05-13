@@ -1,0 +1,9 @@
+nombre,descripcion,categoria_id,proveedor_id,marca,modelo,serie,departamento_id,precio_compra,ubicacion,estado,area,ur,partida,numero_inventario_patrimonial,numero_inventario_saacg,vida_util
+Producto Ejemplo,Descripci��n de ,,1,MarcaX,ModeloY,SerieZ,1,1500,Bodega A,ACTIVO,TI,UR01,P01,PINV-001,SINV-001,5
+Producto Ejemplo2,Descripci��n de ,,1,MarcaX,ModeloY,SerieZ,1,1500,Bodega A,ACTIVO,TI,UR02,P02,PINV-002,SINV-002,6
+Producto Ejemplo,Descripci��n de ,,1,MarcaX,ModeloY,SerieZ,1,1500,Bodega A,ACTIVO,TI,UR03,P03,PINV-003,SINV-003,7
+Producto Ejemplo3,Descripci��n de ,,1,MarcaX,ModeloY,SerieZ,1,1500,Bodega A,ACTIVO,TI,UR04,P04,PINV-004,SINV-004,8
+Producto Ejemplo,Descripci��n de ,,1,MarcaX,ModeloY,SerieZ,1,1500,Bodega A,ACTIVO,TI,UR05,P05,PINV-005,SINV-005,9
+Producto Ejemplo4,Descripci��n de ,,1,MarcaX,ModeloY,SerieZ,1,1500,Bodega A,ACTIVO,TI,UR06,P06,PINV-006,SINV-006,10
+Producto Ejemplo,Descripci��n de ,,1,MarcaX,ModeloY,SerieZ,1,1500,Bodega A,ACTIVO,TI,UR07,P07,PINV-007,SINV-007,11
+Producto Ejemplo5,Descripci��n de ,,1,MarcaX,ModeloY,SerieZ,1,1500,Bodega A,ACTIVO,TI,UR08,P08,PINV-008,SINV-008,12
