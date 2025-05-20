@@ -325,6 +325,51 @@
                             </div>
                         </div>
 
+                        <!-- Ubicación, Resguardante, Observaciones -->
+                        <div class="row">
+                            <!-- Ubicación -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ubicacion">Ubicación</label>
+                                    <input type="text" name="ubicacion" id="ubicacion"
+                                           class="form-control @error('ubicacion') is-invalid @enderror"
+                                           value="{{ old('ubicacion', $producto->ubicacion) }}"
+                                           placeholder="Ej. Almacén B, Estante 3">
+                                    @error('ubicacion')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Resguardante -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="resguardante">Resguardante</label>
+                                    <input type="text" name="resguardante" id="resguardante"
+                                           class="form-control @error('resguardante') is-invalid @enderror"
+                                           value="{{ old('resguardante', $producto->resguardante) }}"
+                                           placeholder="Nombre completo de quien lo resguarda">
+                                    @error('resguardante')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Observaciones -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="observaciones">Observaciones</label>
+                                    <textarea name="observaciones" id="observaciones"
+                                              class="form-control @error('observaciones') is-invalid @enderror"
+                                              rows="3"
+                                              placeholder="Observaciones importantes, programa al que pertenece, etc.">{{ old('observaciones', $producto->observaciones) }}</textarea>
+                                    @error('observaciones')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
 
                         <hr>
 

@@ -41,6 +41,8 @@ class Producto extends Model
         'marca',
         'modelo',
         'serie',
+        'observaciones',
+        'resguardante',
     ];
 
     public function getActivitylogOptions(): LogOptions

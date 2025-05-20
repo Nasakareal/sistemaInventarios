@@ -38,11 +38,11 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="ur">UR:</label>
-                                <select class="form-control" name="ur">
+                                <label for="resguardante">resguardante</label>
+                                <select class="form-control" name="resguardante">
                                     <option value="">Todos</option>
-                                    @foreach($unidades as $ur)
-                                        <option value="{{ $ur }}" {{ request('ur') == $ur ? 'selected' : '' }}>{{ $ur }}</option>
+                                    @foreach($unidades as $resguardante)
+                                        <option value="{{ $resguardante }}" {{ request('resguardante') == $resguardante ? 'selected' : '' }}>{{ $resguardante }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -74,8 +74,8 @@
                                 <th><center>Nombre del Producto</center></th>
                                 <th><center>Categoría</center></th>
                                 <th><center>Área</center></th>
-                                <th><center>UR</center></th>
-                                <th><center>Partida</center></th>
+                                <th><center>Resguardante</center></th>
+                                <th><center>Observaciones</center></th>
                                 <th><center>Precio</center></th>
                                 <th><center>Acciones</center></th>
                             </tr>
@@ -87,8 +87,8 @@
                                     <td>{{ $producto->nombre }}</td>
                                     <td>{{ $producto->categoria->nombre ?? 'Sin categoría' }}</td>
                                     <td>{{ $producto->area ?? 'No especificado' }}</td>
-                                    <td>{{ $producto->ur ?? 'No especificado' }}</td>
-                                    <td>{{ $producto->partida ?? 'No especificado' }}</td>
+                                    <td>{{ $producto->resguardante ?? 'No especificado' }}</td>
+                                    <td>{{ $producto->obersvaciones ?? 'No especificado' }}</td>
                                     <td>${{ number_format($producto->precio_compra, 2) }}</td>
                                     <td style="text-align: center">
                                         <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-info btn-sm">
@@ -139,16 +139,16 @@
 
     <script>
         $(document).ready(function () {
-            $('#productos').DataTable({ // Cambiar el selector '#productos' al id de la tabla.
+            $('#productos').DataTable({
                 "dom": '<"row"<"col-sm-6"l><"col-sm-6"Bf>>rtip',
                 "pageLength": 10,
                 "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
                 "language": {
                     "emptyTable": "No hay información disponible",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ productos",  // Mensaje de información.
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ productos",
                     "infoEmpty": "Mostrando 0 a 0 de 0 productos",
-                    "infoFiltered": "(filtrado de _MAX_ productos en total)",  // Mensaje de información.
-                    "lengthMenu": "Mostrar _MENU_ productos",  // Mensaje de información.
+                    "infoFiltered": "(filtrado de _MAX_ productos en total)",
+                    "lengthMenu": "Mostrar _MENU_ productos",
                     "loadingRecords": "Cargando...",
                     "processing": "Procesando...",
                     "search": "Buscar:",

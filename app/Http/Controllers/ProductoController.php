@@ -21,11 +21,11 @@ class ProductoController extends Controller
         if ($request->filled('area')) {
             $query->where('area', $request->area);
         }
-        if ($request->filled('ur')) {
-            $query->where('ur', $request->ur);
+        if ($request->filled('resguardante')) {
+            $query->where('resguardante', $request->resguardante);
         }
-        if ($request->filled('partida')) {
-            $query->where('partida', $request->partida);
+        if ($request->filled('observaciones')) {
+            $query->where('observaciones', $request->observaciones);
         }
         if ($request->filled('fecha_registro')) {
             $query->whereDate('created_at', $request->fecha_registro);
@@ -33,7 +33,7 @@ class ProductoController extends Controller
 
         $productos  = $query->get();
         $areas      = Producto::select('area')->distinct()->pluck('area');
-        $unidades   = Producto::select('ur')->distinct()->pluck('ur');
+        $unidades   = Producto::select('resguardante')->distinct()->pluck('resguardante');
         $partidas   = Producto::select('partida')->distinct()->pluck('partida');
 
         return view('productos.index', compact('productos', 'areas', 'unidades', 'partidas'));
@@ -68,6 +68,8 @@ class ProductoController extends Controller
             'factura'                          => 'nullable|file|mimes:pdf|max:2048',
             'resguardo'                        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'vida_util'                        => 'nullable|integer|min:1',
+            'observaciones'                    => 'nullable|string',
+            'resguardante'                     => 'nullable|string|max:150',
         ]);
 
         try {
@@ -152,6 +154,8 @@ class ProductoController extends Controller
             'factura'                          => 'nullable|file|mimes:pdf|max:2048',
             'resguardo'                        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'vida_util'                        => 'nullable|integer|min:1',
+            'observaciones'                    => 'nullable|string',
+            'resguardante'                     => 'nullable|string|max:150',
         ]);
 
         try {

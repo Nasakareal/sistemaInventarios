@@ -180,6 +180,34 @@
                         </div>
                     </div>
 
+                    <!-- Ubicación, Resguardante, Observaciones -->
+                    <div class="row">
+                        <!-- Ubicación -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Ubicación:</label>
+                                <p class="form-control-plaintext">{{ $producto->ubicacion ?? 'Sin especificar' }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Resguardante -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Resguardante:</label>
+                                <p class="form-control-plaintext">{{ $producto->resguardante ?? 'Sin especificar' }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Observaciones -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Observaciones:</label>
+                                <p class="form-control-plaintext">{{ $producto->observaciones ?? 'Sin observaciones' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <hr>
                     <div class="row">
                         {{-- Botón de regreso --}}
