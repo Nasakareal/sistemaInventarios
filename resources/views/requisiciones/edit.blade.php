@@ -9,10 +9,6 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <!-- Notas:
-                 1) Se cambió card-primary  -> card-success
-                 2) Se cambió btn-primary   -> btn-success
-            -->
             <div class="card card-outline card-success">
                 <div class="card-header">
                     <h3 class="card-title">Actualice los Datos</h3>
@@ -40,6 +36,18 @@
                             @error('cuenta_bancaria_id')
                                 <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                             @enderror
+
+                            @php
+                                $cuentaSeleccionada = $cuentas->firstWhere('id', old('cuenta_bancaria_id', $requisicion->cuenta_bancaria_id));
+                            @endphp
+
+                            @if($cuentaSeleccionada)
+                                <div class="alert alert-info mt-2">
+                                    Saldo actual en <strong>{{ $cuentaSeleccionada->nombre }}</strong>: 
+                                    <strong>${{ number_format($cuentaSeleccionada->saldo, 2) }}</strong>
+                                </div>
+                            @endif
+
                         </div>
 
                         <!-- Número Req. / UR / Depto / Capítulo -->
@@ -381,4 +389,14 @@
             });
         @endif
     </script>
+
+    <script>
+        document.querySelector('select[name="cuenta_bancaria_id"]').addEventListener('change', function () {
+            const cuentaId = this.value;
+            const url = new URL(window.location.href);
+            url.searchParams.set('cuenta_bancaria_id', cuentaId);
+            window.location.href = url;
+        });
+    </script>
+
 @stop

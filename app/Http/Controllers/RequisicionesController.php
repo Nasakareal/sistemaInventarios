@@ -67,22 +67,48 @@ class RequisicionesController extends Controller
             'mes'                 => 'nullable|string|max:20',
             'status_pago'         => 'required|string|in:Pendiente,Pagado',
             'cuenta_bancaria_id'  => 'required|integer',
-            'fecha_oficio_pago'  => 'required|date',
+            'fecha_oficio_pago'   => 'required|date',
         ]);
 
-        // Validación de cuenta en su conexión
-        if (! CuentaBancaria::where('id', $request->cuenta_bancaria_id)->exists()) {
+        if (!CuentaBancaria::where('id', $request->cuenta_bancaria_id)->exists()) {
             return back()
                 ->withErrors(['cuenta_bancaria_id' => 'La cuenta bancaria seleccionada no existe.'])
                 ->withInput();
         }
 
         $cuentaBancaria = CuentaBancaria::findOrFail($request->cuenta_bancaria_id);
-
         $data = $request->all();
-        // oficio_pago ya viene en $request
-        $data['banco']       = $cuentaBancaria->nombre;
+        $data['banco'] = $cuentaBancaria->nombre;
         $data['status_pago'] = $request->input('status_pago', 'Pendiente');
+
+        // === LÓGICA DE DESCUENTO SI DESDE EL INICIO LLEGA COMO "Pagado" ===
+        if ($data['status_pago'] === 'Pagado') {
+            $cuenta = DB::connection('contable')
+                ->table('cuenta_bancarias')
+                ->where('id', $data['cuenta_bancaria_id'])
+                ->lockForUpdate()
+                ->first();
+
+            if (!$cuenta) {
+                return back()->withErrors([
+                    'cuenta_bancaria_id' => 'No se encontró la cuenta bancaria en el sistema contable.'
+                ]);
+            }
+
+            if ((float)$cuenta->saldo < (float)$data['monto']) {
+                return back()->withErrors([
+                    'monto' => 'Saldo insuficiente en la cuenta bancaria del sistema contable. No se puede marcar como pagado.'
+                ]);
+            }
+
+            DB::connection('contable')
+                ->table('cuenta_bancarias')
+                ->where('id', $data['cuenta_bancaria_id'])
+                ->update([
+                    'saldo' => DB::raw("saldo - {$data['monto']}")
+                ]);
+        }
+        // === FIN DESCUENTO ===
 
         Requisiciones::create($data);
 
@@ -90,6 +116,7 @@ class RequisicionesController extends Controller
             ->route('requisiciones.index')
             ->with('success', 'Requisición creada exitosamente con número de oficio ' . $data['oficio_pago']);
     }
+
 
     public function show(Requisiciones $requisicion)
     {
@@ -130,7 +157,7 @@ class RequisicionesController extends Controller
             'mes'                 => 'nullable|string|max:20',
             'status_pago'         => 'required|string|in:Pendiente,Pagado',
             'cuenta_bancaria_id'  => 'required|integer',
-            'fecha_oficio_pago'  => 'required|date',
+            'fecha_oficio_pago'   => 'required|date',
         ]);
 
         if (! CuentaBancaria::where('id', $request->cuenta_bancaria_id)->exists()) {
@@ -140,12 +167,44 @@ class RequisicionesController extends Controller
         }
 
         $data = $request->all();
+
+        // === LÓGICA DE DESCUENTO SOLO SI CAMBIA A "Pagado" ===
+        if ($data['status_pago'] === 'Pagado' && $requisicion->status_pago !== 'Pagado') {
+            $cuenta = DB::connection('contable')
+                ->table('cuenta_bancarias')
+                ->where('id', $requisicion->cuenta_bancaria_id)
+                ->lockForUpdate()
+                ->first();
+
+            if (! $cuenta) {
+                return back()->withErrors([
+                    'cuenta_bancaria_id' => 'No se encontró la cuenta bancaria en el sistema contable.'
+                ]);
+            }
+
+            if ((float)$cuenta->saldo < (float)$requisicion->monto) {
+                return back()->withErrors([
+                    'monto' => 'Saldo insuficiente en la cuenta bancaria del sistema contable. No se puede marcar como pagado.'
+                ]);
+            }
+
+            DB::connection('contable')
+                ->table('cuenta_bancarias')
+                ->where('id', $requisicion->cuenta_bancaria_id)
+                ->update([
+                    'saldo' => DB::raw("saldo - {$requisicion->monto}")
+                ]);
+        }
+        // === FIN DESCUENTO ===
+
         $requisicion->update($data);
 
         return redirect()
             ->route('requisiciones.index')
             ->with('success', 'Requisición actualizada exitosamente.');
     }
+
+
 
     public function destroy(Requisiciones $requisicion)
     {

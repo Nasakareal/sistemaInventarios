@@ -28,10 +28,6 @@
                     <form action="{{ route('requisiciones.store') }}" method="POST">
                         @csrf
 
-                        {{-- 
-                            Si SÍ tenemos $cuentaBancaria, ponemos los <input hidden>.
-                            Si NO tenemos $cuentaBancaria (entraron sin param), mostramos un <select> 
-                        --}}
                         @if($cuentaBancaria)
                             <input type="hidden" name="cuenta_bancaria_id" value="{{ $cuentaBancaria->id }}">
                             <input type="hidden" name="banco" value="{{ $cuentaBancaria->nombre }}">
@@ -439,35 +435,35 @@
     </script>
 
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const capituloSelect = document.getElementById('capitulo');
-    const partidaSelect = document.getElementById('partida');
+    document.addEventListener('DOMContentLoaded', function () {
+        const capituloSelect = document.getElementById('capitulo');
+        const partidaSelect = document.getElementById('partida');
 
-    capituloSelect.addEventListener('change', function () {
-        const capitulo = this.value;
-        if (!capitulo) {
-            partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
-            return;
-        }
-        const url = `{{ url('/requisiciones/partidas-por-capitulo') }}/${capitulo}`;
-        fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('No se pudo cargar partidas');
-                }
-                return response.json();
-            })
-            .then(data => {
+        capituloSelect.addEventListener('change', function () {
+            const capitulo = this.value;
+            if (!capitulo) {
                 partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
-                data.forEach(partida => {
-                    partidaSelect.innerHTML += `<option value="${partida.clave}">${partida.clave} - ${partida.descripcion}</option>`;
+                return;
+            }
+            const url = `{{ url('/requisiciones/partidas-por-capitulo') }}/${capitulo}`;
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('No se pudo cargar partidas');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
+                    data.forEach(partida => {
+                        partidaSelect.innerHTML += `<option value="${partida.clave}">${partida.clave} - ${partida.descripcion}</option>`;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar partidas:', error);
+                    alert('Error al cargar partidas. Revisa la consola.');
                 });
-            })
-            .catch(error => {
-                console.error('Error al cargar partidas:', error);
-                alert('Error al cargar partidas. Revisa la consola.');
-            });
+        });
     });
-});
-</script>
+    </script>
 @stop

@@ -48,88 +48,91 @@
             </div>
 
             <!-- Tabla de Requisiciones -->
-            <table id="requisiciones_table" class="table table-striped table-bordered table-hover table-sm">
-                <thead>
-                    <tr>
-                        <!-- Columnas a exportar (se pueden ocultar las que no se quieren ver en pantalla) -->
-                        <th class="d-none">ID</th>
-                        <th>Fecha Requisición</th>
-                        <th>Número de Requisición</th>
-                        <th class="d-none">UR</th>
-                        <th class="d-none">Departamento</th>
-                        <th class="d-none">Partida</th>
-                        <th class="d-none">Producto/Material</th>
-                        <th class="d-none">Justificación</th>
-                        <th class="d-none">Oficio Pago</th>
-                        <th class="d-none">Número Factura</th>
-                        <th class="d-none">Proveedor</th>
-                        <th>Monto</th>
-                        <th>Status Requisición</th>
-                        <th>Turnado A</th>
-                        <th class="d-none">Fecha Entrega RF</th>
-                        <th class="d-none">Fecha Pago</th>
-                        <th>Banco</th>
-                        <th>Pago</th>
-                        <th>Status Pago</th>
-                        <th>Observaciones</th>
-                        <th>Referencia</th>
-                        <th>Mes</th>
-                        <th>Cuenta Bancaria ID</th>
-                        <th class="d-none">Created At</th>
-                        <th class="d-none">Updated At</th>
-                        <!-- Columna de Acciones: no se exporta -->
-                        <th class="noExport">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($requisiciones as $req)
+            <div class="table-responsive">
+                <table id="requisiciones_table" class="table table-striped table-bordered table-hover table-sm">
+
+                    <thead>
                         <tr>
-                            <td class="d-none">{{ $req->id }}</td>
-                            <td>{{ $req->fecha_requisicion ? \Carbon\Carbon::parse($req->fecha_requisicion)->format('d-m-Y') : '' }}</td>
-                            <td>{{ $req->numero_requisicion }}</td>
-                            <td class="d-none">{{ $req->ur }}</td>
-                            <td class="d-none">{{ $req->departamento }}</td>
-                            <td class="d-none">{{ $req->partida }}</td>
-                            <td class="d-none">{{ $req->producto_material }}</td>
-                            <td class="d-none">{{ $req->justificacion }}</td>
-                            <td class="d-none">{{ $req->oficio_pago }}</td>
-                            <td class="d-none">{{ $req->numero_factura }}</td>
-                            <td class="d-none">{{ $req->proveedor }}</td>
-                            <td>${{ number_format($req->monto, 2) }}</td>
-                            <td>{{ $req->status_requisicion }}</td>
-                            <td>{{ $req->turnado_a }}</td>
-                            <td class="d-none">{{ $req->fecha_entrega_rf ? \Carbon\Carbon::parse($req->fecha_entrega_rf)->format('d-m-Y') : '' }}</td>
-                            <td class="d-none">{{ $req->fecha_pago ? \Carbon\Carbon::parse($req->fecha_pago)->format('d-m-Y') : '' }}</td>
-                            <td>{{ $req->banco }}</td>
-                            <td>{{ $req->pago }}</td>
-                            <td>{{ $req->status_pago }}</td>
-                            <td>{{ $req->observaciones }}</td>
-                            <td>{{ $req->referencia }}</td>
-                            <td>{{ $req->mes }}</td>
-                            <td>{{ $req->cuenta_bancaria_id }}</td>
-                            <td class="d-none">{{ $req->created_at }}</td>
-                            <td class="d-none">{{ $req->updated_at }}</td>
-                            <td class="noExport">
-                                <div class="btn-group" role="group">
-                                    <a href="{{ route('requisiciones.show', $req->id) }}" class="btn btn-info btn-sm">
-                                        <i class="fa-regular fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('requisiciones.edit', $req->id) }}" class="btn btn-success btn-sm">
-                                        <i class="fa-regular fa-pen-to-square"></i>
-                                    </a>
-                                    <form action="{{ route('requisiciones.destroy', $req->id) }}" method="POST" style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm delete-btn">
-                                            <i class="fa-regular fa-trash-can"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
+                            <!-- Columnas a exportar (se pueden ocultar las que no se quieren ver en pantalla) -->
+                            <th class="d-none">ID</th>
+                            <th>Fecha Requisición</th>
+                            <th>Número de Requisición</th>
+                            <th class="d-none">UR</th>
+                            <th class="d-none">Departamento</th>
+                            <th class="d-none">Partida</th>
+                            <th class="d-none">Producto/Material</th>
+                            <th class="d-none">Justificación</th>
+                            <th class="d-none">Oficio Pago</th>
+                            <th class="d-none">Número Factura</th>
+                            <th class="d-none">Proveedor</th>
+                            <th>Monto</th>
+                            <th>Status Requisición</th>
+                            <th>Turnado A</th>
+                            <th class="d-none">Fecha Entrega RF</th>
+                            <th class="d-none">Fecha Pago</th>
+                            <th>Banco</th>
+                            <th>Pago</th>
+                            <th>Status Pago</th>
+                            <th>Observaciones</th>
+                            <th>Referencia</th>
+                            <th>Mes</th>
+                            <th>Cuenta Bancaria ID</th>
+                            <th class="d-none">Created At</th>
+                            <th class="d-none">Updated At</th>
+                            <!-- Columna de Acciones: no se exporta -->
+                            <th class="noExport">Acciones</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($requisiciones as $req)
+                            <tr>
+                                <td class="d-none">{{ $req->id }}</td>
+                                <td>{{ $req->fecha_requisicion ? \Carbon\Carbon::parse($req->fecha_requisicion)->format('d-m-Y') : '' }}</td>
+                                <td>{{ $req->numero_requisicion }}</td>
+                                <td class="d-none">{{ $req->ur }}</td>
+                                <td class="d-none">{{ $req->departamento }}</td>
+                                <td class="d-none">{{ $req->partida }}</td>
+                                <td class="d-none">{{ $req->producto_material }}</td>
+                                <td class="d-none">{{ $req->justificacion }}</td>
+                                <td class="d-none">{{ $req->oficio_pago }}</td>
+                                <td class="d-none">{{ $req->numero_factura }}</td>
+                                <td class="d-none">{{ $req->proveedor }}</td>
+                                <td>${{ number_format($req->monto, 2) }}</td>
+                                <td>{{ $req->status_requisicion }}</td>
+                                <td>{{ $req->turnado_a }}</td>
+                                <td class="d-none">{{ $req->fecha_entrega_rf ? \Carbon\Carbon::parse($req->fecha_entrega_rf)->format('d-m-Y') : '' }}</td>
+                                <td class="d-none">{{ $req->fecha_pago ? \Carbon\Carbon::parse($req->fecha_pago)->format('d-m-Y') : '' }}</td>
+                                <td>{{ $req->banco }}</td>
+                                <td>{{ $req->pago }}</td>
+                                <td>{{ $req->status_pago }}</td>
+                                <td>{{ $req->observaciones }}</td>
+                                <td>{{ $req->referencia }}</td>
+                                <td>{{ $req->mes }}</td>
+                                <td>{{ $req->cuenta_bancaria_id }}</td>
+                                <td class="d-none">{{ $req->created_at }}</td>
+                                <td class="d-none">{{ $req->updated_at }}</td>
+                                <td class="noExport">
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ route('requisiciones.show', $req->id) }}" class="btn btn-info btn-sm">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('requisiciones.edit', $req->id) }}" class="btn btn-success btn-sm">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </a>
+                                        <form action="{{ route('requisiciones.destroy', $req->id) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-danger btn-sm delete-btn">
+                                                <i class="fa-regular fa-trash-can"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @stop
