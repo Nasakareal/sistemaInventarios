@@ -78,6 +78,12 @@ class RolesAndPermissionsSeeder extends Seeder
             'crear actividades',
             'editar actividades',
             'eliminar actividades',
+
+            // Alertas
+            'ver alertas',
+            'crear alertas',
+            'editar alertas',
+            'eliminar alertas',
         ];
 
         // Crear permisos si no existen

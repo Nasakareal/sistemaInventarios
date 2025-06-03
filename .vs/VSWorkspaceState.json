@@ -1,10 +1,17 @@
 {
   "ExpandedNodes": [
     "",
+    "\\app",
+    "\\app\\Models",
     "\\resources",
     "\\resources\\views",
-    "\\resources\\views\\requisiciones"
+    "\\resources\\views\\admin",
+    "\\resources\\views\\admin\\settings",
+    "\\resources\\views\\vendor",
+    "\\resources\\views\\vendor\\adminlte",
+    "\\resources\\views\\vendor\\adminlte\\partials",
+    "\\resources\\views\\vendor\\adminlte\\partials\\navbar"
   ],
-  "SelectedNode": "\\resources\\views\\requisiciones\\index.blade.php",
+  "SelectedNode": "\\resources\\views\\alertas\\index.blade.php",
   "PreviewInSolutionExplorer": false
 }

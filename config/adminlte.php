@@ -300,13 +300,41 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
-        [
+        
+        /*[
             'type' => 'navbar-search',
             'text' => 'search',
             'topnav_right' => true,
         ],
         [
+            'type'          => 'navbar-notification',
+            'id'            => 'alerts-menu',
+            'icon'          => 'fas fa-bell',
+            'icon_color'    => 'dark',
+            'topnav_right'  => true,
+
+            // Cantidad que se muestra en rojo
+            'badge_label' => function () {
+                return \DB::table('alerts')->where('leido', 0)->count();
+            },
+
+            'badge_color'   => 'danger',
+
+            // Si quieres que al hacer clic abra la lista “dropdown”
+            'dropdown_mode' => 'navbar',
+            'url'           => '/alerta',
+
+            // Pie del dropdown
+            'items' => [
+                [
+                    'type' => 'navbar-notification-footer',
+                    'text' => 'Ver todas las alertas',
+                    'url'  => '/alerta',
+                    'icon' => 'fas fa-list',
+                ],
+            ],
+        ], */
+            [
             'type' => 'link',
             'text' => 'Scan',
             'url' => '/scan',

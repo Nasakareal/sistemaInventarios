@@ -21,6 +21,39 @@
         {{-- Custom right links --}}
         @yield('content_top_nav_right')
 
+            {{-- Alerta personalizada 🔔 --}}
+            @php
+                $alertas = \DB::table('alerts')->where('leido', 0)->get();
+            @endphp
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fas fa-bell"></i>
+                    @if($alertas->count() > 0)
+                        <span class="badge badge-danger navbar-badge">{{ $alertas->count() }}</span>
+                    @endif
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">{{ $alertas->count() }} Alertas sin leer</span>
+                    <div class="dropdown-divider"></div>
+
+                    @foreach($alertas as $alerta)
+                        <a href="{{ route('alerta.show', $alerta->id) }}" class="dropdown-item">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            {{ Str::limit($alerta->mensaje, 40) }}
+                            <span class="float-right text-muted text-sm">
+                                {{ \Carbon\Carbon::parse($alerta->created_at)->diffForHumans() }}
+                            </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                    @endforeach
+
+                    <a href="{{ route('alerta.index') }}" class="dropdown-item dropdown-footer">Ver todas las alertas</a>
+                </div>
+            </li>
+
+
         {{-- Configured right links --}}
         @each('adminlte::partials.navbar.menu-item', $adminlte->menu('navbar-right'), 'item')
 

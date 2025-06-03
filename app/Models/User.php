@@ -33,11 +33,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Configuración para registrar la actividad.
-     *
-     * @return \Spatie\Activitylog\LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -46,14 +41,13 @@ class User extends Authenticatable
             ->logOnlyDirty();
     }
 
-    /**
-     * Personaliza la descripción del evento.
-     *
-     * @param string $eventName
-     * @return string
-     */
     public function getDescriptionForEvent(string $eventName): string
     {
         return "El usuario ha sido {$eventName}";
+    }
+
+    public function alerts()
+    {
+        return DB::table('alerts');
     }
 }

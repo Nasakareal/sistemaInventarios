@@ -24,6 +24,16 @@ Route::get('/scan', function () {
     return view('scan.scan_qr');
 })->middleware('auth')->name('scan.qr');
 
+// Rutas para Alertas
+Route::prefix('alerta')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\AlertaController::class, 'index'])->name('alerta.index');
+    Route::get('/{alerta}', [App\Http\Controllers\AlertaController::class, 'show'])->middleware('can:ver alertas')->name('alerta.show');
+    Route::get('/{alerta}/edit', [App\Http\Controllers\AlertaController::class, 'edit'])->middleware('can:editar alertas')->name('alerta.edit');
+    Route::put('/{alerta}', [App\Http\Controllers\AlertaController::class, 'update'])->middleware('can:editar alertas')->name('alerta.update');
+    Route::delete('/{alerta}', [App\Http\Controllers\AlertaController::class, 'destroy'])->middleware('can:eliminar alertas')->name('alerta.destroy');
+});
+
+
 // Rutas para Almacen
 Route::prefix('almacen')->middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\AlmacenController::class, 'index'])->name('almacen.index');
