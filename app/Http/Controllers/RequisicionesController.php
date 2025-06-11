@@ -135,6 +135,11 @@ class RequisicionesController extends Controller
 
     public function update(Request $request, Requisiciones $requisicion)
     {
+
+        if ($requisicion->bloqueada) {
+            return back()->with('error', 'Esta requisición está bloqueada y no puede modificarse.');
+        }
+
         $request->validate([
             'fecha_requisicion'   => 'required|date',
             'numero_requisicion'  => 'required|string|max:255',

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AlertController;
+use App\Http\Controllers\Api\RequisicionSyncController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Endpoint para que sistemaContable envíe alertas
 Route::middleware('auth:sanctum')->post('/alerts', [AlertController::class, 'store']);
+
+Route::post('/bloquear-requisicion', [RequisicionSyncController::class, 'bloquear']);

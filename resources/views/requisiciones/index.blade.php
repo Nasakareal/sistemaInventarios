@@ -112,22 +112,26 @@
                                 <td class="d-none">{{ $req->created_at }}</td>
                                 <td class="d-none">{{ $req->updated_at }}</td>
                                 <td class="noExport">
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ route('requisiciones.show', $req->id) }}" class="btn btn-info btn-sm">
-                                            <i class="fa-regular fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('requisiciones.edit', $req->id) }}" class="btn btn-success btn-sm">
-                                            <i class="fa-regular fa-pen-to-square"></i>
-                                        </a>
-                                        <form action="{{ route('requisiciones.destroy', $req->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-danger btn-sm delete-btn">
-                                                <i class="fa-regular fa-trash-can"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+    <div class="btn-group" role="group">
+        <a href="{{ route('requisiciones.show', $req->id) }}" class="btn btn-info btn-sm">
+            <i class="fa-regular fa-eye"></i>
+        </a>
+
+        @if(!$req->bloqueada)
+            <a href="{{ route('requisiciones.edit', $req->id) }}" class="btn btn-success btn-sm">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </a>
+            <form action="{{ route('requisiciones.destroy', $req->id) }}" method="POST" style="display:inline-block;">
+                @csrf
+                @method('DELETE')
+                <button type="button" class="btn btn-danger btn-sm delete-btn">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            </form>
+        @endif
+    </div>
+</td>
+
                             </tr>
                         @endforeach
                     </tbody>
