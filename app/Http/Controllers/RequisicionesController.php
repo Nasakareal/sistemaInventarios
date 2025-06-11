@@ -51,6 +51,7 @@ class RequisicionesController extends Controller
             'ur'                  => 'required|string|max:255',
             'departamento'        => 'required|string|max:255',
             'partida'             => 'required|string|max:255',
+            'partida2'            => 'nullable|string|max:255',
             'producto_material'   => 'required|string|max:255',
             'justificacion'       => 'nullable|string',
             'oficio_pago'         => 'required|string|max:255',
@@ -140,6 +141,7 @@ class RequisicionesController extends Controller
             'ur'                  => 'required|string|max:255',
             'departamento'        => 'required|string|max:255',
             'partida'             => 'required|string|max:255',
+            'partida2'            => 'nullable|string|max:255',
             'producto_material'   => 'required|string|max:255',
             'justificacion'       => 'nullable|string',
             'oficio_pago'         => 'nullable|string|max:255',
@@ -203,8 +205,6 @@ class RequisicionesController extends Controller
             ->route('requisiciones.index')
             ->with('success', 'Requisición actualizada exitosamente.');
     }
-
-
 
     public function destroy(Requisiciones $requisicion)
     {

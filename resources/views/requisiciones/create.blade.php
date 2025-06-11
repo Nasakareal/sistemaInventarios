@@ -113,9 +113,9 @@
                             </div>
                         </div>
 
-                        <!-- Select para Partida, Oficio Pago -->
-                         <div class="row">
-                         <!-- Select para Partida -->
+                        <!-- Select para Partida, Partida2, Oficio Pago -->
+                        <div class="row">
+                            <!-- Select para Partida -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="partida">Partida</label>
@@ -124,14 +124,25 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- Select para oficio_pago -->
+
+                            <!-- Select para Partida2 -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="partida2">Segunda Partida (opcional)</label>
+                                    <select name="partida2" id="partida2" class="form-control">
+                                        <option value="">Seleccione una segunda partida</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Campo para Oficio Pago -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="oficio_pago">Oficio Pago</label>
                                     <input type="text" name="oficio_pago" id="oficio_pago"
                                            class="form-control @error('oficio_pago') is-invalid @enderror"
                                            value="{{ old('oficio_pago') }}"
-                                           placeholder="Ingrese la el Oficio de Pago" required>
+                                           placeholder="Ingrese el Oficio de Pago" required>
                                     @error('oficio_pago')
                                         <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                     @enderror
@@ -150,7 +161,8 @@
                                     @enderror
                                 </div>
                             </div>
-                         </div>
+                        </div>
+
 
                         <!-- Fecha Entrega RF, Fecha Pago, Fecha Requisición, Mes -->
                         <div class="row">
@@ -434,36 +446,44 @@
         @endif
     </script>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const capituloSelect = document.getElementById('capitulo');
-        const partidaSelect = document.getElementById('partida');
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const capituloSelect = document.getElementById('capitulo');
+    const partidaSelect = document.getElementById('partida');
+    const partida2Select = document.getElementById('partida2');
 
-        capituloSelect.addEventListener('change', function () {
-            const capitulo = this.value;
-            if (!capitulo) {
+    capituloSelect.addEventListener('change', function () {
+        const capitulo = this.value;
+        if (!capitulo) {
+            partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
+            partida2Select.innerHTML = '<option value="">Seleccione una segunda partida</option>';
+            return;
+        }
+
+        const url = `{{ url('/requisiciones/partidas-por-capitulo') }}/${capitulo}`;
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar partidas');
+                }
+                return response.json();
+            })
+            .then(data => {
                 partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
-                return;
-            }
-            const url = `{{ url('/requisiciones/partidas-por-capitulo') }}/${capitulo}`;
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('No se pudo cargar partidas');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
-                    data.forEach(partida => {
-                        partidaSelect.innerHTML += `<option value="${partida.clave}">${partida.clave} - ${partida.descripcion}</option>`;
-                    });
-                })
-                .catch(error => {
-                    console.error('Error al cargar partidas:', error);
-                    alert('Error al cargar partidas. Revisa la consola.');
+                partida2Select.innerHTML = '<option value="">Seleccione una segunda partida</option>';
+
+                data.forEach(partida => {
+                    const option = `<option value="${partida.clave}">${partida.clave} - ${partida.descripcion}</option>`;
+                    partidaSelect.innerHTML += option;
+                    partida2Select.innerHTML += option;
                 });
-        });
+            })
+            .catch(error => {
+                console.error('Error al cargar partidas:', error);
+                alert('Error al cargar partidas. Revisa la consola.');
+            });
     });
-    </script>
+});
+</script>
+
 @stop

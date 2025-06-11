@@ -104,8 +104,9 @@
                             </div>
                         </div>
 
-                        <!-- Partida / Oficio pago -->
+                        <!-- Partida / Partida2 / Oficio Pago -->
                         <div class="row">
+                            <!-- Partida -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="partida">Partida</label>
@@ -121,6 +122,27 @@
                                 </div>
                             </div>
 
+                            <!-- Partida2 -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="partida2">Segunda Partida (opcional)</label>
+                                    <select name="partida2" id="partida2"
+                                            class="form-control @error('partida2') is-invalid @enderror">
+                                        @if ($requisicion->partida2)
+                                            <option value="{{ $requisicion->partida2 }}" selected>
+                                                {{ $requisicion->partida2 }}
+                                            </option>
+                                        @else
+                                            <option value="">Seleccione una segunda partida</option>
+                                        @endif
+                                    </select>
+                                    @error('partida2')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Oficio Pago -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="oficio_pago">Oficio Pago</label>
@@ -132,6 +154,8 @@
                                     @enderror
                                 </div>
                             </div>
+                        </div>
+
 
                             <!-- Fecha oficio Pago -->
                             <div class="col-md-3">
@@ -398,5 +422,65 @@
             window.location.href = url;
         });
     </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const capituloSelect = document.getElementById('capitulo');
+    const partidaSelect = document.getElementById('partida');
+    const partida2Select = document.getElementById('partida2');
+
+    // Obtenemos los valores actuales desde el servidor (si existen)
+    const partidaActual = '{{ $requisicion->partida }}';
+    const partida2Actual = '{{ $requisicion->partida2 }}';
+
+    capituloSelect.addEventListener('change', function () {
+        const capitulo = this.value;
+        if (!capitulo) {
+            partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
+            partida2Select.innerHTML = '<option value="">Seleccione una segunda partida</option>';
+            return;
+        }
+
+        const url = `{{ url('/requisiciones/partidas-por-capitulo') }}/${capitulo}`;
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar partidas');
+                }
+                return response.json();
+            })
+            .then(data => {
+                partidaSelect.innerHTML = '<option value="">Seleccione una partida</option>';
+                partida2Select.innerHTML = '<option value="">Seleccione una segunda partida</option>';
+
+                data.forEach(partida => {
+                    const clave = partida.clave;
+                    const texto = `${partida.clave} - ${partida.descripcion}`;
+
+                    const option1 = document.createElement('option');
+                    option1.value = clave;
+                    option1.textContent = texto;
+                    if (clave === partidaActual) option1.selected = true;
+                    partidaSelect.appendChild(option1);
+
+                    const option2 = document.createElement('option');
+                    option2.value = clave;
+                    option2.textContent = texto;
+                    if (clave === partida2Actual) option2.selected = true;
+                    partida2Select.appendChild(option2);
+                });
+            })
+            .catch(error => {
+                console.error('Error al cargar partidas:', error);
+                alert('Error al cargar partidas. Revisa la consola.');
+            });
+    });
+
+    if (capituloSelect.value) {
+        capituloSelect.dispatchEvent(new Event('change'));
+    }
+});
+</script>
+
 
 @stop

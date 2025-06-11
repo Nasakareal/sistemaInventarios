@@ -25,6 +25,7 @@ class Requisiciones extends Model
         'ur',
         'departamento',
         'partida',
+        'partida2',
         'producto_material',
         'justificacion',
         'oficio_pago',
@@ -53,7 +54,8 @@ class Requisiciones extends Model
                 'numero_requisicion', 
                 'ur', 
                 'departamento', 
-                'partida', 
+                'partida',
+                'partida2',
                 'producto_material',
                 'justificacion', 
                 'oficio_pago', 
@@ -79,7 +81,7 @@ class Requisiciones extends Model
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "La requisicion ha sido {$eventName}";
+        return "La requisición ha sido {$eventName}";
     }
 
     protected $casts = [
