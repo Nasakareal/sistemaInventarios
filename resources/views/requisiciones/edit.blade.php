@@ -163,12 +163,13 @@
                                     <label for="fecha_oficio_pago">Fecha de Oficio de Pago</label>
                                     <input type="date" name="fecha_oficio_pago" id="fecha_oficio_pago"
                                            class="form-control @error('fecha_oficio_pago') is-invalid @enderror"
-                                           value="{{ old('fecha_oficio_pago') }}">
+                                           value="{{ old('fecha_oficio_pago', $requisicion->fecha_oficio_pago ? \Carbon\Carbon::parse($requisicion->fecha_oficio_pago)->format('Y-m-d') : '') }}">
                                     @error('fecha_oficio_pago')
                                         <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
                             </div>
+
                         </div>
 
                         <!-- Fechas / Mes -->
@@ -414,14 +415,44 @@
         @endif
     </script>
 
-    <script>
-        document.querySelector('select[name="cuenta_bancaria_id"]').addEventListener('change', function () {
-            const cuentaId = this.value;
-            const url = new URL(window.location.href);
-            url.searchParams.set('cuenta_bancaria_id', cuentaId);
-            window.location.href = url;
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const cuentaSelect = document.querySelector('select[name="cuenta_bancaria_id"]');
+
+    cuentaSelect.addEventListener('change', function () {
+        const cuentaId = this.value;
+
+        fetch(`{{ url('cuentas') }}/${cuentaId}/saldo`, {
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('No se pudo cargar la cuenta');
+            return response.json();
+        })
+        .then(data => {
+            const existingAlert = document.getElementById('alert-saldo');
+            if (existingAlert) existingAlert.remove();
+
+            const newAlert = document.createElement('div');
+            newAlert.className = 'alert alert-info mt-2';
+            newAlert.id = 'alert-saldo';
+            newAlert.innerHTML = `
+                Saldo actual en <strong>${data.nombre}</strong>: 
+                <strong>$${parseFloat(data.saldo).toFixed(2)}</strong>
+            `;
+            cuentaSelect.parentElement.appendChild(newAlert);
+        })
+        .catch(err => {
+            console.error('Error al obtener saldo:', err);
+            alert('Error al cargar el saldo de la cuenta bancaria.');
         });
-    </script>
+    });
+});
+</script>
+
+
+
+
 
     <script>
 document.addEventListener('DOMContentLoaded', function () {

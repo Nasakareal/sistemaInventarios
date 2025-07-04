@@ -176,10 +176,51 @@ class RequisicionesController extends Controller
         $data = $request->all();
 
         // === LÓGICA DE DESCUENTO SOLO SI CAMBIA A "Pagado" ===
-        if ($data['status_pago'] === 'Pagado' && $requisicion->status_pago !== 'Pagado') {
+        if ($requisicion->status_pago === 'Pagado') {
+            // Ya estaba pagado antes
+            if ($data['cuenta_bancaria_id'] != $requisicion->cuenta_bancaria_id) {
+                // Se cambió la cuenta: devolver monto a la anterior y descontar a la nueva
+
+                // Devolver a la cuenta anterior
+                DB::connection('contable')
+                    ->table('cuenta_bancarias')
+                    ->where('id', $requisicion->cuenta_bancaria_id)
+                    ->update([
+                        'saldo' => DB::raw("saldo + {$requisicion->monto}")
+                    ]);
+
+                // Validar que haya saldo suficiente en la nueva
+                $nuevaCuenta = DB::connection('contable')
+                    ->table('cuenta_bancarias')
+                    ->where('id', $data['cuenta_bancaria_id'])
+                    ->lockForUpdate()
+                    ->first();
+
+                if (! $nuevaCuenta) {
+                    return back()->withErrors(['cuenta_bancaria_id' => 'La nueva cuenta bancaria no existe.']);
+                }
+
+                if ((float)$nuevaCuenta->saldo < (float)$requisicion->monto) {
+                    return back()->withErrors([
+                        'monto' => 'Saldo insuficiente en la nueva cuenta bancaria para transferir el pago.'
+                    ]);
+                }
+
+                // Descontar de la nueva cuenta
+                DB::connection('contable')
+                    ->table('cuenta_bancarias')
+                    ->where('id', $data['cuenta_bancaria_id'])
+                    ->update([
+                        'saldo' => DB::raw("saldo - {$requisicion->monto}")
+                    ]);
+            }
+
+        } elseif ($data['status_pago'] === 'Pagado' && $requisicion->status_pago !== 'Pagado') {
+            // Se acaba de marcar como pagado
+
             $cuenta = DB::connection('contable')
                 ->table('cuenta_bancarias')
-                ->where('id', $requisicion->cuenta_bancaria_id)
+                ->where('id', $data['cuenta_bancaria_id'])
                 ->lockForUpdate()
                 ->first();
 
@@ -189,7 +230,7 @@ class RequisicionesController extends Controller
                 ]);
             }
 
-            if ((float)$cuenta->saldo < (float)$requisicion->monto) {
+            if ((float)$cuenta->saldo < (float)$data['monto']) {
                 return back()->withErrors([
                     'monto' => 'Saldo insuficiente en la cuenta bancaria del sistema contable. No se puede marcar como pagado.'
                 ]);
@@ -197,9 +238,9 @@ class RequisicionesController extends Controller
 
             DB::connection('contable')
                 ->table('cuenta_bancarias')
-                ->where('id', $requisicion->cuenta_bancaria_id)
+                ->where('id', $data['cuenta_bancaria_id'])
                 ->update([
-                    'saldo' => DB::raw("saldo - {$requisicion->monto}")
+                    'saldo' => DB::raw("saldo - {$data['monto']}")
                 ]);
         }
         // === FIN DESCUENTO ===

@@ -15,6 +15,18 @@ Auth::routes();
 Route::get('productos/import', [App\Http\Controllers\ProductoController::class, 'showImportForm'])->name('productos.import.form');
 Route::post('productos/import', [App\Http\Controllers\ProductoController::class, 'import'])->name('productos.import');
 
+Route::get('/cuentas/{id}/saldo', function ($id) {
+    \Log::info("Consultando saldo de cuenta: $id");
+
+    $cuenta = \App\Models\CuentaBancaria::findOrFail($id);
+    return response()->json([
+        'nombre' => $cuenta->nombre,
+        'saldo'  => $cuenta->saldo,
+    ]);
+})->middleware('auth');
+
+
+
 
 // Home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -111,7 +123,7 @@ Route::prefix('requisiciones')->middleware('auth')->group(function () {
     Route::put('/{requisicion}', [App\Http\Controllers\RequisicionesController::class, 'update'])->middleware('can:editar requisiciones')->name('requisiciones.update');
     Route::delete('/{requisicion}', [App\Http\Controllers\RequisicionesController::class, 'destroy'])->middleware('can:eliminar requisiciones')->name('requisiciones.destroy');
     Route::get('/partidas-por-capitulo/{capitulo}', [App\Http\Controllers\RequisicionesController::class, 'porCapitulo'])->name('requisiciones.partidasPorCapitulo');
-
+    
 });
 
 
