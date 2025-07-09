@@ -23,8 +23,13 @@
 
             {{-- Alerta personalizada 🔔 --}}
             @php
-                $alertas = \DB::table('alerts')->where('leido', 0)->get();
+                try {
+                    $alertas = \DB::table('alerts')->where('leido', 0)->get();
+                } catch (\Exception $e) {
+                    $alertas = collect(); // colección vacía para que no truene
+                }
             @endphp
+
 
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">

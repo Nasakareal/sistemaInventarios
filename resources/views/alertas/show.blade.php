@@ -32,6 +32,25 @@
                         </div>
                     </div>
 
+                    {{-- Requisición relacionada --}}
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <strong>Requisición Relacionada:</strong>
+                            <p class="form-control-static">
+                                @if($alerta->requisicion_id)
+                                    <a href="{{ route('requisiciones.show', $alerta->requisicion_id) }}" class="btn btn-sm btn-info me-2">
+                                        <i class="fas fa-eye"></i> Ver Requisición #{{ $alerta->requisicion_id }}
+                                    </a>
+                                    <a href="{{ route('requisiciones.edit', $alerta->requisicion_id) }}" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i> Editar Requisición
+                                    </a>
+                                @else
+                                    <span class="text-muted">No relacionada</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <strong>Estado:</strong>
@@ -62,7 +81,6 @@
                                     <i class="fas fa-check-circle"></i> Marcar como leída
                                 </button>
                             </form>
-
                         @endif
                     </div>
                 </div>
@@ -76,6 +94,9 @@
         .form-control-static {
             font-size: 1rem;
             margin-top: 0.25rem;
+        }
+        .me-2 {
+            margin-right: 0.5rem;
         }
     </style>
 @stop

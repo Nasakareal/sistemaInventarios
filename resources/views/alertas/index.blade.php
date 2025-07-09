@@ -25,6 +25,7 @@
                                         <th>Tipo</th>
                                         <th>Mensaje</th>
                                         <th>Origen</th>
+                                        <th>Requisición</th> <!-- NUEVA COLUMNA -->
                                         <th>Leído</th>
                                         <th>Fecha</th>
                                         <th>Acciones</th>
@@ -37,6 +38,18 @@
                                             <td>{{ $alerta->tipo }}</td>
                                             <td class="text-start">{{ Str::limit($alerta->mensaje, 50) }}</td>
                                             <td>{{ $alerta->origen ?? 'Desconocido' }}</td>
+                                            
+                                            {{-- NUEVA COLUMNA DE REQUISICIÓN --}}
+                                            <td>
+                                                @if($alerta->requisicion_id)
+                                                    <a href="{{ route('requisiciones.show', $alerta->requisicion_id) }}" class="btn btn-sm btn-info">
+                                                        #{{ $alerta->requisicion_id }}
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted">N/A</span>
+                                                @endif
+                                            </td>
+
                                             <td>
                                                 @if($alerta->leido)
                                                     <span class="badge bg-success">Sí</span>
